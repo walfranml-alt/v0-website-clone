@@ -1,5 +1,7 @@
 import { Heart, MessageCircle, Menu, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
+import Link from "next/link"
 
 export default function HomePage() {
   return (
@@ -134,9 +136,7 @@ export default function HomePage() {
       {/* Header */}
       <header className="relative z-10 flex items-center justify-between p-6">
         <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-400 to-orange-600 rounded-xl flex items-center justify-center">
-            <Heart className="w-6 h-6 fill-white text-white" />
-          </div>
+          <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
         </div>
         <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
           <Menu className="w-6 h-6" />
@@ -150,19 +150,23 @@ export default function HomePage() {
         </h2>
 
         <div className="flex flex-col gap-4 w-full max-w-md">
-          <Button
-            size="lg"
-            className="w-full bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-lg font-semibold py-6 rounded-full shadow-lg shadow-orange-400/30"
-          >
-            Sign Up
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black text-lg font-semibold py-6 rounded-full"
-          >
-            Log In
-          </Button>
+          <Link href="/signup">
+            <Button
+              size="lg"
+              className="w-full bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-lg font-semibold py-6 rounded-full shadow-lg shadow-orange-400/30"
+            >
+              Sign Up
+            </Button>
+          </Link>
+          <Link href="/login">
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full bg-transparent border-2 border-white text-white hover:bg-white hover:text-black text-lg font-semibold py-6 rounded-full"
+            >
+              Log In
+            </Button>
+          </Link>
         </div>
       </main>
 
