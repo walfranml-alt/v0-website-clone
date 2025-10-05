@@ -24,6 +24,7 @@ import {
   Users,
   Shield,
   AlertCircle,
+  Play,
 } from "lucide-react"
 
 export default function DashboardPage() {
@@ -366,6 +367,17 @@ export default function DashboardPage() {
                 </Card>
               </div>
 
+              {/* Start Evaluation Button Before Recent Activity */}
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => setShowVerificationModal(true)}
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-3"
+                >
+                  <Play className="w-6 h-6" />
+                  Start Evaluation
+                </Button>
+              </div>
+
               {/* Recent Activity */}
               <Card className="bg-gray-900/50 border-gray-800 p-6">
                 <h2 className="text-xl font-bold mb-4 text-white">Recent Activity</h2>
@@ -415,6 +427,17 @@ export default function DashboardPage() {
                   ))}
                 </div>
               </Card>
+
+              {/* Start Evaluation Button After Recent Activity */}
+              <div className="flex justify-center">
+                <Button
+                  onClick={() => setShowVerificationModal(true)}
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-3"
+                >
+                  <Play className="w-6 h-6" />
+                  Start Evaluation
+                </Button>
+              </div>
             </div>
           )}
 
