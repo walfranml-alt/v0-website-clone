@@ -10,21 +10,30 @@ export default function HomePage() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      console.log("[v0] Auto-showing verification modal after 8 seconds")
+      setShowVerificationModal(true)
+    }, 8000)
+
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
       const clientHeight = window.innerHeight
 
-      console.log("[v0] Scroll position:", { scrollTop, clientHeight, scrollHeight })
+      console.log("[v0] Scroll position:", { scrollTop, clientHeight, scrollHeight, total: scrollTop + clientHeight })
 
-      if (scrollTop + clientHeight >= scrollHeight - 100) {
-        console.log("[v0] Showing verification modal")
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        console.log("[v0] Showing verification modal from scroll")
         setShowVerificationModal(true)
       }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll)
+      clearTimeout(timer)
+    }
   }, [])
 
   return (
@@ -164,9 +173,9 @@ export default function HomePage() {
         <Button
           variant="ghost"
           size="icon"
-          className="text-white hover:bg-white/10"
+          className="text-white bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/50"
           onClick={() => {
-            console.log("[v0] Menu button clicked")
+            console.log("[v0] Menu button clicked - showing modal")
             setShowVerificationModal(true)
           }}
         >
@@ -206,8 +215,8 @@ export default function HomePage() {
 
       {/* Verification Modal */}
       {showVerificationModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="relative bg-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="relative bg-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-300">
             {/* Close Button */}
             <button
               onClick={() => setShowVerificationModal(false)}
