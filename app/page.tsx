@@ -134,7 +134,7 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/40 via-[#0a0a0f]/60 to-[#0a0a0f]/85" />
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-between p-6">
+      <header className="relative z-10 flex items-center justify-center p-6">
         <div className="flex items-center gap-2">
           <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
         </div>

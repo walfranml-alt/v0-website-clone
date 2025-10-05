@@ -236,6 +236,11 @@ export default function DashboardPage() {
             </h1>
             <div className="w-10" />
           </div>
+          {activeTab === "overview" && (
+            <div className="flex justify-center pb-4">
+              <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
+            </div>
+          )}
         </header>
 
         {/* Content Area */}
@@ -275,13 +280,13 @@ export default function DashboardPage() {
                     <GraduationCap className="w-8 h-8 text-purple-400" />
                   </div>
                   <p className="text-3xl font-bold text-white">{stats.trainingProgress}%</p>
-                  <p className="text-sm text-gray-300">Training Progress</p>
+                  <p className="text-sm text-white font-medium">Training Progress</p>
                 </Card>
               </div>
 
               {/* Recent Activity */}
               <Card className="bg-gray-900/50 border-gray-800 p-6">
-                <h2 className="text-xl font-bold mb-4">Recent Activity</h2>
+                <h2 className="text-xl font-bold mb-4 text-white">Recent Activity</h2>
                 <div className="space-y-3">
                   {recentTransactions.map((transaction) => (
                     <div
@@ -307,8 +312,8 @@ export default function DashboardPage() {
                           )}
                         </div>
                         <div>
-                          <p className="font-semibold">{transaction.product}</p>
-                          <p className="text-sm text-gray-400">{transaction.date}</p>
+                          <p className="font-semibold text-white">{transaction.product}</p>
+                          <p className="text-sm text-gray-300">{transaction.date}</p>
                         </div>
                       </div>
                       <div className="text-right">
