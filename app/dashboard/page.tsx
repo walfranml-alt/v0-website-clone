@@ -250,32 +250,32 @@ export default function DashboardPage() {
             <div className="space-y-6">
               {/* Stats Grid */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <Card className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border-orange-500/30 p-6">
+                <Card className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border-orange-500/30 p-6 bg-opacity-80">
                   <div className="flex items-center justify-between mb-2">
                     <DollarSign className="w-8 h-8 text-orange-400" />
                     <TrendingUp className="w-5 h-5 text-green-400" />
                   </div>
                   <p className="text-3xl font-bold text-white">${stats.balance.toFixed(2)}</p>
-                  <p className="text-sm text-gray-300">Available Balance</p>
+                  <p className="text-sm text-white">Available Balance</p>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/30 p-6">
+                <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/30 p-6 bg-opacity-80">
                   <div className="flex items-center justify-between mb-2">
                     <Clock className="w-8 h-8 text-blue-400" />
                   </div>
                   <p className="text-3xl font-bold text-white">{stats.pendingReviews}</p>
-                  <p className="text-sm text-gray-300">Pending Reviews</p>
+                  <p className="text-sm text-white">Pending Reviews</p>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-green-500/20 to-green-600/20 border-green-500/30 p-6">
+                <Card className="bg-gradient-to-br from-green-500/20 to-green-600/20 border-green-500/30 p-6 bg-opacity-80">
                   <div className="flex items-center justify-between mb-2">
                     <CheckCircle2 className="w-8 h-8 text-green-400" />
                   </div>
                   <p className="text-3xl font-bold text-white">{stats.completedReviews}</p>
-                  <p className="text-sm text-gray-300">Completed Reviews</p>
+                  <p className="text-sm text-white">Completed Reviews</p>
                 </Card>
 
-                <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-purple-500/30 p-6">
+                <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-purple-500/30 p-6 bg-opacity-80">
                   <div className="flex items-center justify-between mb-2">
                     <GraduationCap className="w-8 h-8 text-purple-400" />
                   </div>
