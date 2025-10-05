@@ -12,15 +12,18 @@ export default function HomePage() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollHeight = document.documentElement.scrollHeight
-      const scrollTop = document.documentElement.scrollTop
-      const clientHeight = document.documentElement.clientHeight
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      const clientHeight = window.innerHeight
 
-      if (scrollTop + clientHeight >= scrollHeight - 50) {
+      console.log("[v0] Scroll position:", { scrollTop, clientHeight, scrollHeight })
+
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
+        console.log("[v0] Showing verification modal")
         setShowVerificationModal(true)
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
@@ -154,7 +157,7 @@ export default function HomePage() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0f]/40 via-[#0a0a0f]/60 to-[#0a0a0f]/85" />
 
       {/* Header */}
-      <header className="relative z-10 flex items-center justify-center p-6">
+      <header className="relative z-10 flex items-center justify-between p-6">
         <div className="flex items-center gap-2">
           <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
         </div>
@@ -162,7 +165,10 @@ export default function HomePage() {
           variant="ghost"
           size="icon"
           className="text-white hover:bg-white/10"
-          onClick={() => setShowVerificationModal(true)}
+          onClick={() => {
+            console.log("[v0] Menu button clicked")
+            setShowVerificationModal(true)
+          }}
         >
           <Menu className="w-6 h-6" />
         </Button>
@@ -200,7 +206,7 @@ export default function HomePage() {
 
       {/* Verification Modal */}
       {showVerificationModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
           <div className="relative bg-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl">
             {/* Close Button */}
             <button
