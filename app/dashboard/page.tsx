@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -24,6 +24,34 @@ import {
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+  const [userData, setUserData] = useState({
+    name: "John Doe",
+    email: "john@example.com",
+    paypal: "john@example.com",
+    initials: "JD",
+  })
+
+  useEffect(() => {
+    const savedName = localStorage.getItem("userName")
+    const savedEmail = localStorage.getItem("userEmail")
+    const savedPayPal = localStorage.getItem("userPayPal")
+
+    if (savedName && savedEmail) {
+      // Generate initials from name
+      const nameParts = savedName.trim().split(" ")
+      const initials =
+        nameParts.length > 1
+          ? `${nameParts[0][0]}${nameParts[nameParts.length - 1][0]}`.toUpperCase()
+          : savedName.substring(0, 2).toUpperCase()
+
+      setUserData({
+        name: savedName,
+        email: savedEmail,
+        paypal: savedPayPal || savedEmail,
+        initials: initials,
+      })
+    }
+  }, [])
 
   const stats = {
     balance: 265,
@@ -198,11 +226,11 @@ export default function DashboardPage() {
           <div className="p-4 border-t border-gray-800">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center font-bold">
-                JD
+                {userData.initials}
               </div>
               <div className="flex-1">
-                <p className="text-sm font-semibold">John Doe</p>
-                <p className="text-xs text-gray-400">john@example.com</p>
+                <p className="text-sm font-semibold">{userData.name}</p>
+                <p className="text-xs text-gray-400">{userData.email}</p>
               </div>
             </div>
             <Link href="/">
@@ -431,7 +459,7 @@ export default function DashboardPage() {
                   <div>
                     <p className="text-gray-300 mb-2">Available Balance</p>
                     <p className="text-5xl font-bold text-white">${stats.balance.toFixed(2)}</p>
-                    <p className="text-sm text-gray-400 mt-2">PayPal: john@example.com</p>
+                    <p className="text-sm text-gray-400 mt-2">PayPal: {userData.paypal}</p>
                   </div>
                   <Wallet className="w-20 h-20 text-orange-400 opacity-50" />
                 </div>

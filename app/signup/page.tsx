@@ -45,6 +45,9 @@ export default function SignUpPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Form submitted:", formData)
+    localStorage.setItem("userName", formData.name)
+    localStorage.setItem("userEmail", formData.email)
+    localStorage.setItem("userPayPal", formData.paypalAccount)
     setShowLoadingModal(true)
     setProgress(0)
   }
