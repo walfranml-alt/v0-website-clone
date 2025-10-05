@@ -22,11 +22,14 @@ import {
   Gift,
   Award,
   Users,
+  Shield,
+  AlertCircle,
 } from "lucide-react"
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
+  const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [userData, setUserData] = useState({
     name: "John Doe",
     email: "john@example.com",
@@ -40,7 +43,6 @@ export default function DashboardPage() {
     const savedPayPal = localStorage.getItem("userPayPal")
 
     if (savedName && savedEmail) {
-      // Generate initials from name
       const nameParts = savedName.trim().split(" ")
       const initials =
         nameParts.length > 1
@@ -55,6 +57,11 @@ export default function DashboardPage() {
       })
     }
   }, [])
+
+  const handleMenuClick = (tab: string) => {
+    setActiveTab(tab)
+    setShowVerificationModal(true)
+  }
 
   const stats = {
     balance: 265,
@@ -182,7 +189,7 @@ export default function DashboardPage() {
                   ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                   : "text-gray-300 hover:bg-gray-800"
               }`}
-              onClick={() => setActiveTab("overview")}
+              onClick={() => handleMenuClick("overview")}
             >
               <LayoutDashboard className="w-5 h-5 mr-3" />
               Overview
@@ -194,7 +201,7 @@ export default function DashboardPage() {
                   ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                   : "text-gray-300 hover:bg-gray-800"
               }`}
-              onClick={() => setActiveTab("products")}
+              onClick={() => handleMenuClick("products")}
             >
               <Package className="w-5 h-5 mr-3" />
               Available Products
@@ -206,7 +213,7 @@ export default function DashboardPage() {
                   ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                   : "text-gray-300 hover:bg-gray-800"
               }`}
-              onClick={() => setActiveTab("training")}
+              onClick={() => handleMenuClick("training")}
             >
               <GraduationCap className="w-5 h-5 mr-3" />
               Training
@@ -218,7 +225,7 @@ export default function DashboardPage() {
                   ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                   : "text-gray-300 hover:bg-gray-800"
               }`}
-              onClick={() => setActiveTab("wallet")}
+              onClick={() => handleMenuClick("wallet")}
             >
               <Wallet className="w-5 h-5 mr-3" />
               Wallet & Withdrawals
@@ -234,7 +241,7 @@ export default function DashboardPage() {
                     ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                     : "text-gray-300 hover:bg-gray-800"
                 }`}
-                onClick={() => setActiveTab("giftcards")}
+                onClick={() => handleMenuClick("giftcards")}
               >
                 <Gift className="w-5 h-5 mr-3" />
                 Generate Gift Cards
@@ -246,7 +253,7 @@ export default function DashboardPage() {
                     ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                     : "text-gray-300 hover:bg-gray-800"
                 }`}
-                onClick={() => setActiveTab("brands")}
+                onClick={() => handleMenuClick("brands")}
               >
                 <Award className="w-5 h-5 mr-3" />
                 Top Brands List
@@ -258,7 +265,7 @@ export default function DashboardPage() {
                     ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
                     : "text-gray-300 hover:bg-gray-800"
                 }`}
-                onClick={() => setActiveTab("family")}
+                onClick={() => handleMenuClick("family")}
               >
                 <Users className="w-5 h-5 mr-3" />
                 Family Registration
@@ -780,6 +787,74 @@ export default function DashboardPage() {
       {/* Mobile Sidebar Overlay */}
       {sidebarOpen && (
         <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+      )}
+
+      {showVerificationModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-gray-100 rounded-2xl max-w-md w-full p-8 relative animate-in zoom-in-95 duration-200">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowVerificationModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Shield Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center">
+                <Shield className="w-10 h-10 text-yellow-600" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">Human Verification Required</h2>
+
+            {/* Description */}
+            <p className="text-gray-600 text-center mb-6">
+              Due to the high rate of system abuse, a verification fee is required to confirm you are human.
+            </p>
+
+            {/* Info Box */}
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-gray-700">
+                This one-time fee helps us maintain platform quality and ensures legitimate evaluators.
+              </p>
+            </div>
+
+            {/* Additional Info */}
+            <p className="text-gray-600 text-center mb-6">
+              After payment, you will receive immediate access to the panel.
+            </p>
+
+            {/* Buttons */}
+            <div className="space-y-3">
+              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold">
+                Proceed to Verification
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full text-gray-600 hover:text-gray-900 hover:bg-gray-200 py-6 text-lg"
+                onClick={() => setShowVerificationModal(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+
+            {/* Terms */}
+            <p className="text-xs text-gray-500 text-center mt-6">
+              By proceeding, you agree to our{" "}
+              <a href="#" className="text-blue-600 hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="text-blue-600 hover:underline">
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+        </div>
       )}
     </div>
   )

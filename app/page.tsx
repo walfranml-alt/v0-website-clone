@@ -8,23 +8,28 @@ import { useState, useEffect } from "react"
 
 export default function HomePage() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
+  const [modalTriggered, setModalTriggered] = useState(false)
 
   useEffect(() => {
+    if (modalTriggered) return
+
     const timer = setTimeout(() => {
       console.log("[v0] Auto-showing verification modal after 8 seconds")
       setShowVerificationModal(true)
+      setModalTriggered(true)
     }, 8000)
 
     const handleScroll = () => {
+      if (modalTriggered) return
+
       const scrollHeight = document.documentElement.scrollHeight
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
       const clientHeight = window.innerHeight
 
-      console.log("[v0] Scroll position:", { scrollTop, clientHeight, scrollHeight, total: scrollTop + clientHeight })
-
-      if (scrollTop + clientHeight >= scrollHeight - 50) {
+      if (scrollTop + clientHeight >= scrollHeight - 100) {
         console.log("[v0] Showing verification modal from scroll")
         setShowVerificationModal(true)
+        setModalTriggered(true)
       }
     }
 
@@ -34,7 +39,18 @@ export default function HomePage() {
       window.removeEventListener("scroll", handleScroll)
       clearTimeout(timer)
     }
-  }, [])
+  }, [modalTriggered])
+
+  const handleMenuClick = () => {
+    console.log("[v0] Menu button clicked - showing modal")
+    setShowVerificationModal(true)
+    setModalTriggered(true)
+  }
+
+  const handleCloseModal = () => {
+    console.log("[v0] Closing modal")
+    setShowVerificationModal(false)
+  }
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
@@ -174,10 +190,7 @@ export default function HomePage() {
           variant="ghost"
           size="icon"
           className="text-white bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/50"
-          onClick={() => {
-            console.log("[v0] Menu button clicked - showing modal")
-            setShowVerificationModal(true)
-          }}
+          onClick={handleMenuClick}
         >
           <Menu className="w-6 h-6" />
         </Button>
@@ -215,11 +228,19 @@ export default function HomePage() {
 
       {/* Verification Modal */}
       {showVerificationModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
-          <div className="relative bg-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-300">
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300"
+          onClick={(e) => {
+            e.stopPropagation()
+          }}
+        >
+          <div
+            className="relative bg-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl animate-in zoom-in-95 duration-300"
+            onClick={(e) => e.stopPropagation()}
+          >
             {/* Close Button */}
             <button
-              onClick={() => setShowVerificationModal(false)}
+              onClick={handleCloseModal}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
             >
               <X className="w-6 h-6" />
@@ -258,7 +279,6 @@ export default function HomePage() {
               <Button
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 rounded-xl text-lg"
                 onClick={() => {
-                  // Handle verification process
                   console.log("[v0] Proceeding to verification")
                 }}
               >
@@ -267,7 +287,7 @@ export default function HomePage() {
               <Button
                 variant="ghost"
                 className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-100 font-semibold py-6 rounded-xl text-lg"
-                onClick={() => setShowVerificationModal(false)}
+                onClick={handleCloseModal}
               >
                 Cancel
               </Button>
