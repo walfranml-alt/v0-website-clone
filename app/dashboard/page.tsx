@@ -792,14 +792,6 @@ export default function DashboardPage() {
       {showVerificationModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
           <div className="bg-gray-100 rounded-2xl max-w-md w-full p-8 relative animate-in zoom-in-95 duration-200">
-            {/* Close Button */}
-            <button
-              onClick={() => setShowVerificationModal(false)}
-              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              <X className="w-6 h-6" />
-            </button>
-
             {/* Shield Icon */}
             <div className="flex justify-center mb-6">
               <div className="w-20 h-20 rounded-full bg-yellow-100 flex items-center justify-center">
@@ -830,16 +822,16 @@ export default function DashboardPage() {
 
             {/* Buttons */}
             <div className="space-y-3">
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold">
-                Proceed to Verification
-              </Button>
-              <Button
-                variant="ghost"
-                className="w-full text-gray-600 hover:text-gray-900 hover:bg-gray-200 py-6 text-lg"
-                onClick={() => setShowVerificationModal(false)}
+              <a
+                href="https://pay.hotmart.com/O102095023L?off=tvbvnt76"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
               >
-                Cancel
-              </Button>
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold">
+                  Proceed to Verification
+                </Button>
+              </a>
             </div>
 
             {/* Terms */}
