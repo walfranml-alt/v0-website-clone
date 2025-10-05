@@ -1,9 +1,29 @@
-import { Heart, MessageCircle, Menu, Star } from "lucide-react"
+"use client"
+
+import { Heart, MessageCircle, Menu, Star, Shield, Info, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Image from "next/image"
 import Link from "next/link"
+import { useState, useEffect } from "react"
 
 export default function HomePage() {
+  const [showVerificationModal, setShowVerificationModal] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollHeight = document.documentElement.scrollHeight
+      const scrollTop = document.documentElement.scrollTop
+      const clientHeight = document.documentElement.clientHeight
+
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        setShowVerificationModal(true)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   return (
     <div className="relative min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
       {/* Animated Background Cards */}
@@ -138,7 +158,12 @@ export default function HomePage() {
         <div className="flex items-center gap-2">
           <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
         </div>
-        <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-white hover:bg-white/10"
+          onClick={() => setShowVerificationModal(true)}
+        >
           <Menu className="w-6 h-6" />
         </Button>
       </header>
@@ -172,6 +197,81 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 text-sm text-gray-400">© 2025 LLC, All rights reserved.</footer>
+
+      {/* Verification Modal */}
+      {showVerificationModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
+          <div className="relative bg-gray-200 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowVerificationModal(false)}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            {/* Shield Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 rounded-full bg-yellow-200 flex items-center justify-center">
+                <Shield className="w-10 h-10 text-yellow-700" />
+              </div>
+            </div>
+
+            {/* Title */}
+            <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">Human Verification Required</h2>
+
+            {/* Description */}
+            <p className="text-gray-600 text-center mb-6">
+              Due to the high rate of system abuse, a verification fee is required to confirm you are human.
+            </p>
+
+            {/* Info Box */}
+            <div className="bg-yellow-100 rounded-2xl p-4 mb-6 flex gap-3">
+              <Info className="w-5 h-5 text-yellow-700 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-gray-700">
+                This one-time fee helps us maintain platform quality and ensures legitimate evaluators.
+              </p>
+            </div>
+
+            {/* Additional Info */}
+            <p className="text-gray-600 text-center mb-6">
+              After payment, you will receive immediate access to the panel.
+            </p>
+
+            {/* Buttons */}
+            <div className="space-y-3">
+              <Button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 rounded-xl text-lg"
+                onClick={() => {
+                  // Handle verification process
+                  console.log("[v0] Proceeding to verification")
+                }}
+              >
+                Proceed to Verification
+              </Button>
+              <Button
+                variant="ghost"
+                className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-100 font-semibold py-6 rounded-xl text-lg"
+                onClick={() => setShowVerificationModal(false)}
+              >
+                Cancel
+              </Button>
+            </div>
+
+            {/* Terms */}
+            <p className="text-sm text-gray-500 text-center mt-6">
+              By proceeding, you agree to our{" "}
+              <a href="#" className="text-blue-600 hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="text-blue-600 hover:underline">
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
