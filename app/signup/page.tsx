@@ -25,12 +25,38 @@ export default function SignUpPage() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
+    const savedFormData = localStorage.getItem("signupFormData")
+    if (savedFormData) {
+      try {
+        const parsed = JSON.parse(savedFormData)
+        setFormData(parsed)
+      } catch (error) {
+        console.error("Error loading saved form data:", error)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (
+      formData.name ||
+      formData.email ||
+      formData.password ||
+      formData.paypalAccount ||
+      formData.age ||
+      formData.reviewExperience
+    ) {
+      localStorage.setItem("signupFormData", JSON.stringify(formData))
+    }
+  }, [formData])
+
+  useEffect(() => {
     if (showLoadingModal) {
       const interval = setInterval(() => {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(interval)
             setTimeout(() => {
+              localStorage.removeItem("signupFormData")
               router.push("/dashboard")
             }, 500)
             return 100
