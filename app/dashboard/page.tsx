@@ -19,6 +19,9 @@ import {
   Menu,
   X,
   LogOut,
+  Gift,
+  Award,
+  Users,
 } from "lucide-react"
 
 export default function DashboardPage() {
@@ -171,7 +174,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-2">
+          <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
             <Button
               variant={activeTab === "overview" ? "secondary" : "ghost"}
               className={`w-full justify-start ${
@@ -220,6 +223,47 @@ export default function DashboardPage() {
               <Wallet className="w-5 h-5 mr-3" />
               Wallet & Withdrawals
             </Button>
+
+            {/* Bonus Features */}
+            <div className="pt-4 mt-4 border-t border-gray-700">
+              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wider px-3 mb-2">Bonus Features</p>
+              <Button
+                variant={activeTab === "giftcards" ? "secondary" : "ghost"}
+                className={`w-full justify-start ${
+                  activeTab === "giftcards"
+                    ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
+                    : "text-gray-300 hover:bg-gray-800"
+                }`}
+                onClick={() => setActiveTab("giftcards")}
+              >
+                <Gift className="w-5 h-5 mr-3" />
+                Generate Gift Cards
+              </Button>
+              <Button
+                variant={activeTab === "brands" ? "secondary" : "ghost"}
+                className={`w-full justify-start ${
+                  activeTab === "brands"
+                    ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
+                    : "text-gray-300 hover:bg-gray-800"
+                }`}
+                onClick={() => setActiveTab("brands")}
+              >
+                <Award className="w-5 h-5 mr-3" />
+                Top Brands List
+              </Button>
+              <Button
+                variant={activeTab === "family" ? "secondary" : "ghost"}
+                className={`w-full justify-start ${
+                  activeTab === "family"
+                    ? "bg-orange-500/20 text-orange-400 hover:bg-orange-500/30"
+                    : "text-gray-300 hover:bg-gray-800"
+                }`}
+                onClick={() => setActiveTab("family")}
+              >
+                <Users className="w-5 h-5 mr-3" />
+                Family Registration
+              </Button>
+            </div>
           </nav>
 
           {/* User Section */}
@@ -261,6 +305,9 @@ export default function DashboardPage() {
               {activeTab === "products" && "Available Products"}
               {activeTab === "training" && "Training Modules"}
               {activeTab === "wallet" && "Wallet & Withdrawals"}
+              {activeTab === "giftcards" && "Generate Discount Gift Cards"}
+              {activeTab === "brands" && "Secret List of Top Brands"}
+              {activeTab === "family" && "Register Family Members"}
             </h1>
             <div className="w-10" />
           </div>
@@ -533,6 +580,196 @@ export default function DashboardPage() {
                       </p>
                     </div>
                   ))}
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* Gift Cards Tab */}
+          {activeTab === "giftcards" && (
+            <div className="space-y-6">
+              <p className="text-gray-400">
+                Generate discount gift cards for popular retailers and earn additional rewards.
+              </p>
+              <Card className="bg-gradient-to-br from-orange-500/20 to-orange-600/20 border-orange-500/30 p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <Gift className="w-12 h-12 text-orange-400" />
+                  <div>
+                    <h2 className="text-2xl font-bold">Gift Card Generator</h2>
+                    <p className="text-gray-300">Unlock exclusive discounts on gift cards</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {["Amazon", "Walmart", "Target", "Best Buy", "Starbucks", "iTunes"].map((brand) => (
+                    <Card
+                      key={brand}
+                      className="bg-gray-900/50 border-gray-800 p-4 hover:border-orange-500/50 transition-colors cursor-pointer"
+                    >
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="font-bold text-lg">{brand}</h3>
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/30">5% OFF</Badge>
+                      </div>
+                      <p className="text-sm text-gray-400 mb-3">Available denominations: $25, $50, $100</p>
+                      <Button className="w-full bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700">
+                        Generate Card
+                      </Button>
+                    </Card>
+                  ))}
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* Top Brands Tab */}
+          {activeTab === "brands" && (
+            <div className="space-y-6">
+              <p className="text-gray-400">
+                Access our exclusive list of top brands with special review opportunities and higher rewards.
+              </p>
+              <Card className="bg-gradient-to-br from-purple-500/20 to-purple-600/20 border-purple-500/30 p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <Award className="w-12 h-12 text-purple-400" />
+                  <div>
+                    <h2 className="text-2xl font-bold">Premium Brand Partners</h2>
+                    <p className="text-gray-300">Exclusive access to top-tier brands</p>
+                  </div>
+                </div>
+                <div className="space-y-4">
+                  {[
+                    { name: "Apple", category: "Electronics", reward: 50, reviews: 12 },
+                    { name: "Nike", category: "Fashion", reward: 45, reviews: 8 },
+                    { name: "Sony", category: "Electronics", reward: 40, reviews: 15 },
+                    { name: "Samsung", category: "Electronics", reward: 48, reviews: 10 },
+                    { name: "Adidas", category: "Fashion", reward: 42, reviews: 6 },
+                  ].map((brand) => (
+                    <Card
+                      key={brand.name}
+                      className="bg-gray-900/50 border-gray-800 p-6 hover:border-purple-500/50 transition-colors"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-4">
+                          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-purple-500/20 to-purple-600/20 flex items-center justify-center">
+                            <Award className="w-8 h-8 text-purple-400" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-xl">{brand.name}</h3>
+                            <p className="text-sm text-gray-400">{brand.category}</p>
+                            <p className="text-xs text-gray-500 mt-1">{brand.reviews} products available</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <Badge className="bg-orange-500/20 text-orange-400 border-orange-500/30 mb-2">
+                            Up to ${brand.reward}
+                          </Badge>
+                          <Button className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700">
+                            View Products
+                          </Button>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </Card>
+            </div>
+          )}
+
+          {/* Family Registration Tab */}
+          {activeTab === "family" && (
+            <div className="space-y-6">
+              <p className="text-gray-400">
+                Register your family members for Amazon Career opportunities and earn referral bonuses.
+              </p>
+              <Card className="bg-gradient-to-br from-blue-500/20 to-blue-600/20 border-blue-500/30 p-8">
+                <div className="flex items-center gap-4 mb-6">
+                  <Users className="w-12 h-12 text-blue-400" />
+                  <div>
+                    <h2 className="text-2xl font-bold">Amazon Career Registration</h2>
+                    <p className="text-gray-300">Help your family join Amazon's workforce</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <Card className="bg-gray-900/50 border-gray-800 p-6">
+                    <h3 className="font-bold text-lg mb-4">Registration Form</h3>
+                    <div className="space-y-4">
+                      <div>
+                        <label className="text-sm text-gray-400 mb-1 block">Family Member Name</label>
+                        <input
+                          type="text"
+                          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                          placeholder="Enter full name"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-400 mb-1 block">Email Address</label>
+                        <input
+                          type="email"
+                          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                          placeholder="Enter email"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-400 mb-1 block">Phone Number</label>
+                        <input
+                          type="tel"
+                          className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-blue-500 focus:outline-none"
+                          placeholder="Enter phone number"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm text-gray-400 mb-1 block">Relationship</label>
+                        <select className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-white focus:border-blue-500 focus:outline-none">
+                          <option>Select relationship</option>
+                          <option>Spouse</option>
+                          <option>Parent</option>
+                          <option>Sibling</option>
+                          <option>Child</option>
+                          <option>Other</option>
+                        </select>
+                      </div>
+                      <Button className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700">
+                        Submit Registration
+                      </Button>
+                    </div>
+                  </Card>
+                  <Card className="bg-gray-900/50 border-gray-800 p-6">
+                    <h3 className="font-bold text-lg mb-4">Referral Benefits</h3>
+                    <div className="space-y-4">
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <p className="font-semibold">$100 Referral Bonus</p>
+                          <p className="text-sm text-gray-400">Earn when your referral gets hired</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <p className="font-semibold">Priority Application Review</p>
+                          <p className="text-sm text-gray-400">Your referrals get faster processing</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <p className="font-semibold">Career Support</p>
+                          <p className="text-sm text-gray-400">Access to exclusive training resources</p>
+                        </div>
+                      </div>
+                      <div className="flex items-start gap-3">
+                        <CheckCircle2 className="w-5 h-5 text-green-400 mt-0.5" />
+                        <div>
+                          <p className="font-semibold">Unlimited Referrals</p>
+                          <p className="text-sm text-gray-400">No limit on family members you can refer</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                      <p className="text-sm text-blue-300">
+                        <strong>Note:</strong> All referrals must meet Amazon's standard hiring requirements and pass
+                        background checks.
+                      </p>
+                    </div>
+                  </Card>
                 </div>
               </Card>
             </div>
