@@ -21,6 +21,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        {/* Google Analytics */}
+        <Script src="https://www.googletagmanager.com/gtag/js?id=G-TTC340RRS0" strategy="afterInteractive" />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TTC340RRS0');
+          `}
+        </Script>
+
         {/* Hotjar Analytics - AMAZON NOVO */}
         <Script id="hotjar-tracking" strategy="afterInteractive">
           {`
