@@ -9,8 +9,10 @@ import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function SignUpPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -21,7 +23,7 @@ export default function SignUpPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Form submitted:", formData)
-    // Add your signup logic here
+    router.push("/dashboard")
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
