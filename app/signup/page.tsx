@@ -18,6 +18,8 @@ export default function SignUpPage() {
     email: "",
     password: "",
     paypalAccount: "",
+    age: "",
+    reviewExperience: "",
   })
   const [showLoadingModal, setShowLoadingModal] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -28,15 +30,14 @@ export default function SignUpPage() {
         setProgress((prev) => {
           if (prev >= 100) {
             clearInterval(interval)
-            // Redirect to dashboard when progress reaches 100%
             setTimeout(() => {
               router.push("/dashboard")
             }, 500)
             return 100
           }
-          return prev + 2 // Increment by 2% every interval
+          return prev + 2
         })
-      }, 50) // Update every 50ms (total ~2.5 seconds to reach 100%)
+      }, 50)
 
       return () => clearInterval(interval)
     }
@@ -48,11 +49,13 @@ export default function SignUpPage() {
     localStorage.setItem("userName", formData.name)
     localStorage.setItem("userEmail", formData.email)
     localStorage.setItem("userPayPal", formData.paypalAccount)
+    localStorage.setItem("userAge", formData.age)
+    localStorage.setItem("userReviewExperience", formData.reviewExperience)
     setShowLoadingModal(true)
     setProgress(0)
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -61,10 +64,8 @@ export default function SignUpPage() {
 
   return (
     <div className="relative min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
-      {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-[#0a0a0f] to-orange-600/10" />
 
-      {/* Header */}
       <header className="relative z-10 flex items-center justify-between p-6">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
@@ -76,7 +77,6 @@ export default function SignUpPage() {
         </Link>
       </header>
 
-      {/* Main Content */}
       <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6">
         <div className="w-full max-w-md">
           <h1 className="text-4xl md:text-5xl font-bold text-center mb-2">Create Account</h1>
@@ -152,7 +152,66 @@ export default function SignUpPage() {
               <p className="text-xs text-gray-500">This will be used for your earnings withdrawals</p>
             </div>
 
-            {/* Submit Button */}
+            <div className="space-y-2">
+              <Label htmlFor="age" className="text-white text-sm font-medium">
+                Age
+              </Label>
+              <select
+                id="age"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-900/50 border border-gray-700 text-white rounded-md px-3 py-2 focus:border-orange-400 focus:ring-orange-400 focus:outline-none"
+              >
+                <option value="" disabled className="bg-gray-900">
+                  Select age range
+                </option>
+                <option value="18-25" className="bg-gray-900">
+                  18-25
+                </option>
+                <option value="26-35" className="bg-gray-900">
+                  26-35
+                </option>
+                <option value="36-45" className="bg-gray-900">
+                  36-45
+                </option>
+                <option value="46-55" className="bg-gray-900">
+                  46-55
+                </option>
+                <option value="56+" className="bg-gray-900">
+                  56+
+                </option>
+              </select>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="reviewExperience" className="text-white text-sm font-medium">
+                Review Experience
+              </Label>
+              <select
+                id="reviewExperience"
+                name="reviewExperience"
+                value={formData.reviewExperience}
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-900/50 border border-gray-700 text-white rounded-md px-3 py-2 focus:border-orange-400 focus:ring-orange-400 focus:outline-none"
+              >
+                <option value="" disabled className="bg-gray-900">
+                  Select experience level
+                </option>
+                <option value="Beginner" className="bg-gray-900">
+                  Beginner
+                </option>
+                <option value="Intermediate" className="bg-gray-900">
+                  Intermediate
+                </option>
+                <option value="Advanced" className="bg-gray-900">
+                  Advanced
+                </option>
+              </select>
+            </div>
+
             <Button
               type="submit"
               size="lg"
@@ -162,7 +221,6 @@ export default function SignUpPage() {
             </Button>
           </form>
 
-          {/* Login Link */}
           <p className="text-center text-gray-400 mt-6">
             Already have an account?{" "}
             <Link href="/" className="text-orange-400 hover:text-orange-300 font-semibold">
@@ -172,7 +230,6 @@ export default function SignUpPage() {
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="relative z-10 text-center py-8 text-sm text-gray-400">© 2025 LLC, All rights reserved.</footer>
 
       {showLoadingModal && (
@@ -198,7 +255,6 @@ export default function SignUpPage() {
               <p className="text-gray-400 text-sm">Please wait...</p>
             </div>
 
-            {/* Progress Bar */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-gray-400">
                 <span>Progress</span>
