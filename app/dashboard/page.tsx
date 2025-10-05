@@ -67,7 +67,7 @@ export default function DashboardPage() {
   const stats = {
     balance: 265,
     pendingReviews: 8,
-    completedReviews: 0,
+    completedReviews: 3, // Updated from 0 to 3
     trainingProgress: 0,
   }
 
