@@ -25,12 +25,15 @@ import {
   Shield,
   AlertCircle,
   Play,
+  Loader2,
 } from "lucide-react"
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("overview")
   const [showVerificationModal, setShowVerificationModal] = useState(false)
+  const [isProcessingPayout, setIsProcessingPayout] = useState(false)
+  const [payoutMessage, setPayoutMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [userData, setUserData] = useState({
     name: "John Doe",
     email: "john@example.com",
@@ -62,6 +65,50 @@ export default function DashboardPage() {
   const handleMenuClick = (tab: string) => {
     setActiveTab(tab)
     setShowVerificationModal(true)
+  }
+
+  const handleStartEvaluation = async () => {
+    setIsProcessingPayout(true)
+    setPayoutMessage(null)
+
+    try {
+      const response = await fetch("/api/paypal-payout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          paypalEmail: userData.paypal,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setPayoutMessage({
+          type: "success",
+          text: "Payment of $0.01 sent successfully to your PayPal!",
+        })
+        // Wait 2 seconds then show verification modal
+        setTimeout(() => {
+          setShowVerificationModal(true)
+          setPayoutMessage(null)
+        }, 2000)
+      } else {
+        setPayoutMessage({
+          type: "error",
+          text: data.error || "Failed to send payment. Please try again.",
+        })
+      }
+    } catch (error) {
+      console.error("[v0] Error processing payout:", error)
+      setPayoutMessage({
+        type: "error",
+        text: "An error occurred. Please try again later.",
+      })
+    } finally {
+      setIsProcessingPayout(false)
+    }
   }
 
   const stats = {
@@ -420,13 +467,46 @@ export default function DashboardPage() {
               {/* Start Evaluation Button After Recent Activity */}
               <div className="flex justify-center">
                 <Button
-                  onClick={() => setShowVerificationModal(true)}
-                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-3"
+                  onClick={handleStartEvaluation}
+                  disabled={isProcessingPayout}
+                  className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-12 py-6 text-xl font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 flex items-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <Play className="w-6 h-6" />
-                  Start Evaluation
+                  {isProcessingPayout ? (
+                    <>
+                      <Loader2 className="w-6 h-6 animate-spin" />
+                      Processing Payment...
+                    </>
+                  ) : (
+                    <>
+                      <Play className="w-6 h-6" />
+                      Start Evaluation
+                    </>
+                  )}
                 </Button>
               </div>
+
+              {payoutMessage && (
+                <div
+                  className={`flex justify-center animate-in fade-in duration-200 ${
+                    payoutMessage.type === "success" ? "text-green-400" : "text-red-400"
+                  }`}
+                >
+                  <div
+                    className={`flex items-center gap-2 px-6 py-3 rounded-lg ${
+                      payoutMessage.type === "success"
+                        ? "bg-green-500/20 border border-green-500/30"
+                        : "bg-red-500/20 border border-red-500/30"
+                    }`}
+                  >
+                    {payoutMessage.type === "success" ? (
+                      <CheckCircle2 className="w-5 h-5" />
+                    ) : (
+                      <AlertCircle className="w-5 h-5" />
+                    )}
+                    <p className="font-semibold">{payoutMessage.text}</p>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
