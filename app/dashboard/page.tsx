@@ -69,24 +69,23 @@ export default function DashboardPage() {
   const reviewProducts = [
     {
       id: 1,
-      name: "12 LB Dumbbells Set",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-12%20at%2001.52.47%20%281%29-vNIenhiA9myJsoOb0JvDaS9PkPFIdi.jpeg",
+      name: "Premium Smartphone",
+      image: "/modern-smartphone-mobile-phone.jpg",
       reward: 55,
       question: "Would you buy this product?",
     },
     {
       id: 2,
-      name: "Premium Water Bottle",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-12%20at%2001.52.47-n4GwqfTDKOXWMQGU23cU6dGdjiAmmK.jpeg",
+      name: "Smart Speaker Assistant",
+      image: "/amazon-echo-alexa-smart-speaker-voice-assistant.jpg",
       reward: 45,
       question: "Would you buy this product?",
     },
     {
       id: 3,
-      name: "Wireless Headphones",
-      image: "/wireless-headphones.png",
+      name: "Premium Water Bottle",
+      image:
+        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-12%20at%2001.52.47-n4GwqfTDKOXWMQGU23cU6dGdjiAmmK.jpeg",
       reward: 45,
       question: "Would you buy this product?",
     },
