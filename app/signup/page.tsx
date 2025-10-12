@@ -19,6 +19,17 @@ export default function SignUpPage() {
     password: "",
   })
   const [isLoaded, setIsLoaded] = useState(false)
+  const [accessCode, setAccessCode] = useState("")
+
+  useEffect(() => {
+    const generateAccessCode = () => {
+      const timestamp = Date.now().toString(36).toUpperCase()
+      const random = Math.random().toString(36).substring(2, 8).toUpperCase()
+      return `AMZ-${timestamp}-${random}`
+    }
+
+    setAccessCode(generateAccessCode())
+  }, [])
 
   useEffect(() => {
     const savedFormData = localStorage.getItem("signupFormData")
@@ -50,6 +61,7 @@ export default function SignUpPage() {
     localStorage.setItem("userName", formData.name)
     localStorage.setItem("userEmail", formData.email)
     localStorage.setItem("userPayPal", formData.email)
+    localStorage.setItem("userAccessCode", accessCode)
 
     localStorage.removeItem("signupFormData")
 
@@ -87,6 +99,21 @@ export default function SignUpPage() {
           <p className="text-gray-400 text-center mb-8">Join us and start earning today</p>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <Label htmlFor="accessCode" className="text-white text-sm font-medium">
+                Exclusive Access Code
+              </Label>
+              <Input
+                id="accessCode"
+                name="accessCode"
+                type="text"
+                value={accessCode}
+                readOnly
+                className="bg-gray-900/50 border-gray-700 text-orange-400 font-mono font-semibold focus:border-orange-400 focus:ring-orange-400 cursor-not-allowed"
+              />
+              <p className="text-xs text-gray-500">(This code is valid for a single registration)</p>
+            </div>
+
             {/* Name Field */}
             <div className="space-y-2">
               <Label htmlFor="name" className="text-white text-sm font-medium">
