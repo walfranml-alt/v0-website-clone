@@ -18,6 +18,7 @@ import {
   Shield,
   X,
   ChevronLeft,
+  Clock,
 } from "lucide-react"
 
 // Transaction interface
@@ -155,39 +156,109 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* How to Earn Section */}
-      <section
-        className="bg-gray-900 rounded-lg p-4 border border-gray-800 cursor-pointer hover:bg-gray-800 transition-colors"
-        onClick={() => setActiveView("tutorial")}
-      >
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center">
-            <Star className="w-5 h-5 text-orange-500" />
+      {/* Step-by-step checklist */}
+      <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <div className="space-y-3">
+          {/* Step 1 - Completed */}
+          <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+              1
+            </div>
+            <p className="text-sm flex-1">Assessments Performed</p>
+            <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+            <span className="text-green-500 text-sm font-semibold">Ok</span>
           </div>
-          <div>
-            <h3 className="font-semibold">How to earn with Amazon Jobs 2025</h3>
-            <p className="text-sm text-gray-400">Complete product reviews and earn rewards</p>
+
+          {/* Step 2 - Completed */}
+          <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+              2
+            </div>
+            <p className="text-sm flex-1">Registered data</p>
+            <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+            <span className="text-green-500 text-sm font-semibold">Ok</span>
+          </div>
+
+          {/* Step 3 - Not completed */}
+          <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+              3
+            </div>
+            <p className="text-sm flex-1">Watch the video to withdraw your balance</p>
+            <Clock className="w-5 h-5 text-orange-500 flex-shrink-0" />
           </div>
         </div>
       </section>
 
-      {/* Task Center */}
-      <section className="bg-gray-900 rounded-lg p-4 border border-gray-800">
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3">Task Center</h2>
-          <Button variant="ghost" size="sm" className="text-gray-400" onClick={handleStartReview}>
-            →
-          </Button>
-        </div>
-        <div
-          className="flex items-center gap-3 cursor-pointer hover:bg-gray-800 p-3 rounded-lg transition-colors"
-          onClick={handleStartReview}
-        >
-          <CheckCircle2 className="w-6 h-6 text-green-500" />
-          <span className="text-sm">Complete tasks and earn rewards</span>
-          <Button variant="ghost" size="sm" className="ml-auto text-gray-400">
-            →
-          </Button>
+      {/* Social Proof Testimonials */}
+      <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+        <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3 mb-4">What Our Users Say</h2>
+        <div className="space-y-4">
+          {/* Testimonial 1 - Withdrawal released after video */}
+          <div className="bg-gray-800/50 rounded-lg p-4">
+            <div className="flex items-start gap-3 mb-3">
+              <img src="/profile-1.png" alt="Jessica M." className="w-12 h-12 rounded-full object-cover" />
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-semibold">Jessica M.</h3>
+                  <span className="text-xs text-gray-400">2 hours ago</span>
+                </div>
+                <div className="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                  ))}
+                </div>
+                <p className="text-sm text-gray-300">
+                  "I watched the video and my withdrawal was released immediately! Got my $247 in my PayPal within
+                  hours. This is legit! 🎉"
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial 2 - Paid activation fee, got profits same day */}
+          <div className="bg-gray-800/50 rounded-lg p-4">
+            <div className="flex items-start gap-3 mb-3">
+              <img src="/profile-2.png" alt="Michael R." className="w-12 h-12 rounded-full object-cover" />
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-semibold">Michael R.</h3>
+                  <span className="text-xs text-gray-400">5 hours ago</span>
+                </div>
+                <div className="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                  ))}
+                </div>
+                <p className="text-sm text-gray-300">
+                  "I was skeptical about the activation fee, but I paid it and made profits the same day! Already earned
+                  back 3x what I paid. Best decision ever! 💰"
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Testimonial 3 - Fast and easy process */}
+          <div className="bg-gray-800/50 rounded-lg p-4">
+            <div className="flex items-start gap-3 mb-3">
+              <img src="/profile-3.png" alt="Sarah L." className="w-12 h-12 rounded-full object-cover" />
+              <div className="flex-1">
+                <div className="flex items-center justify-between mb-1">
+                  <h3 className="font-semibold">Sarah L.</h3>
+                  <span className="text-xs text-gray-400">1 day ago</span>
+                </div>
+                <div className="flex gap-1 mb-2">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                  ))}
+                </div>
+                <p className="text-sm text-gray-300">
+                  "Super easy! Completed 3 reviews in 10 minutes and cashed out. The whole process was smooth and fast.
+                  Highly recommend! ⚡"
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
