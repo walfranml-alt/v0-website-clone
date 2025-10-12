@@ -268,14 +268,18 @@ export default function DashboardPage() {
     switch (activeView) {
       case "dashboard":
         return (
-          <DashboardView userData={userData} onStartReview={handleStartEvaluation} isProcessing={isProcessingPayout} />
+          <DashboardView
+            userData={userData}
+            onStartReview={() => setActiveView("reviews")}
+            isProcessing={isProcessingPayout}
+          />
         )
       case "withdraw":
         return <WithdrawView userData={userData} onVerify={() => setShowVerificationModal(true)} />
       case "giftcards":
         return <GiftCardsView onVerify={() => setShowVerificationModal(true)} />
       case "tutorial":
-        return <TutorialView onStartEarning={handleStartEvaluation} isProcessing={isProcessingPayout} />
+        return <TutorialView onStartEarning={() => setActiveView("reviews")} isProcessing={isProcessingPayout} />
       case "reviews":
         return <ReviewsView availableReviews={availableReviews} onReviewClick={handleStartEvaluation} />
       case "vip":
@@ -494,7 +498,7 @@ function HomeView({
       {/* Product Banner */}
       <section
         className="relative h-48 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
-        onClick={handleStartEvaluation}
+        onClick={() => setActiveView("reviews")}
       >
         <img
           src={productsBanner[currentBannerIndex].image || "/placeholder.svg"}
@@ -614,18 +618,11 @@ function HomeView({
               <div className="p-3 space-y-2">
                 <h3 className="font-semibold text-sm line-clamp-2 text-white">{review.name}</h3>
                 <Button
-                  onClick={onReviewClick}
+                  onClick={() => setActiveView("reviews")}
                   disabled={isProcessingPayout}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
                 >
-                  {isProcessingPayout ? (
-                    <>
-                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
-                      Processing...
-                    </>
-                  ) : (
-                    "Review Immediately"
-                  )}
+                  Review Immediately
                 </Button>
               </div>
             </Card>
