@@ -25,17 +25,126 @@ import {
   Star,
 } from "lucide-react"
 
+interface Transaction {
+  id: string
+  type: "Review" | "Withdrawal"
+  product: string
+  amount: number
+  date: string
+  status: "Completed" | "Pending activation"
+  userName: string
+}
+
 export default function DashboardPage() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [isProcessingPayout, setIsProcessingPayout] = useState(false)
   const [payoutMessage, setPayoutMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
+  const [recentTransactions, setRecentTransactions] = useState<Transaction[]>([
+    {
+      id: "1",
+      type: "Review",
+      product: "Luggage evaluation",
+      amount: 45.0,
+      date: "10 minutes",
+      status: "Completed",
+      userName: "Sarah M.",
+    },
+    {
+      id: "2",
+      type: "Review",
+      product: "Jordan Sneakers",
+      amount: 55.0,
+      date: "11 minutes",
+      status: "Completed",
+      userName: "Michael R.",
+    },
+    {
+      id: "3",
+      type: "Review",
+      product: "Fire TV",
+      amount: 65.0,
+      date: "11 minutes",
+      status: "Completed",
+      userName: "Jessica L.",
+    },
+    {
+      id: "4",
+      type: "Withdrawal",
+      product: "PayPal Transfer",
+      amount: 265.0,
+      date: "15 minutes",
+      status: "Pending activation",
+      userName: "David K.",
+    },
+  ])
+
   const [userData, setUserData] = useState({
     name: "John Doe",
     email: "john@example.com",
     paypal: "john@example.com",
     initials: "JD",
   })
+
+  const userNames = [
+    "Sarah M.",
+    "Michael R.",
+    "Jessica L.",
+    "David K.",
+    "Emily W.",
+    "James T.",
+    "Amanda S.",
+    "Robert H.",
+    "Lisa P.",
+    "Christopher B.",
+    "Jennifer M.",
+    "Daniel F.",
+    "Michelle C.",
+    "Matthew G.",
+    "Ashley N.",
+    "Joshua D.",
+    "Stephanie R.",
+    "Andrew W.",
+    "Nicole K.",
+    "Ryan L.",
+    "Lauren B.",
+    "Kevin S.",
+    "Rachel T.",
+    "Brandon M.",
+    "Melissa H.",
+    "Tyler J.",
+    "Amber P.",
+    "Justin C.",
+    "Brittany F.",
+    "Eric G.",
+  ]
+
+  const products = [
+    "Wireless Headphones",
+    "Smart Watch",
+    "Coffee Maker",
+    "Leather Backpack",
+    "Bluetooth Speaker",
+    "Fitness Tracker",
+    "Laptop Stand",
+    "Desk Lamp",
+    "Premium Luggage",
+    "Jordan Sneakers",
+    "Fire TV 4K",
+    "Echo Dot",
+    "Kindle Paperwhite",
+    "Ring Doorbell",
+    "AirPods Pro",
+    "iPad Air",
+    "Gaming Mouse",
+    "Mechanical Keyboard",
+    "Webcam HD",
+    "USB-C Hub",
+    "Portable Charger",
+    "Phone Case",
+    "Screen Protector",
+    "Wireless Charger",
+  ]
 
   useEffect(() => {
     const savedName = localStorage.getItem("userName")
@@ -59,9 +168,47 @@ export default function DashboardPage() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentBannerIndex((prev) => (prev + 1) % products.length)
+      setCurrentBannerIndex((prev) => (prev + 1) % productsBanner.length)
     }, 5000)
     return () => clearInterval(interval)
+  }, [])
+
+  useEffect(() => {
+    const generateRandomTransaction = () => {
+      const randomUser = userNames[Math.floor(Math.random() * userNames.length)]
+      const randomProduct = products[Math.floor(Math.random() * products.length)]
+      const randomAmount = Math.floor(Math.random() * (65 - 15 + 1)) + 15
+      const randomMinutes = Math.floor(Math.random() * 5) + 1
+
+      const newTransaction: Transaction = {
+        id: Date.now().toString(),
+        type: "Review",
+        product: `${randomProduct} evaluation`,
+        amount: randomAmount,
+        date: `${randomMinutes} minute${randomMinutes > 1 ? "s" : ""}`,
+        status: "Completed",
+        userName: randomUser,
+      }
+
+      setRecentTransactions((prev) => {
+        const updated = [newTransaction, ...prev]
+        return updated.slice(0, 10) // Keep only last 10 transactions
+      })
+    }
+
+    // Generate first transaction after 3 seconds
+    const initialTimeout = setTimeout(generateRandomTransaction, 3000)
+
+    // Then generate new transactions every 3-5 seconds
+    const interval = setInterval(() => {
+      const randomDelay = Math.floor(Math.random() * 2000) + 3000 // 3-5 seconds
+      setTimeout(generateRandomTransaction, randomDelay)
+    }, 5000)
+
+    return () => {
+      clearTimeout(initialTimeout)
+      clearInterval(interval)
+    }
   }, [])
 
   const handleStartEvaluation = async () => {
@@ -107,7 +254,7 @@ export default function DashboardPage() {
     }
   }
 
-  const products = [
+  const productsBanner = [
     { id: 1, name: "Wireless Headphones", image: "/wireless-headphones.png", reward: 15 },
     { id: 2, name: "Smart Watch", image: "/smartwatch-lifestyle.png", reward: 25 },
     { id: 3, name: "Coffee Maker", image: "/modern-coffee-maker.png", reward: 18 },
@@ -123,20 +270,6 @@ export default function DashboardPage() {
     { id: 2, name: "Jordan Sneakers Limited", image: "/jordan-sneakers.jpg", reward: 55 },
     { id: 3, name: "Fire TV 4K Streaming", image: "/fire-tv.jpg", reward: 35 },
     { id: 4, name: "Echo Dot Smart Speaker", image: "/echo-dot.jpg", reward: 28 },
-  ]
-
-  const recentTransactions = [
-    { id: 1, type: "Review", product: "Luggage evaluation", amount: 45.0, date: "10 minutes", status: "Completed" },
-    { id: 2, type: "Review", product: "Jordan Sneakers", amount: 55.0, date: "11 minutes", status: "Completed" },
-    { id: 3, type: "Review", product: "Fire TV", amount: 65.0, date: "11 minutes", status: "Completed" },
-    {
-      id: 4,
-      type: "Withdrawal",
-      product: "PayPal Transfer",
-      amount: 265.0,
-      date: "15 minutes",
-      status: "Pending activation",
-    },
   ]
 
   return (
@@ -166,18 +299,20 @@ export default function DashboardPage() {
         {/* Product Grid - Netflix Style */}
         <section className="relative h-48 rounded-lg overflow-hidden">
           <img
-            src={products[currentBannerIndex].image || "/placeholder.svg"}
-            alt={products[currentBannerIndex].name}
+            src={productsBanner[currentBannerIndex].image || "/placeholder.svg"}
+            alt={productsBanner[currentBannerIndex].name}
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
           <div className="absolute bottom-4 left-4 right-4">
-            <h3 className="text-xl font-bold mb-1">{products[currentBannerIndex].name}</h3>
-            <Badge className="bg-orange-500 text-white border-0">Earn ${products[currentBannerIndex].reward}</Badge>
+            <h3 className="text-xl font-bold mb-1">{productsBanner[currentBannerIndex].name}</h3>
+            <Badge className="bg-orange-500 text-white border-0">
+              Earn ${productsBanner[currentBannerIndex].reward}
+            </Badge>
           </div>
           {/* Banner indicators */}
           <div className="absolute bottom-4 right-4 flex gap-1">
-            {products.map((_, index) => (
+            {productsBanner.map((_, index) => (
               <button
                 key={index}
                 onClick={() => setCurrentBannerIndex(index)}
@@ -273,7 +408,7 @@ export default function DashboardPage() {
                   </div>
                 </div>
                 <div className="p-3 space-y-2">
-                  <h3 className="font-semibold text-sm line-clamp-2">{review.name}</h3>
+                  <h3 className="font-semibold text-sm line-clamp-2 text-white">{review.name}</h3>
                   <Button
                     onClick={handleStartEvaluation}
                     disabled={isProcessingPayout}
@@ -316,10 +451,11 @@ export default function DashboardPage() {
           <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3 mb-4">Recent Activity</h2>
           <Card className="bg-gray-900 border-gray-800 p-4">
             <div className="space-y-3">
-              {recentTransactions.map((transaction) => (
+              {recentTransactions.map((transaction, index) => (
                 <div
                   key={transaction.id}
-                  className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-colors"
+                  className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-all animate-in slide-in-from-top duration-300"
+                  style={{ animationDelay: `${index * 50}ms` }}
                 >
                   <div className="flex items-center gap-4">
                     <div
@@ -332,8 +468,9 @@ export default function DashboardPage() {
                       {transaction.type === "Review" ? <Star className="w-5 h-5" /> : <Wallet className="w-5 h-5" />}
                     </div>
                     <div>
-                      <p className="font-semibold text-white">{transaction.product}</p>
-                      <p className="text-sm text-gray-300">{transaction.date}</p>
+                      <p className="font-semibold text-white">{transaction.userName}</p>
+                      <p className="text-sm text-gray-400">{transaction.product}</p>
+                      <p className="text-xs text-gray-500">{transaction.date} ago</p>
                     </div>
                   </div>
                   <div className="text-right">
