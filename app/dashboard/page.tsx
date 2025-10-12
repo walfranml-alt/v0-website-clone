@@ -3,7 +3,6 @@
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import {
   Star,
   CheckCircle2,
@@ -260,50 +259,6 @@ export default function Dashboard() {
             </div>
           </div>
         </div>
-      </section>
-
-      {/* Recent Activity */}
-      <section>
-        <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3 mb-4">Recent Activity</h2>
-        <Card className="bg-gray-900 border-gray-800 p-4">
-          <div className="space-y-3">
-            {recentTransactions.map((transaction, index) => (
-              <div
-                key={transaction.id}
-                className="flex items-center justify-between p-4 bg-gray-800/50 rounded-lg hover:bg-gray-800 transition-all"
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center ${
-                      transaction.type === "Review"
-                        ? "bg-orange-500/20 text-orange-400"
-                        : "bg-blue-500/20 text-blue-400"
-                    }`}
-                  >
-                    {transaction.type === "Review" ? <Star className="w-5 h-5" /> : <Wallet className="w-5 h-5" />}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white">{transaction.userName}</p>
-                    <p className="text-sm text-gray-400">{transaction.product}</p>
-                    <p className="text-xs text-gray-500">{transaction.date} ago</p>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <p className="font-bold text-green-400">+${transaction.amount.toFixed(2)}</p>
-                  <Badge
-                    className={
-                      transaction.status === "Completed"
-                        ? "bg-green-500/20 text-green-400 border-green-500/30"
-                        : "bg-yellow-500/20 text-yellow-400 border-yellow-500/30"
-                    }
-                  >
-                    {transaction.status}
-                  </Badge>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Card>
       </section>
     </div>
   )
@@ -598,7 +553,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-gray-700 text-center mb-6">
-            After verification, your full access to the official Amazon Jobs App and your $247 withdrawal will be
+            After verification, your full access to the official Amazon Reviews App and your $247 withdrawal will be
             authorized and credited to your PayPal account.
           </p>
 
@@ -630,7 +585,10 @@ export default function Dashboard() {
       <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-40">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
-            <img src="/amazon-logo.png" alt="Amazon Jobs" className="h-8" />
+            <div className="flex items-center gap-1 text-2xl font-bold">
+              <span className="text-white">amazon</span>
+              <span className="text-orange-500">reviews</span>
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon">

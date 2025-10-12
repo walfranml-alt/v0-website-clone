@@ -8,7 +8,7 @@ import Script from "next/script"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Amazon Jobs - Product Review Platform",
+  title: "Amazon Reviews - Product Review Platform",
   description: "Join Amazon's official product review program and earn rewards",
   generator: "v0.app",
 }
