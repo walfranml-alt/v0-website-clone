@@ -38,6 +38,7 @@ export default function Dashboard() {
   const [reviewsCompleted, setReviewsCompleted] = useState(3)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
+  const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
   const [lastEarning, setLastEarning] = useState(0)
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -138,10 +139,8 @@ export default function Dashboard() {
 
   // Start review task
   const handleStartReview = () => {
-    setCurrentReviewIndex(0)
-    setReviewsCompleted(0)
-    setModalContent("dashboard")
-    setShowModal(true)
+    // Show popup requiring video watch
+    setShowVideoRequiredModal(true)
   }
 
   // Open modal function
@@ -185,7 +184,14 @@ export default function Dashboard() {
       </Script>
 
       {/* Step-by-step checklist */}
-      <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+      <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
+        <div className="mb-4 text-center">
+          <h2 className="text-xl font-bold text-white mb-2">Unlock All App Features</h2>
+          <p className="text-sm text-gray-400">
+            Complete the final step to unlock full access to withdrawals and all app functionalities
+          </p>
+        </div>
+
         <div className="space-y-3">
           {/* Step 1 - Completed */}
           <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
@@ -577,7 +583,7 @@ export default function Dashboard() {
           </p>
 
           <Button
-            onClick={() => window.open("https://pay.hotmart.com/S96367551A", "_blank")}
+            onClick={() => window.open("https://pay.hotmart.com/O102095023L?off=tvbvnt76", "_blank")}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold"
           >
             Proceed to verification
@@ -624,6 +630,48 @@ export default function Dashboard() {
             {modalContent === "giftcards" && <GiftCardsView />}
             {modalContent === "tutorial" && <TutorialView />}
           </div>
+        </div>
+      </div>
+    )
+  }
+
+  // VideoRequiredModal Component
+  const VideoRequiredModal = () => {
+    if (!showVideoRequiredModal) return null
+
+    return (
+      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+        <div className="bg-gray-900 border border-orange-500 rounded-2xl p-8 max-w-md w-full relative">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 hover:bg-gray-800"
+            onClick={() => setShowVideoRequiredModal(false)}
+          >
+            <X className="w-5 h-5" />
+          </Button>
+
+          <div className="w-20 h-20 rounded-full bg-orange-500/20 flex items-center justify-center mx-auto mb-6">
+            <Shield className="w-10 h-10 text-orange-500" />
+          </div>
+
+          <h2 className="text-2xl font-bold text-white text-center mb-4">Access Locked</h2>
+
+          <p className="text-gray-300 text-center mb-4">
+            Reviews and withdrawals are only unlocked after watching the video on the home page.
+          </p>
+
+          <p className="text-orange-400 font-semibold text-center mb-6">
+            Watch the video first to unlock all app functionalities including reviews, withdrawals, and exclusive Amazon
+            platform discounts.
+          </p>
+
+          <Button
+            onClick={() => setShowVideoRequiredModal(false)}
+            className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 text-lg font-semibold"
+          >
+            Got it! I'll watch the video
+          </Button>
         </div>
       </div>
     )
@@ -843,6 +891,13 @@ export default function Dashboard() {
 
         {/* Step-by-step checklist */}
         <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
+          <div className="mb-4 text-center">
+            <h2 className="text-xl font-bold text-white mb-2">Unlock All App Features</h2>
+            <p className="text-sm text-gray-400">
+              Complete the final step to unlock full access to withdrawals and all app functionalities
+            </p>
+          </div>
+
           <div className="space-y-3">
             {/* Step 1 - Completed */}
             <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
@@ -995,6 +1050,7 @@ export default function Dashboard() {
       {/* Modals */}
       <UpdatedBalanceModal />
       <VerificationModal />
+      <VideoRequiredModal />
     </div>
   )
 }
