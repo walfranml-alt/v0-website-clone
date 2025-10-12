@@ -1129,13 +1129,16 @@ function VIPView({ onUpgrade }: any) {
         <h3 className="text-2xl font-bold mb-2">VIP Membership</h3>
         <p className="text-4xl font-bold mb-2">$49.99</p>
         <p className="text-white/80 mb-6">One-time payment • Lifetime access</p>
-        <Button
-          onClick={onUpgrade}
-          className="w-full bg-white text-purple-700 hover:bg-gray-100 py-6 text-lg font-semibold"
+        {/* CHANGE: Added Hotmart payment link to VIP upgrade button */}
+        <a
+          href="https://pay.hotmart.com/F101935913S?off=adx9i1ez"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center w-full bg-white text-purple-700 hover:bg-gray-100 py-6 text-lg font-semibold rounded-lg transition-colors"
         >
           <Award className="w-5 h-5 mr-2" />
           Upgrade to VIP Now
-        </Button>
+        </a>
       </Card>
     </div>
   )
@@ -1148,6 +1151,28 @@ function InviteView({ referralCode }: any) {
     navigator.clipboard.writeText(referralCode)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
+  }
+
+  const shareReferralLink = () => {
+    const referralLink = "https://ofsignup.vercel.app"
+
+    // Try to use Web Share API if available
+    if (navigator.share) {
+      navigator
+        .share({
+          title: "Join Amazon Jobs",
+          text: `Use my referral code ${referralCode} to join Amazon Jobs and start earning!`,
+          url: referralLink,
+        })
+        .catch((error) => {
+          console.log("[v0] Error sharing:", error)
+          // Fallback: open in new tab
+          window.open(referralLink, "_blank", "noopener,noreferrer")
+        })
+    } else {
+      // Fallback: open in new tab
+      window.open(referralLink, "_blank", "noopener,noreferrer")
+    }
   }
 
   return (
@@ -1207,7 +1232,10 @@ function InviteView({ referralCode }: any) {
         </div>
       </Card>
 
-      <Button className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-semibold">
+      <Button
+        onClick={shareReferralLink}
+        className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-semibold"
+      >
         <Share2 className="w-5 h-5 mr-2" />
         Share Referral Link
       </Button>
