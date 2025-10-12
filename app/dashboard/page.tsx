@@ -716,23 +716,23 @@ function DashboardView({ userData }: any) {
       </div>
 
       <Card className="bg-gray-900 border-gray-800 p-6">
-        <h2 className="text-xl font-bold mb-4">Account Information</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">Account Information</h2>
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span className="text-gray-400">Name:</span>
-            <span className="font-semibold">{userData.name}</span>
+            <span className="text-gray-300">Name:</span>
+            <span className="font-semibold text-white">{userData.name}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Email:</span>
-            <span className="font-semibold">{userData.email}</span>
+            <span className="text-gray-300">Email:</span>
+            <span className="font-semibold text-white">{userData.email}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">PayPal:</span>
-            <span className="font-semibold">{userData.paypal}</span>
+            <span className="text-gray-300">PayPal:</span>
+            <span className="font-semibold text-white">{userData.paypal}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-400">Member Since:</span>
-            <span className="font-semibold">January 2025</span>
+            <span className="text-gray-300">Member Since:</span>
+            <span className="font-semibold text-white">January 2025</span>
           </div>
         </div>
       </Card>
@@ -814,17 +814,17 @@ function GiftCardsView({ onVerify }: any) {
             <div className="flex items-center gap-4 mb-4">
               <img src={card.image || "/placeholder.svg"} alt={card.brand} className="w-16 h-16 rounded-lg" />
               <div>
-                <h3 className="text-xl font-bold">{card.brand}</h3>
+                <h3 className="text-xl font-bold text-white">{card.brand}</h3>
                 <Badge className="bg-green-500 text-white border-0">{card.discount} OFF</Badge>
               </div>
             </div>
             <div className="space-y-3">
               <div className="flex justify-between">
-                <span className="text-gray-400">Card Value:</span>
-                <span className="font-bold">${card.value}</span>
+                <span className="text-gray-300">Card Value:</span>
+                <span className="font-bold text-white">${card.value}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-400">Your Price:</span>
+                <span className="text-gray-300">Your Price:</span>
                 <span className="font-bold text-green-400">
                   ${(card.value * (1 - Number.parseInt(card.discount) / 100)).toFixed(2)}
                 </span>
@@ -881,10 +881,10 @@ function TutorialView() {
                 <step.icon className="w-6 h-6 text-orange-500" />
               </div>
               <div>
-                <h3 className="text-lg font-bold mb-2">
+                <h3 className="text-lg font-bold mb-2 text-white">
                   Step {index + 1}: {step.title}
                 </h3>
-                <p className="text-gray-400">{step.description}</p>
+                <p className="text-gray-300">{step.description}</p>
               </div>
             </div>
           </Card>
