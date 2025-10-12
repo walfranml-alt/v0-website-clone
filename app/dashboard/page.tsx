@@ -33,7 +33,7 @@ interface Transaction {
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState("home")
-  const [currentBalance, setCurrentBalance] = useState(102)
+  const [currentBalance, setCurrentBalance] = useState(204)
   const [reviewsCompleted, setReviewsCompleted] = useState(0)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
@@ -54,7 +54,7 @@ export default function Dashboard() {
     {
       id: 2,
       title: "Balance Available",
-      message: "You have $267 available in your account ready to withdraw!",
+      message: "You have $204 available in your account ready to withdraw!",
       time: "5 mins ago",
       unread: true,
     },
@@ -233,7 +233,7 @@ export default function Dashboard() {
                   ))}
                 </div>
                 <p className="text-sm text-gray-300">
-                  "I watched the video and my withdrawal was released immediately! Got my $247 in my PayPal within
+                  "I watched the video and my withdrawal was released immediately! Got my $204 in my PayPal within
                   hours. This is legit! 🎉"
                 </p>
               </div>
@@ -317,7 +317,7 @@ export default function Dashboard() {
 
           {/* Question */}
           <div className="mb-6">
-            <h3 className="text-2xl font-bold mb-2">{currentProduct.question}</h3>
+            <h3 className="text-2xl font-bold mb-2 text-gray-900">{currentProduct.question}</h3>
             <p className="text-gray-600 flex items-center gap-2">
               {currentProduct.question} <span className="text-blue-500">⬇️</span>
             </p>
@@ -364,24 +364,24 @@ export default function Dashboard() {
           {/* Withdraw form */}
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-2">PayPal Email</label>
+              <label className="block text-sm font-medium mb-2 text-white">PayPal Email</label>
               <input
                 type="email"
                 value={withdrawEmail}
                 onChange={(e) => setWithdrawEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Withdraw Amount</label>
+              <label className="block text-sm font-medium mb-2 text-white">Withdraw Amount</label>
               <input
                 type="number"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
                 placeholder="0.00"
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500"
+                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
             </div>
 
@@ -419,7 +419,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-400">Balance</p>
-              <p className="text-xl font-bold">${currentBalance.toFixed(2)}</p>
+              <p className="text-xl font-bold text-white">${currentBalance.toFixed(2)}</p>
             </div>
           </div>
         </Card>
@@ -431,7 +431,7 @@ export default function Dashboard() {
             </div>
             <div>
               <p className="text-sm text-gray-400">Reviews</p>
-              <p className="text-xl font-bold">{reviewsCompleted}</p>
+              <p className="text-xl font-bold text-white">{reviewsCompleted}</p>
             </div>
           </div>
         </Card>
@@ -439,7 +439,7 @@ export default function Dashboard() {
 
       {/* Quick actions */}
       <Card className="bg-gray-900 border-gray-800 p-6">
-        <h2 className="text-lg font-bold mb-4">Quick Actions</h2>
+        <h2 className="text-lg font-bold mb-4 text-white">Quick Actions</h2>
         <div className="space-y-3">
           <Button onClick={handleStartReview} className="w-full bg-orange-500 hover:bg-orange-600 justify-start">
             <Star className="w-5 h-5 mr-2" />
@@ -468,14 +468,14 @@ export default function Dashboard() {
       </div>
 
       <Card className="bg-gray-900 border-gray-800 p-6">
-        <h2 className="text-xl font-bold mb-4">How It Works</h2>
+        <h2 className="text-xl font-bold mb-4 text-white">How It Works</h2>
         <div className="space-y-6">
           <div className="flex gap-4">
             <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
               <span className="text-white font-bold">1</span>
             </div>
             <div>
-              <h3 className="font-bold mb-1">Complete Reviews</h3>
+              <h3 className="font-bold mb-1 text-white">Complete Reviews</h3>
               <p className="text-gray-400 text-sm">
                 Answer simple questions about products and earn rewards for each review.
               </p>
@@ -487,7 +487,7 @@ export default function Dashboard() {
               <span className="text-white font-bold">2</span>
             </div>
             <div>
-              <h3 className="font-bold mb-1">Earn Money</h3>
+              <h3 className="font-bold mb-1 text-white">Earn Money</h3>
               <p className="text-gray-400 text-sm">Get paid $35-$55 for each product review you complete.</p>
             </div>
           </div>
@@ -497,7 +497,7 @@ export default function Dashboard() {
               <span className="text-white font-bold">3</span>
             </div>
             <div>
-              <h3 className="font-bold mb-1">Withdraw Funds</h3>
+              <h3 className="font-bold mb-1 text-white">Withdraw Funds</h3>
               <p className="text-gray-400 text-sm">Cash out your earnings to PayPal within 24-48 hours.</p>
             </div>
           </div>
@@ -578,7 +578,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-gray-700 text-center mb-6">
-            After verification, your full access to the official Amazon Reviews App and your $247 withdrawal will be
+            After verification, your full access to the official Amazon Reviews App and your $204 withdrawal will be
             authorized and credited to your PayPal account.
           </p>
 
