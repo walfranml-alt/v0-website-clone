@@ -18,8 +18,6 @@ export default function SignUpPage() {
     email: "",
     password: "",
   })
-  const [showLoadingModal, setShowLoadingModal] = useState(false)
-  const [progress, setProgress] = useState(0)
 
   useEffect(() => {
     const savedFormData = localStorage.getItem("signupFormData")
@@ -39,34 +37,14 @@ export default function SignUpPage() {
     }
   }, [formData])
 
-  useEffect(() => {
-    if (showLoadingModal) {
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval)
-            setTimeout(() => {
-              localStorage.removeItem("signupFormData")
-              router.push("/dashboard")
-            }, 500)
-            return 100
-          }
-          return prev + 2
-        })
-      }, 50)
-
-      return () => clearInterval(interval)
-    }
-  }, [showLoadingModal, router])
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Form submitted:", formData)
     localStorage.setItem("userName", formData.name)
     localStorage.setItem("userEmail", formData.email)
     localStorage.setItem("userPayPal", formData.email)
-    setShowLoadingModal(true)
-    setProgress(0)
+    localStorage.removeItem("signupFormData")
+    router.push("/dashboard")
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -170,47 +148,6 @@ export default function SignUpPage() {
 
       {/* Footer */}
       <footer className="relative z-10 text-center py-8 text-sm text-gray-400">© 2025 LLC, All rights reserved.</footer>
-
-      {/* Loading Modal */}
-      {showLoadingModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-orange-500/20">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-white animate-spin"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Customizing account and adding bonus</h2>
-              <p className="text-gray-400 text-sm">Please wait...</p>
-            </div>
-
-            {/* Progress Bar */}
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-gray-400">
-                <span>Progress</span>
-                <span className="font-semibold text-orange-400">{progress}%</span>
-              </div>
-              <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-300 ease-out rounded-full"
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
