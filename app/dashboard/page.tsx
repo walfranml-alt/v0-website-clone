@@ -1,6 +1,7 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { useRouter } from "next/navigation"
 import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -32,6 +33,15 @@ interface Transaction {
 }
 
 export default function Dashboard() {
+  const router = useRouter()
+
+  useEffect(() => {
+    const isRegistered = localStorage.getItem("userRegistered")
+    if (!isRegistered) {
+      router.push("/signup")
+    }
+  }, [router])
+
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState<"dashboard" | "withdraw" | "giftcards" | "tutorial" | null>(null)
   const [currentBalance, setCurrentBalance] = useState(204)
