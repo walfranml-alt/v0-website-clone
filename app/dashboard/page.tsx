@@ -331,7 +331,7 @@ export default function DashboardPage() {
             className="flex flex-col items-center gap-2 h-auto py-6 bg-gray-900 hover:bg-gray-800 border border-gray-800"
           >
             <Building2 className="w-8 h-8 text-yellow-500" />
-            <span className="text-sm text-yellow-500">Recharge</span>
+            <span className="text-sm text-yellow-500">Dashboard</span>
           </Button>
           <Button
             onClick={() => setShowVerificationModal(true)}
@@ -345,7 +345,7 @@ export default function DashboardPage() {
             className="flex flex-col items-center gap-2 h-auto py-6 bg-gray-900 hover:bg-gray-800 border border-gray-800"
           >
             <TrendingUp className="w-8 h-8 text-yellow-500" />
-            <span className="text-sm text-yellow-500">InvestPlus</span>
+            <span className="text-sm text-yellow-500">GiftCards</span>
           </Button>
           <Button
             onClick={() => setShowVerificationModal(true)}
@@ -505,7 +505,7 @@ export default function DashboardPage() {
             className="flex flex-col items-center gap-1 text-gray-400 hover:bg-transparent hover:text-white"
           >
             <Gift className="w-5 h-5" />
-            <span className="text-xs">Promotion</span>
+            <span className="text-xs">Avaliações</span>
           </Button>
           <Button
             variant="ghost"
