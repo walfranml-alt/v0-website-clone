@@ -29,6 +29,7 @@ export default function DashboardPage() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [isProcessingPayout, setIsProcessingPayout] = useState(false)
   const [payoutMessage, setPayoutMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
+  const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
   const [userData, setUserData] = useState({
     name: "John Doe",
     email: "john@example.com",
@@ -54,6 +55,13 @@ export default function DashboardPage() {
         initials: initials,
       })
     }
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBannerIndex((prev) => (prev + 1) % products.length)
+    }, 5000)
+    return () => clearInterval(interval)
   }, [])
 
   const handleStartEvaluation = async () => {
@@ -154,23 +162,29 @@ export default function DashboardPage() {
       </header>
 
       {/* Main Content */}
-      <main className="px-4 py-6 space-y-8">
+      <main className="px-4 py-6 space-y-6">
         {/* Product Grid - Netflix Style */}
-        <section>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2">
-            {products.map((product) => (
-              <div key={product.id} className="relative group cursor-pointer">
-                <div className="aspect-[2/3] rounded-lg overflow-hidden bg-gray-900">
-                  <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                </div>
-                <Badge className="absolute top-2 right-2 bg-orange-500 text-white border-0 text-xs">
-                  ${product.reward}
-                </Badge>
-              </div>
+        <section className="relative h-48 rounded-lg overflow-hidden">
+          <img
+            src={products[currentBannerIndex].image || "/placeholder.svg"}
+            alt={products[currentBannerIndex].name}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+          <div className="absolute bottom-4 left-4 right-4">
+            <h3 className="text-xl font-bold mb-1">{products[currentBannerIndex].name}</h3>
+            <Badge className="bg-orange-500 text-white border-0">Earn ${products[currentBannerIndex].reward}</Badge>
+          </div>
+          {/* Banner indicators */}
+          <div className="absolute bottom-4 right-4 flex gap-1">
+            {products.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentBannerIndex(index)}
+                className={`w-2 h-2 rounded-full transition-all ${
+                  index === currentBannerIndex ? "bg-white w-6" : "bg-white/50"
+                }`}
+              />
             ))}
           </div>
         </section>
