@@ -41,7 +41,7 @@ type ViewType =
   | "vip"
   | "invite"
   | "profile"
-  | "product-review"
+  | "review-task"
 
 interface Transaction {
   id: string
@@ -56,9 +56,42 @@ interface Transaction {
 export default function DashboardPage() {
   const [activeView, setActiveView] = useState<ViewType>("home")
   const [showVerificationModal, setShowVerificationModal] = useState(false)
+  const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
+  const [lastEarning, setLastEarning] = useState(0)
   const [isProcessingPayout, setIsProcessingPayout] = useState(false)
   const [payoutMessage, setPayoutMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [currentBannerIndex, setCurrentBannerIndex] = useState(0)
+
+  const [reviewsCompleted, setReviewsCompleted] = useState(0)
+  const [currentBalance, setCurrentBalance] = useState(102)
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
+
+  const reviewProducts = [
+    {
+      id: 1,
+      name: "12 LB Dumbbells Set",
+      image:
+        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-12%20at%2001.52.47%20%281%29-vNIenhiA9myJsoOb0JvDaS9PkPFIdi.jpeg",
+      reward: 55,
+      question: "Would you buy this product?",
+    },
+    {
+      id: 2,
+      name: "Premium Water Bottle",
+      image:
+        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-12%20at%2001.52.47-n4GwqfTDKOXWMQGU23cU6dGdjiAmmK.jpeg",
+      reward: 45,
+      question: "Would you buy this product?",
+    },
+    {
+      id: 3,
+      name: "Wireless Headphones",
+      image: "/wireless-headphones.png",
+      reward: 45,
+      question: "Would you buy this product?",
+    },
+  ]
+
   const [recentTransactions, setRecentTransactions] = useState<Transaction[]>([
     {
       id: "1",
@@ -261,39 +294,73 @@ export default function DashboardPage() {
 
   const handleReviewClick = (product: any) => {
     setSelectedProduct(product)
-    setActiveView("product-review")
+    setActiveView("review-task")
+  }
+
+  const handleStartReviewTask = () => {
+    setActiveView("review-task")
+  }
+
+  const handleReviewSubmit = (answer: "yes" | "no") => {
+    const currentProduct = reviewProducts[currentReviewIndex]
+    const earning = currentProduct.reward
+
+    // Update balance
+    setCurrentBalance((prev) => prev + earning)
+    setLastEarning(earning)
+
+    // Show updated balance modal
+    setShowUpdatedBalanceModal(true)
+
+    // Increment reviews completed
+    setReviewsCompleted((prev) => prev + 1)
+
+    // After 2 seconds, close modal and proceed
+    setTimeout(() => {
+      setShowUpdatedBalanceModal(false)
+
+      if (reviewsCompleted + 1 >= 3) {
+        // After 3rd review, go to withdraw page
+        setActiveView("withdraw")
+      } else {
+        // Move to next review
+        setCurrentReviewIndex((prev) => prev + 1)
+      }
+    }, 2000)
   }
 
   const renderView = () => {
     switch (activeView) {
       case "dashboard":
         return (
-          <DashboardView
-            userData={userData}
-            onStartReview={() => setActiveView("reviews")}
-            isProcessing={isProcessingPayout}
-          />
+          <DashboardView userData={userData} onStartReview={handleStartReviewTask} isProcessing={isProcessingPayout} />
         )
       case "withdraw":
-        return <WithdrawView userData={userData} onVerify={() => setShowVerificationModal(true)} />
+        return (
+          <WithdrawView
+            userData={userData}
+            currentBalance={currentBalance}
+            onVerify={() => setShowVerificationModal(true)}
+          />
+        )
       case "giftcards":
         return <GiftCardsView onVerify={() => setShowVerificationModal(true)} />
       case "tutorial":
-        return <TutorialView onStartEarning={() => setActiveView("reviews")} isProcessing={isProcessingPayout} />
+        return <TutorialView onStartEarning={handleStartReviewTask} isProcessing={isProcessingPayout} />
       case "reviews":
-        return <ReviewsView availableReviews={availableReviews} onReviewClick={handleStartEvaluation} />
+        return <ReviewsView availableReviews={availableReviews} onReviewClick={handleStartReviewTask} />
       case "vip":
         return <VIPView onUpgrade={() => setShowVerificationModal(true)} />
       case "invite":
         return <InviteView referralCode={userData.referralCode} />
       case "profile":
         return <ProfileView userData={userData} />
-      case "product-review":
+      case "review-task":
         return (
-          <ProductReviewView
-            product={selectedProduct}
-            onStartReview={handleStartEvaluation}
-            isProcessing={isProcessingPayout}
+          <ReviewTaskView
+            product={reviewProducts[currentReviewIndex]}
+            currentBalance={currentBalance}
+            onSubmit={handleReviewSubmit}
           />
         )
       default:
@@ -304,11 +371,11 @@ export default function DashboardPage() {
             setCurrentBannerIndex={setCurrentBannerIndex}
             availableReviews={availableReviews}
             recentTransactions={recentTransactions}
-            handleStartEvaluation={handleStartEvaluation}
+            handleStartEvaluation={handleStartReviewTask}
             isProcessingPayout={isProcessingPayout}
             setShowVerificationModal={setShowVerificationModal}
             setActiveView={setActiveView}
-            onReviewClick={handleStartEvaluation}
+            onReviewClick={handleStartReviewTask}
           />
         )
     }
@@ -373,6 +440,69 @@ export default function DashboardPage() {
         </div>
       )}
 
+      {showUpdatedBalanceModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-gradient-to-br from-teal-400 to-teal-500 rounded-2xl max-w-md w-full p-8 relative animate-in zoom-in-95 duration-200">
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 rounded-full bg-yellow-400 flex items-center justify-center">
+                <DollarSign className="w-12 h-12 text-teal-600" />
+              </div>
+            </div>
+            <h2 className="text-3xl font-bold text-white text-center mb-3">Updated balance</h2>
+            <p className="text-xl text-white text-center font-semibold">you received + ${lastEarning}</p>
+          </div>
+        </div>
+      )}
+
+      {/* Verification Modal */}
+      {showVerificationModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
+          <div className="bg-gray-100 rounded-2xl max-w-md w-full p-6 relative animate-in zoom-in-95 duration-200">
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center">
+                <Shield className="w-8 h-8 text-yellow-600" />
+              </div>
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 text-center mb-3">Human Verification Required</h2>
+            <p className="text-xs text-gray-600 text-center mb-4">
+              Due to the high rate of system abuse, a verification fee is required to confirm you are human.
+            </p>
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4 flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-gray-700">
+                This one-time fee helps us maintain platform quality and ensures legitimate evaluators.
+              </p>
+            </div>
+            <p className="text-sm text-gray-600 text-center mb-5">
+              It will give you full access to the official Amazon Jobs platform with its bonuses. After payment, your $
+              {currentBalance.toFixed(2)} transfer is validated and credited to your registered account.
+            </p>
+            <div className="space-y-3">
+              <a
+                href="https://pay.hotmart.com/O102095023L?off=tvbvnt76"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 text-base font-semibold">
+                  Proceed to Verification
+                </Button>
+              </a>
+            </div>
+            <p className="text-xs text-gray-500 text-center mt-4">
+              By proceeding, you agree to our{" "}
+              <a href="#" className="text-blue-600 hover:underline">
+                Terms of Service
+              </a>{" "}
+              and{" "}
+              <a href="#" className="text-blue-600 hover:underline">
+                Privacy Policy
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 z-40">
         <div className="flex items-center justify-around py-3">
@@ -428,55 +558,6 @@ export default function DashboardPage() {
           </Button>
         </div>
       </nav>
-
-      {/* Verification Modal */}
-      {showVerificationModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="bg-gray-100 rounded-2xl max-w-md w-full p-6 relative animate-in zoom-in-95 duration-200">
-            <div className="flex justify-center mb-4">
-              <div className="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center">
-                <Shield className="w-8 h-8 text-yellow-600" />
-              </div>
-            </div>
-            <h2 className="text-xl font-bold text-gray-900 text-center mb-3">Human Verification Required</h2>
-            <p className="text-xs text-gray-600 text-center mb-4">
-              Due to the high rate of system abuse, a verification fee is required to confirm you are human.
-            </p>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-gray-700">
-                This one-time fee helps us maintain platform quality and ensures legitimate evaluators.
-              </p>
-            </div>
-            <p className="text-sm text-gray-600 text-center mb-5">
-              It will give you full access to the official Amazon Jobs platform with its bonuses. After payment, your
-              $265 transfer is validated and credited to your registered account.
-            </p>
-            <div className="space-y-3">
-              <a
-                href="https://pay.hotmart.com/O102095023L?off=tvbvnt76"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block"
-              >
-                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 text-base font-semibold">
-                  Proceed to Verification
-                </Button>
-              </a>
-            </div>
-            <p className="text-xs text-gray-500 text-center mt-4">
-              By proceeding, you agree to our{" "}
-              <a href="#" className="text-blue-600 hover:underline">
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a href="#" className="text-blue-600 hover:underline">
-                Privacy Policy
-              </a>
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
@@ -762,7 +843,9 @@ function DashboardView({ userData, onStartReview, isProcessing }: any) {
   )
 }
 
-function WithdrawView({ userData, onVerify }: any) {
+function WithdrawView({ userData, currentBalance, onVerify }: any) {
+  const [withdrawAmount, setWithdrawAmount] = useState("")
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Withdraw Funds</h1>
@@ -770,7 +853,7 @@ function WithdrawView({ userData, onVerify }: any) {
       <Card className="bg-gray-900 border-gray-800 p-6">
         <div className="text-center mb-6">
           <p className="text-gray-400 mb-2">Available Balance</p>
-          <p className="text-4xl font-bold text-green-400">$265.00</p>
+          <p className="text-4xl font-bold text-green-400">${currentBalance.toFixed(2)}</p>
         </div>
 
         <div className="space-y-4">
@@ -778,8 +861,7 @@ function WithdrawView({ userData, onVerify }: any) {
             <label className="text-sm text-gray-400 mb-2 block">PayPal Email</label>
             <input
               type="email"
-              value={userData.paypal}
-              readOnly
+              defaultValue={userData.paypal}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
             />
           </div>
@@ -789,6 +871,8 @@ function WithdrawView({ userData, onVerify }: any) {
             <input
               type="number"
               placeholder="Enter amount"
+              value={withdrawAmount}
+              onChange={(e) => setWithdrawAmount(e.target.value)}
               className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-white"
             />
           </div>
@@ -1273,6 +1357,59 @@ function ProfileView({ userData }: any) {
       </Card>
 
       <Button className="w-full bg-red-600 hover:bg-red-700 text-white py-4">Sign Out</Button>
+    </div>
+  )
+}
+
+function ReviewTaskView({ product, currentBalance, onSubmit }: any) {
+  return (
+    <div className="space-y-0 -mx-4 -my-6">
+      {/* Header with Balance */}
+      <div className="bg-gradient-to-r from-orange-600 to-orange-500 px-6 py-4">
+        <p className="text-white text-center text-xl font-bold">BALANCE: ${currentBalance.toFixed(2)}</p>
+      </div>
+
+      {/* Main Content */}
+      <div className="px-4 py-6 space-y-6">
+        {/* Title */}
+        <h1 className="text-3xl font-bold text-orange-500 text-center">RATE AND WIN ${product.reward}.00</h1>
+
+        {/* Product Image */}
+        <div className="bg-white rounded-lg overflow-hidden">
+          <img
+            src={product.image || "/placeholder.svg"}
+            alt={product.name}
+            className="w-full aspect-square object-cover"
+          />
+        </div>
+
+        {/* Question */}
+        <div className="space-y-4">
+          <h2 className="text-2xl font-bold text-white text-center">{product.question}</h2>
+
+          {/* Duplicate question text as shown in the image */}
+          <div className="flex items-center gap-2 text-gray-400 justify-center">
+            <span className="text-sm">{product.question}</span>
+            <span className="text-blue-400">⬇️</span>
+          </div>
+
+          {/* Yes/No Buttons */}
+          <div className="grid grid-cols-2 gap-4 pt-4">
+            <Button
+              onClick={() => onSubmit("yes")}
+              className="bg-orange-600 hover:bg-orange-700 text-white py-8 text-2xl font-bold rounded-lg"
+            >
+              Yes
+            </Button>
+            <Button
+              onClick={() => onSubmit("no")}
+              className="bg-orange-600 hover:bg-orange-700 text-white py-8 text-2xl font-bold rounded-lg"
+            >
+              No
+            </Button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
