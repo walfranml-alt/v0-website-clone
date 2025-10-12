@@ -6,10 +6,7 @@ import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import Image from "next/image"
 import {
-  Home,
-  Gift,
   Crown,
-  Users,
   User,
   Bell,
   Smartphone,
@@ -503,60 +500,52 @@ export default function DashboardPage() {
       )}
 
       {/* Bottom Navigation */}
+      {/* CHANGE: Updated bottom navigation to match action buttons: Dashboard, Withdraw, GiftCards, System Tutorial */}
       <nav className="fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800 z-40">
         <div className="flex items-center justify-around py-3">
           <Button
             variant="ghost"
-            onClick={() => setActiveView("home")}
+            onClick={() => setActiveView("dashboard")}
             className={`flex flex-col items-center gap-1 hover:bg-transparent ${
-              activeView === "home" ? "text-yellow-500" : "text-gray-400 hover:text-white"
+              activeView === "dashboard" ? "text-yellow-500" : "text-gray-400 hover:text-white"
             }`}
           >
-            <Home className="w-5 h-5" />
-            <span className="text-xs">Home</span>
+            <Building2 className="w-5 h-5" />
+            <span className="text-xs">Dashboard</span>
           </Button>
           <Button
             variant="ghost"
-            onClick={() => setActiveView("reviews")}
+            onClick={() => setActiveView("withdraw")}
             className={`flex flex-col items-center gap-1 hover:bg-transparent ${
-              activeView === "reviews" ? "text-yellow-500" : "text-gray-400 hover:text-white"
+              activeView === "withdraw" ? "text-yellow-500" : "text-gray-400 hover:text-white"
             }`}
           >
-            <Gift className="w-5 h-5" />
-            <span className="text-xs">Avaliações</span>
+            <Wallet className="w-5 h-5" />
+            <span className="text-xs">Withdraw</span>
           </Button>
           <Button
             variant="ghost"
-            onClick={() => setActiveView("vip")}
+            onClick={() => setActiveView("giftcards")}
             className={`flex flex-col items-center gap-1 hover:bg-transparent ${
-              activeView === "vip" ? "text-yellow-500" : "text-gray-400 hover:text-white"
+              activeView === "giftcards" ? "text-yellow-500" : "text-gray-400 hover:text-white"
             }`}
           >
-            <Crown className="w-5 h-5" />
-            <span className="text-xs">VIP</span>
+            <TrendingUp className="w-5 h-5" />
+            <span className="text-xs">GiftCards</span>
           </Button>
           <Button
             variant="ghost"
-            onClick={() => setActiveView("invite")}
+            onClick={() => setActiveView("tutorial")}
             className={`flex flex-col items-center gap-1 hover:bg-transparent ${
-              activeView === "invite" ? "text-yellow-500" : "text-gray-400 hover:text-white"
+              activeView === "tutorial" ? "text-yellow-500" : "text-gray-400 hover:text-white"
             }`}
           >
-            <Users className="w-5 h-5" />
-            <span className="text-xs">Invite Friends</span>
-          </Button>
-          <Button
-            variant="ghost"
-            onClick={() => setActiveView("profile")}
-            className={`flex flex-col items-center gap-1 hover:bg-transparent ${
-              activeView === "profile" ? "text-yellow-500" : "text-gray-400 hover:text-white"
-            }`}
-          >
-            <User className="w-5 h-5" />
-            <span className="text-xs">My</span>
+            <GraduationCap className="w-5 h-5" />
+            <span className="text-xs">System Tutorial</span>
           </Button>
         </div>
       </nav>
+      {/* </CHANGE> */}
     </div>
   )
 }
@@ -575,34 +564,19 @@ function HomeView({
 }: any) {
   return (
     <div className="space-y-6">
-      {/* Product Banner */}
-      <section
-        className="relative h-48 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
-        onClick={() => setActiveView("reviews")}
-      >
-        <img
-          src={productsBanner[currentBannerIndex].image || "/placeholder.svg"}
-          alt={productsBanner[currentBannerIndex].name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-        <div className="absolute bottom-4 left-4 right-4">
-          <h3 className="text-xl font-bold mb-1">{productsBanner[currentBannerIndex].name}</h3>
-          <Badge className="bg-orange-500 text-white border-0">Earn ${productsBanner[currentBannerIndex].reward}</Badge>
-        </div>
-        <div className="absolute bottom-4 right-4 flex gap-1">
-          {productsBanner.map((_: any, index: number) => (
-            <button
-              key={index}
-              onClick={(e) => {
-                e.stopPropagation()
-                setCurrentBannerIndex(index)
-              }}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentBannerIndex ? "bg-white w-6" : "bg-white/50"
-              }`}
-            />
-          ))}
+      {/* VSL Video Section */}
+      <section className="relative rounded-lg overflow-hidden bg-gray-900">
+        <div className="aspect-video w-full">
+          {/* Replace the src with your actual VSL video URL */}
+          {/* For YouTube: https://www.youtube.com/embed/YOUR_VIDEO_ID */}
+          {/* For Vimeo: https://player.vimeo.com/video/YOUR_VIDEO_ID */}
+          <iframe
+            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+            title="VSL Video"
+            className="w-full h-full"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
         </div>
       </section>
 
@@ -671,42 +645,6 @@ function HomeView({
           <Button variant="ghost" size="sm" className="ml-auto text-gray-400">
             →
           </Button>
-        </div>
-      </section>
-
-      {/* Available Reviews */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3">Reviews available for you</h2>
-          <Button variant="ghost" size="sm" className="text-gray-400" onClick={() => setActiveView("reviews")}>
-            →
-          </Button>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {availableReviews.map((review: any) => (
-            <Card key={review.id} className="bg-gray-900 border-gray-800 overflow-hidden">
-              <div className="aspect-[2/3] relative">
-                <img
-                  src={review.image || "/placeholder.svg"}
-                  alt={review.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-2 left-2">
-                  <Image src="/amazon-jobs-logo.png" alt="Amazon" width={40} height={40} className="h-8 w-auto" />
-                </div>
-              </div>
-              <div className="p-3 space-y-2">
-                <h3 className="font-semibold text-sm line-clamp-2 text-white">{review.name}</h3>
-                <Button
-                  onClick={() => setActiveView("reviews")}
-                  disabled={isProcessingPayout}
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
-                >
-                  Review Immediately
-                </Button>
-              </div>
-            </Card>
-          ))}
         </div>
       </section>
 
