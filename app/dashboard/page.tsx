@@ -461,20 +461,21 @@ export default function DashboardPage() {
                 <Shield className="w-8 h-8 text-yellow-600" />
               </div>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 text-center mb-3">Human Verification Required</h2>
-            <p className="text-xs text-gray-600 text-center mb-4">
-              Due to the high rate of system abuse, a verification fee is required to confirm you are human.
+            <h2 className="text-xl font-bold text-gray-900 text-center mb-3">Human verification required</h2>
+            <p className="text-sm text-gray-600 text-center mb-3">
+              Due to the high rate of abuse of the system, a verification fee is required to confirm that you are human.
             </p>
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4 flex items-start gap-2">
-              <AlertCircle className="w-4 h-4 text-yellow-600 flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-gray-700">
-                This one-time fee helps us maintain platform quality and ensures legitimate evaluators.
-              </p>
-            </div>
+            <p className="text-sm text-gray-600 text-center mb-3">
+              This one-time fee helps us maintain the quality of the platform and ensures legitimate reviewers.
+            </p>
+            <p className="text-sm font-bold text-red-600 text-center mb-3">
+              DON'T WORRY, THE FEE IS ONLY FOR SECURITY PURPOSES AND WILL BE REFUNDED WITHIN 1 BUSINESS DAY.
+            </p>
             <p className="text-sm text-gray-600 text-center mb-5">
-              It will give you full access to the official Amazon Jobs platform with its bonuses. After payment, your $
-              {currentBalance.toFixed(2)} transfer is validated and credited to your registered account.
+              After verification, your full access to the official Amazon Jobs App and your $247 withdrawal will be
+              authorized and credited to your PayPal account.
             </p>
+            {/* </CHANGE> */}
             <div className="space-y-3">
               <a
                 href="https://pay.hotmart.com/O102095023L?off=tvbvnt76"
@@ -483,7 +484,7 @@ export default function DashboardPage() {
                 className="block"
               >
                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white py-5 text-base font-semibold">
-                  Proceed to Verification
+                  Proceed to verification
                 </Button>
               </a>
             </div>
