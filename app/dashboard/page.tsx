@@ -83,9 +83,8 @@ export default function DashboardPage() {
     },
     {
       id: 3,
-      name: "Premium Water Bottle",
-      image:
-        "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-10-12%20at%2001.52.47-n4GwqfTDKOXWMQGU23cU6dGdjiAmmK.jpeg",
+      name: "Kitchen Storage Container Set",
+      image: "/kitchen-storage-containers-set.jpg",
       reward: 45,
       question: "Would you buy this product?",
     },
