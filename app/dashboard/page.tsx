@@ -32,8 +32,8 @@ interface Transaction {
 }
 
 export default function Dashboard() {
-  const [activeView, setActiveView] = useState("home")
-  const [activeTab, setActiveTab] = useState("dashboard")
+  const [showModal, setShowModal] = useState(false)
+  const [modalContent, setModalContent] = useState<"dashboard" | "withdraw" | "giftcards" | "tutorial" | null>(null)
   const [currentBalance, setCurrentBalance] = useState(204)
   const [reviewsCompleted, setReviewsCompleted] = useState(0)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
@@ -44,29 +44,6 @@ export default function Dashboard() {
   const [withdrawEmail, setWithdrawEmail] = useState("")
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
-  const [notifications] = useState([
-    {
-      id: 1,
-      title: "Welcome!",
-      message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
-      time: "Just now",
-      unread: true,
-    },
-    {
-      id: 2,
-      title: "Balance Available",
-      message: "You have $204 available in your account ready to withdraw!",
-      time: "5 mins ago",
-      unread: true,
-    },
-    {
-      id: 3,
-      title: "Action Required",
-      message: "Watch the video to unlock your withdrawal and cash out your earnings.",
-      time: "10 mins ago",
-      unread: true,
-    },
-  ])
 
   // Review products data
   const reviewProducts = [
@@ -140,7 +117,8 @@ export default function Dashboard() {
       setShowUpdatedBalanceModal(false)
       if (reviewsCompleted + 1 >= 3) {
         // After 3 reviews, go to withdraw page
-        setActiveView("withdraw")
+        setModalContent("withdraw")
+        setShowModal(true)
       } else {
         // Move to next review
         setCurrentReviewIndex((prev) => prev + 1)
@@ -162,8 +140,19 @@ export default function Dashboard() {
   const handleStartReview = () => {
     setCurrentReviewIndex(0)
     setReviewsCompleted(0)
-    setActiveView("tabs")
-    setActiveTab("dashboard")
+    setModalContent("dashboard")
+    setShowModal(true)
+  }
+
+  // Open modal function
+  const openModal = (content: "dashboard" | "withdraw" | "giftcards" | "tutorial") => {
+    setModalContent(content)
+    setShowModal(true)
+  }
+
+  const closeModal = () => {
+    setShowModal(false)
+    setModalContent(null)
   }
 
   // HomeView Component
@@ -417,7 +406,7 @@ export default function Dashboard() {
 
   // DashboardView Component
   const DashboardView = () => (
-    <div className="space-y-6 pb-24">
+    <div className="space-y-6">
       <h1 className="text-2xl font-bold">Dashboard</h1>
 
       {/* Stats cards */}
@@ -456,7 +445,7 @@ export default function Dashboard() {
             Start Review
           </Button>
           <Button
-            onClick={() => setActiveView("withdraw")}
+            onClick={() => openModal("withdraw")}
             className="w-full bg-green-600 hover:bg-green-700 justify-start"
           >
             <Wallet className="w-5 h-5 mr-2" />
@@ -609,64 +598,36 @@ export default function Dashboard() {
     )
   }
 
-  // TabsView Component
-  const TabsView = () => (
-    <div className="space-y-6 pb-24">
-      {/* Tab Navigation */}
-      <div className="bg-gray-900 border-b border-gray-800 sticky top-[73px] z-30 -mx-4 px-4">
-        <div className="flex overflow-x-auto scrollbar-hide">
-          <button
-            onClick={() => setActiveTab("dashboard")}
-            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === "dashboard"
-                ? "border-yellow-500 text-yellow-500"
-                : "border-transparent text-gray-400 hover:text-white"
-            }`}
-          >
-            Start Review
-          </button>
-          <button
-            onClick={() => setActiveTab("withdraw")}
-            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === "withdraw"
-                ? "border-yellow-500 text-yellow-500"
-                : "border-transparent text-gray-400 hover:text-white"
-            }`}
-          >
-            Withdraw
-          </button>
-          <button
-            onClick={() => setActiveTab("giftcards")}
-            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === "giftcards"
-                ? "border-yellow-500 text-yellow-500"
-                : "border-transparent text-gray-400 hover:text-white"
-            }`}
-          >
-            GiftCards
-          </button>
-          <button
-            onClick={() => setActiveTab("tutorial")}
-            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
-              activeTab === "tutorial"
-                ? "border-yellow-500 text-yellow-500"
-                : "border-transparent text-gray-400 hover:text-white"
-            }`}
-          >
-            System Tutorial
-          </button>
+  // ContentModal Component
+  const ContentModal = () => {
+    if (!showModal || !modalContent) return null
+
+    return (
+      <div className="fixed inset-0 bg-black/90 z-50 overflow-y-auto">
+        <div className="min-h-screen p-4">
+          {/* Close button */}
+          <div className="sticky top-0 z-10 flex justify-end mb-4">
+            <Button
+              onClick={closeModal}
+              variant="ghost"
+              size="icon"
+              className="bg-gray-900 hover:bg-gray-800 rounded-full w-12 h-12"
+            >
+              <X className="w-6 h-6" />
+            </Button>
+          </div>
+
+          {/* Modal content */}
+          <div className="max-w-2xl mx-auto">
+            {modalContent === "dashboard" && <DashboardView />}
+            {modalContent === "withdraw" && <WithdrawView />}
+            {modalContent === "giftcards" && <GiftCardsView />}
+            {modalContent === "tutorial" && <TutorialView />}
+          </div>
         </div>
       </div>
-
-      {/* Tab Content */}
-      <div>
-        {activeTab === "dashboard" && <DashboardView />}
-        {activeTab === "withdraw" && <WithdrawView />}
-        {activeTab === "giftcards" && <GiftCardsView />}
-        {activeTab === "tutorial" && <TutorialView />}
-      </div>
-    </div>
-  )
+    )
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -716,7 +677,29 @@ export default function Dashboard() {
                     <h3 className="font-bold text-lg">Notifications</h3>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
-                    {notifications.map((notification) => (
+                    {[
+                      {
+                        id: 1,
+                        title: "Welcome!",
+                        message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
+                        time: "Just now",
+                        unread: true,
+                      },
+                      {
+                        id: 2,
+                        title: "Balance Available",
+                        message: "You have $204 available in your account ready to withdraw!",
+                        time: "5 mins ago",
+                        unread: true,
+                      },
+                      {
+                        id: 3,
+                        title: "Action Required",
+                        message: "Watch the video to unlock your withdrawal and cash out your earnings.",
+                        time: "10 mins ago",
+                        unread: true,
+                      },
+                    ].map((notification) => (
                       <div
                         key={notification.id}
                         className="p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
@@ -742,6 +725,7 @@ export default function Dashboard() {
         </div>
       </header>
 
+      {/* Side Menu Drawer */}
       {showSideMenu && (
         <>
           {/* Overlay */}
@@ -766,8 +750,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("tabs")
-                  setActiveTab("dashboard")
+                  openModal("dashboard")
                   setShowSideMenu(false)
                 }}
               >
@@ -779,8 +762,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("tabs")
-                  setActiveTab("withdraw")
+                  openModal("withdraw")
                   setShowSideMenu(false)
                 }}
               >
@@ -792,8 +774,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("tabs")
-                  setActiveTab("giftcards")
+                  openModal("giftcards")
                   setShowSideMenu(false)
                 }}
               >
@@ -805,8 +786,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("tabs")
-                  setActiveTab("tutorial")
+                  openModal("tutorial")
                   setShowSideMenu(false)
                 }}
               >
@@ -820,9 +800,144 @@ export default function Dashboard() {
 
       {/* Main content */}
       <main className="container mx-auto p-4 max-w-2xl">
-        {activeView === "home" && <HomeView />}
-        {activeView === "tabs" && <TabsView />}
-        {activeView === "review-task" && <ReviewTaskView />}
+        <div className="mb-4 text-center">
+          <h1 className="text-lg md:text-xl font-bold text-white leading-tight">
+            Watch the video to learn how to earn <span className="text-orange-500">$300 to $500 per day</span> with
+            reviews on the Amazon Reviews app.
+          </h1>
+        </div>
+
+        {/* VSL Video Section */}
+        <section className="relative rounded-lg overflow-hidden bg-gray-900 mb-6">
+          <div className="aspect-video w-full">
+            <vturb-smartplayer
+              id="vid-68e5bb23787da31935e6c11b"
+              style={{ display: "block", margin: "0 auto", width: "100%" }}
+            />
+          </div>
+        </section>
+
+        {/* VSL Scripts */}
+        <Script id="vsl-player-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script"); 
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+
+        <Script id="vsl-performance" strategy="beforeInteractive">
+          {`
+            !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
+          `}
+        </Script>
+
+        {/* Step-by-step checklist */}
+        <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
+          <div className="space-y-3">
+            {/* Step 1 - Completed */}
+            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+                1
+              </div>
+              <p className="text-sm flex-1">Assessments Performed</p>
+              <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span className="text-green-500 text-sm font-semibold">Ok</span>
+            </div>
+
+            {/* Step 2 - Completed */}
+            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+                2
+              </div>
+              <p className="text-sm flex-1">Registered data</p>
+              <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+              <span className="text-green-500 text-sm font-semibold">Ok</span>
+            </div>
+
+            {/* Step 3 - Not completed */}
+            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+                3
+              </div>
+              <p className="text-sm flex-1">Watch the video to withdraw your balance</p>
+              <Clock className="w-5 h-5 text-orange-500 flex-shrink-0" />
+            </div>
+          </div>
+        </section>
+
+        {/* Social Proof Testimonials */}
+        <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+          <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3 mb-4">What Our Users Say</h2>
+          <div className="space-y-4">
+            {/* Testimonial 1 - Withdrawal released after video */}
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="flex items-start gap-3 mb-3">
+                <img src="/profile-1.png" alt="Jessica M." className="w-12 h-12 rounded-full object-cover" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-semibold">Jessica M.</h3>
+                    <span className="text-xs text-gray-400">2 hours ago</span>
+                  </div>
+                  <div className="flex gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-300">
+                    "I watched the video and my withdrawal was released immediately! Got my $204 in my PayPal within
+                    hours. This is legit! 🎉"
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 2 - Paid activation fee, got profits same day */}
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="flex items-start gap-3 mb-3">
+                <img src="/profile-2.png" alt="Michael R." className="w-12 h-12 rounded-full object-cover" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-semibold">Michael R.</h3>
+                    <span className="text-xs text-gray-400">5 hours ago</span>
+                  </div>
+                  <div className="flex gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-300">
+                    "I was skeptical about the activation fee, but I paid it and made profits the same day! Already
+                    earned back 3x what I paid. Best decision ever! 💰"
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Testimonial 3 - Fast and easy process */}
+            <div className="bg-gray-800/50 rounded-lg p-4">
+              <div className="flex items-start gap-3 mb-3">
+                <img src="/profile-3.png" alt="Sarah L." className="w-12 h-12 rounded-full object-cover" />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="font-semibold">Sarah L.</h3>
+                    <span className="text-xs text-gray-400">1 day ago</span>
+                  </div>
+                  <div className="flex gap-1 mb-2">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                    ))}
+                  </div>
+                  <p className="text-sm text-gray-300">
+                    "Super easy! Completed 3 reviews in 10 minutes and cashed out. The whole process was smooth and
+                    fast. Highly recommend! ⚡"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       </main>
 
       {/* Bottom Navigation */}
@@ -830,45 +945,26 @@ export default function Dashboard() {
         <div className="flex items-center justify-around p-2">
           <Button
             variant="ghost"
-            className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "tabs" && activeTab === "dashboard" ? "text-yellow-500" : "text-gray-400"
-            }`}
-            onClick={() => {
-              setActiveView("tabs")
-              setActiveTab("dashboard")
-            }}
+            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            onClick={() => openModal("dashboard")}
           >
             <Building2 className="w-5 h-5" />
-            <span className={`text-xs ${activeView === "tabs" && activeTab === "dashboard" ? "" : "text-white"}`}>
-              Start Review
-            </span>
+            <span className="text-xs text-white">Start Review</span>
           </Button>
 
           <Button
             variant="ghost"
-            className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "tabs" && activeTab === "withdraw" ? "text-yellow-500" : "text-gray-400"
-            }`}
-            onClick={() => {
-              setActiveView("tabs")
-              setActiveTab("withdraw")
-            }}
+            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            onClick={() => openModal("withdraw")}
           >
             <Wallet className="w-5 h-5" />
-            <span className={`text-xs ${activeView === "tabs" && activeTab === "withdraw" ? "" : "text-white"}`}>
-              Withdraw
-            </span>
+            <span className="text-xs text-white">Withdraw</span>
           </Button>
 
           <Button
             variant="ghost"
-            className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "tabs" && activeTab === "giftcards" ? "text-yellow-500" : "text-gray-400"
-            }`}
-            onClick={() => {
-              setActiveView("tabs")
-              setActiveTab("giftcards")
-            }}
+            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            onClick={() => openModal("giftcards")}
           >
             <TrendingUp className="w-5 h-5" />
             <span className="text-xs">GiftCards</span>
@@ -876,21 +972,17 @@ export default function Dashboard() {
 
           <Button
             variant="ghost"
-            className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "tabs" && activeTab === "tutorial" ? "text-yellow-500" : "text-gray-400"
-            }`}
-            onClick={() => {
-              setActiveView("tabs")
-              setActiveTab("tutorial")
-            }}
+            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            onClick={() => openModal("tutorial")}
           >
             <GraduationCap className="w-5 h-5" />
-            <span className={`text-xs ${activeView === "tabs" && activeTab === "tutorial" ? "" : "text-white"}`}>
-              System Tutorial
-            </span>
+            <span className="text-xs text-white">System Tutorial</span>
           </Button>
         </div>
       </nav>
+
+      {/* Content Modal */}
+      <ContentModal />
 
       {/* Modals */}
       <UpdatedBalanceModal />
