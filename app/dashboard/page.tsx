@@ -235,47 +235,10 @@ export default function DashboardPage() {
     }
   }, [])
 
+  // CHANGE: Simplified handleStartEvaluation to directly open verification modal without PayPal payout
   const handleStartEvaluation = async () => {
-    setIsProcessingPayout(true)
-    setPayoutMessage(null)
-
-    try {
-      const response = await fetch("/api/paypal-payout", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          paypalEmail: userData.paypal,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (response.ok) {
-        setPayoutMessage({
-          type: "success",
-          text: "Payment of $0.01 sent successfully to your PayPal!",
-        })
-        setTimeout(() => {
-          setShowVerificationModal(true)
-          setPayoutMessage(null)
-        }, 2000)
-      } else {
-        setPayoutMessage({
-          type: "error",
-          text: data.error || "Failed to send payment. Please try again.",
-        })
-      }
-    } catch (error) {
-      console.error("[v0] Error processing payout:", error)
-      setPayoutMessage({
-        type: "error",
-        text: "An error occurred. Please try again later.",
-      })
-    } finally {
-      setIsProcessingPayout(false)
-    }
+    // Directly open the verification modal without PayPal payout
+    setShowVerificationModal(true)
   }
 
   const productsBanner = [
