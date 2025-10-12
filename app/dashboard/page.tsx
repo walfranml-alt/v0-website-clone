@@ -690,7 +690,7 @@ export default function Dashboard() {
                 }}
               >
                 <Building2 className="w-5 h-5 text-orange-500" />
-                <span>Start Review</span>
+                <span className="text-white">Start Review</span>
               </Button>
 
               <Button
@@ -702,7 +702,7 @@ export default function Dashboard() {
                 }}
               >
                 <Wallet className="w-5 h-5 text-orange-500" />
-                <span>Withdraw</span>
+                <span className="text-white">Withdraw</span>
               </Button>
 
               <Button
@@ -726,7 +726,7 @@ export default function Dashboard() {
                 }}
               >
                 <GraduationCap className="w-5 h-5 text-orange-500" />
-                <span>System Tutorial</span>
+                <span className="text-white">System Tutorial</span>
               </Button>
             </div>
           </div>
@@ -754,7 +754,7 @@ export default function Dashboard() {
             onClick={() => setActiveView("dashboard")}
           >
             <Building2 className="w-5 h-5" />
-            <span className="text-xs">Start Review</span>
+            <span className={`text-xs ${activeView === "dashboard" ? "" : "text-white"}`}>Start Review</span>
           </Button>
 
           <Button
@@ -765,7 +765,7 @@ export default function Dashboard() {
             onClick={() => setActiveView("withdraw")}
           >
             <Wallet className="w-5 h-5" />
-            <span className="text-xs">Withdraw</span>
+            <span className={`text-xs ${activeView === "withdraw" ? "" : "text-white"}`}>Withdraw</span>
           </Button>
 
           <Button
@@ -787,7 +787,7 @@ export default function Dashboard() {
             onClick={() => setActiveView("tutorial")}
           >
             <GraduationCap className="w-5 h-5" />
-            <span className="text-xs">System Tutorial</span>
+            <span className={`text-xs ${activeView === "tutorial" ? "" : "text-white"}`}>System Tutorial</span>
           </Button>
         </div>
       </nav>
