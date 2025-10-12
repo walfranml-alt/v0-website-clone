@@ -41,6 +41,31 @@ export default function Dashboard() {
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
   const [withdrawEmail, setWithdrawEmail] = useState("")
+  const [showNotifications, setShowNotifications] = useState(false)
+  const [showSideMenu, setShowSideMenu] = useState(false)
+  const [notifications] = useState([
+    {
+      id: 1,
+      title: "Welcome!",
+      message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
+      time: "Just now",
+      unread: true,
+    },
+    {
+      id: 2,
+      title: "Balance Available",
+      message: "You have $267 available in your account ready to withdraw!",
+      time: "5 mins ago",
+      unread: true,
+    },
+    {
+      id: 3,
+      title: "Action Required",
+      message: "Watch the video to unlock your withdrawal and cash out your earnings.",
+      time: "10 mins ago",
+      unread: true,
+    },
+  ])
 
   // Review products data
   const reviewProducts = [
@@ -591,15 +616,122 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            <Button variant="ghost" size="icon">
-              <Bell className="w-5 h-5" />
-            </Button>
-            <Button variant="ghost" size="icon">
+            <div className="relative">
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowNotifications(!showNotifications)}
+                className="relative"
+              >
+                <Bell className="w-5 h-5" />
+                {/* Notification badge */}
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+              </Button>
+
+              {/* Notifications dropdown */}
+              {showNotifications && (
+                <div className="absolute right-0 top-12 w-80 bg-gray-900 border border-gray-800 rounded-lg shadow-xl z-50">
+                  <div className="p-4 border-b border-gray-800">
+                    <h3 className="font-bold text-lg">Notifications</h3>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.map((notification) => (
+                      <div
+                        key={notification.id}
+                        className="p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold mb-1">{notification.title}</h4>
+                            <p className="text-sm text-gray-400 mb-2">{notification.message}</p>
+                            <span className="text-xs text-gray-500">{notification.time}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(true)}>
               <Menu className="w-5 h-5" />
             </Button>
           </div>
         </div>
       </header>
+
+      {showSideMenu && (
+        <>
+          {/* Overlay */}
+          <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowSideMenu(false)} />
+
+          {/* Side Menu Drawer */}
+          <div className="fixed top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-800 z-50 shadow-2xl animate-in slide-in-from-left">
+            {/* Menu Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-800">
+              <div className="flex items-center gap-1 text-xl font-bold">
+                <span className="text-white">amazon</span>
+                <span className="text-orange-500">reviews</span>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(false)}>
+                <X className="w-5 h-5" />
+              </Button>
+            </div>
+
+            {/* Menu Items */}
+            <div className="p-4 space-y-2">
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
+                onClick={() => {
+                  setActiveView("dashboard")
+                  setShowSideMenu(false)
+                }}
+              >
+                <Building2 className="w-5 h-5 text-orange-500" />
+                <span>Start Review</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
+                onClick={() => {
+                  setActiveView("withdraw")
+                  setShowSideMenu(false)
+                }}
+              >
+                <Wallet className="w-5 h-5 text-orange-500" />
+                <span>Withdraw</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
+                onClick={() => {
+                  setActiveView("giftcards")
+                  setShowSideMenu(false)
+                }}
+              >
+                <TrendingUp className="w-5 h-5 text-orange-500" />
+                <span>GiftCards</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
+                onClick={() => {
+                  setActiveView("tutorial")
+                  setShowSideMenu(false)
+                }}
+              >
+                <GraduationCap className="w-5 h-5 text-orange-500" />
+                <span>System Tutorial</span>
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Main content */}
       <main className="container mx-auto p-4 max-w-2xl">
