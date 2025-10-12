@@ -245,7 +245,7 @@ export default function DashboardPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.JSON.stringify({
+        body: JSON.stringify({
           paypalEmail: userData.paypal,
         }),
       })
