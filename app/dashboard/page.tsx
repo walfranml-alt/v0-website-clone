@@ -17,7 +17,6 @@ import {
   DollarSign,
   Shield,
   X,
-  ChevronLeft,
   Clock,
 } from "lucide-react"
 
@@ -34,6 +33,7 @@ interface Transaction {
 
 export default function Dashboard() {
   const [activeView, setActiveView] = useState("home")
+  const [activeTab, setActiveTab] = useState("dashboard")
   const [currentBalance, setCurrentBalance] = useState(204)
   const [reviewsCompleted, setReviewsCompleted] = useState(0)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
@@ -162,7 +162,8 @@ export default function Dashboard() {
   const handleStartReview = () => {
     setCurrentReviewIndex(0)
     setReviewsCompleted(0)
-    setActiveView("review-task")
+    setActiveView("tabs")
+    setActiveTab("dashboard")
   }
 
   // HomeView Component
@@ -359,13 +360,8 @@ export default function Dashboard() {
 
   // WithdrawView Component
   const WithdrawView = () => (
-    <div className="space-y-6 pb-24">
-      <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" size="icon" onClick={() => setActiveView("home")}>
-          <ChevronLeft className="w-6 h-6" />
-        </Button>
-        <h1 className="text-2xl font-bold">Withdraw Funds</h1>
-      </div>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Withdraw Funds</h1>
 
       <Card className="bg-gray-900 border-gray-800 p-6">
         <div className="space-y-6">
@@ -473,13 +469,8 @@ export default function Dashboard() {
 
   // TutorialView Component
   const TutorialView = () => (
-    <div className="space-y-6 pb-24">
-      <div className="flex items-center gap-4 mb-6">
-        <Button variant="ghost" size="icon" onClick={() => setActiveView("home")}>
-          <ChevronLeft className="w-6 h-6" />
-        </Button>
-        <h1 className="text-2xl font-bold">System Tutorial</h1>
-      </div>
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">System Tutorial</h1>
 
       <Card className="bg-gray-900 border-gray-800 p-6">
         <h2 className="text-xl font-bold mb-4 text-white">How It Works</h2>
@@ -618,6 +609,65 @@ export default function Dashboard() {
     )
   }
 
+  // TabsView Component
+  const TabsView = () => (
+    <div className="space-y-6 pb-24">
+      {/* Tab Navigation */}
+      <div className="bg-gray-900 border-b border-gray-800 sticky top-[73px] z-30 -mx-4 px-4">
+        <div className="flex overflow-x-auto scrollbar-hide">
+          <button
+            onClick={() => setActiveTab("dashboard")}
+            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === "dashboard"
+                ? "border-yellow-500 text-yellow-500"
+                : "border-transparent text-gray-400 hover:text-white"
+            }`}
+          >
+            Start Review
+          </button>
+          <button
+            onClick={() => setActiveTab("withdraw")}
+            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === "withdraw"
+                ? "border-yellow-500 text-yellow-500"
+                : "border-transparent text-gray-400 hover:text-white"
+            }`}
+          >
+            Withdraw
+          </button>
+          <button
+            onClick={() => setActiveTab("giftcards")}
+            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === "giftcards"
+                ? "border-yellow-500 text-yellow-500"
+                : "border-transparent text-gray-400 hover:text-white"
+            }`}
+          >
+            GiftCards
+          </button>
+          <button
+            onClick={() => setActiveTab("tutorial")}
+            className={`flex-1 min-w-[100px] py-4 px-2 text-sm font-medium border-b-2 transition-colors ${
+              activeTab === "tutorial"
+                ? "border-yellow-500 text-yellow-500"
+                : "border-transparent text-gray-400 hover:text-white"
+            }`}
+          >
+            System Tutorial
+          </button>
+        </div>
+      </div>
+
+      {/* Tab Content */}
+      <div>
+        {activeTab === "dashboard" && <DashboardView />}
+        {activeTab === "withdraw" && <WithdrawView />}
+        {activeTab === "giftcards" && <GiftCardsView />}
+        {activeTab === "tutorial" && <TutorialView />}
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Preload links for VSL */}
@@ -716,7 +766,8 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("dashboard")
+                  setActiveView("tabs")
+                  setActiveTab("dashboard")
                   setShowSideMenu(false)
                 }}
               >
@@ -728,7 +779,8 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("withdraw")
+                  setActiveView("tabs")
+                  setActiveTab("withdraw")
                   setShowSideMenu(false)
                 }}
               >
@@ -740,7 +792,8 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("giftcards")
+                  setActiveView("tabs")
+                  setActiveTab("giftcards")
                   setShowSideMenu(false)
                 }}
               >
@@ -752,7 +805,8 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
-                  setActiveView("tutorial")
+                  setActiveView("tabs")
+                  setActiveTab("tutorial")
                   setShowSideMenu(false)
                 }}
               >
@@ -767,11 +821,8 @@ export default function Dashboard() {
       {/* Main content */}
       <main className="container mx-auto p-4 max-w-2xl">
         {activeView === "home" && <HomeView />}
-        {activeView === "dashboard" && <DashboardView />}
+        {activeView === "tabs" && <TabsView />}
         {activeView === "review-task" && <ReviewTaskView />}
-        {activeView === "withdraw" && <WithdrawView />}
-        {activeView === "tutorial" && <TutorialView />}
-        {activeView === "giftcards" && <GiftCardsView />}
       </main>
 
       {/* Bottom Navigation */}
@@ -780,31 +831,44 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "dashboard" ? "text-yellow-500" : "text-gray-400"
+              activeView === "tabs" && activeTab === "dashboard" ? "text-yellow-500" : "text-gray-400"
             }`}
-            onClick={() => setActiveView("dashboard")}
+            onClick={() => {
+              setActiveView("tabs")
+              setActiveTab("dashboard")
+            }}
           >
             <Building2 className="w-5 h-5" />
-            <span className={`text-xs ${activeView === "dashboard" ? "" : "text-white"}`}>Start Review</span>
+            <span className={`text-xs ${activeView === "tabs" && activeTab === "dashboard" ? "" : "text-white"}`}>
+              Start Review
+            </span>
           </Button>
 
           <Button
             variant="ghost"
             className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "withdraw" ? "text-yellow-500" : "text-gray-400"
+              activeView === "tabs" && activeTab === "withdraw" ? "text-yellow-500" : "text-gray-400"
             }`}
-            onClick={() => setActiveView("withdraw")}
+            onClick={() => {
+              setActiveView("tabs")
+              setActiveTab("withdraw")
+            }}
           >
             <Wallet className="w-5 h-5" />
-            <span className={`text-xs ${activeView === "withdraw" ? "" : "text-white"}`}>Withdraw</span>
+            <span className={`text-xs ${activeView === "tabs" && activeTab === "withdraw" ? "" : "text-white"}`}>
+              Withdraw
+            </span>
           </Button>
 
           <Button
             variant="ghost"
             className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "giftcards" ? "text-yellow-500" : "text-gray-400"
+              activeView === "tabs" && activeTab === "giftcards" ? "text-yellow-500" : "text-gray-400"
             }`}
-            onClick={() => setActiveView("giftcards")}
+            onClick={() => {
+              setActiveView("tabs")
+              setActiveTab("giftcards")
+            }}
           >
             <TrendingUp className="w-5 h-5" />
             <span className="text-xs">GiftCards</span>
@@ -813,12 +877,17 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className={`flex flex-col items-center gap-1 flex-1 ${
-              activeView === "tutorial" ? "text-yellow-500" : "text-gray-400"
+              activeView === "tabs" && activeTab === "tutorial" ? "text-yellow-500" : "text-gray-400"
             }`}
-            onClick={() => setActiveView("tutorial")}
+            onClick={() => {
+              setActiveView("tabs")
+              setActiveTab("tutorial")
+            }}
           >
             <GraduationCap className="w-5 h-5" />
-            <span className={`text-xs ${activeView === "tutorial" ? "" : "text-white"}`}>System Tutorial</span>
+            <span className={`text-xs ${activeView === "tabs" && activeTab === "tutorial" ? "" : "text-white"}`}>
+              System Tutorial
+            </span>
           </Button>
         </div>
       </nav>
