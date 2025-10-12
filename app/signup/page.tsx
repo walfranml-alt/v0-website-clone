@@ -18,40 +18,52 @@ export default function SignUpPage() {
     email: "",
     password: "",
   })
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     const savedFormData = localStorage.getItem("signupFormData")
     if (savedFormData) {
       try {
         const parsed = JSON.parse(savedFormData)
+        console.log("[v0] Loading saved form data:", parsed)
         setFormData(parsed)
       } catch (error) {
-        console.error("Error loading saved form data:", error)
+        console.error("[v0] Error loading saved form data:", error)
       }
     }
+    setIsLoaded(true)
   }, [])
 
   useEffect(() => {
+    if (!isLoaded) return
+
     if (formData.name || formData.email || formData.password) {
+      console.log("[v0] Auto-saving form data:", formData)
       localStorage.setItem("signupFormData", JSON.stringify(formData))
     }
-  }, [formData])
+  }, [formData, isLoaded])
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
+    console.log("[v0] Form submitted:", formData)
+
     localStorage.setItem("userName", formData.name)
     localStorage.setItem("userEmail", formData.email)
     localStorage.setItem("userPayPal", formData.email)
+
     localStorage.removeItem("signupFormData")
+
     router.push("/dashboard")
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    const { name, value } = e.target
+    console.log(`[v0] Field changed: ${name} = ${value}`)
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }))
   }
 
   return (
