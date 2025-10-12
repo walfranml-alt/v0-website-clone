@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import {
@@ -170,15 +171,28 @@ export default function Dashboard() {
       {/* VSL Video Section */}
       <section className="relative rounded-lg overflow-hidden bg-gray-900">
         <div className="aspect-video w-full">
-          <iframe
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="VSL Video"
-            className="w-full h-full"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+          <vturb-smartplayer
+            id="vid-68e5bb23787da31935e6c11b"
+            style={{ display: "block", margin: "0 auto", width: "100%" }}
           />
         </div>
       </section>
+
+      {/* VSL Scripts */}
+      <Script id="vsl-player-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script"); 
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="vsl-performance" strategy="beforeInteractive">
+        {`
+          !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
+        `}
+      </Script>
 
       {/* Step-by-step checklist */}
       <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
@@ -606,6 +620,23 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Preload links for VSL */}
+      <link
+        rel="preload"
+        href="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js"
+        as="script"
+      />
+      <link rel="preload" href="https://scripts.converteai.net/lib/js/smartplayer-wc/v4/smartplayer.js" as="script" />
+      <link
+        rel="preload"
+        href="https://cdn.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/68e5bb005efcf3a1ee618643/main.m3u8"
+        as="fetch"
+      />
+      <link rel="dns-prefetch" href="https://cdn.converteai.net" />
+      <link rel="dns-prefetch" href="https://scripts.converteai.net" />
+      <link rel="dns-prefetch" href="https://images.converteai.net" />
+      <link rel="dns-prefetch" href="https://api.vturb.com.br" />
+
       {/* Header */}
       <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-40">
         <div className="flex items-center justify-between p-4">
