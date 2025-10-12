@@ -31,7 +31,17 @@ import {
   Zap,
 } from "lucide-react"
 
-type ViewType = "home" | "dashboard" | "withdraw" | "giftcards" | "tutorial" | "reviews" | "vip" | "invite" | "profile"
+type ViewType =
+  | "home"
+  | "dashboard"
+  | "withdraw"
+  | "giftcards"
+  | "tutorial"
+  | "reviews"
+  | "vip"
+  | "invite"
+  | "profile"
+  | "product-review"
 
 interface Transaction {
   id: string
@@ -95,6 +105,8 @@ export default function DashboardPage() {
     initials: "JD",
     referralCode: "AMZ-REF-" + Math.random().toString(36).substring(2, 8).toUpperCase(),
   })
+
+  const [selectedProduct, setSelectedProduct] = useState<any>(null)
 
   const userNames = [
     "Sarah M.",
@@ -284,6 +296,11 @@ export default function DashboardPage() {
     { id: 4, name: "Echo Dot Smart Speaker", image: "/echo-dot.jpg", reward: 28 },
   ]
 
+  const handleReviewClick = (product: any) => {
+    setSelectedProduct(product)
+    setActiveView("product-review")
+  }
+
   const renderView = () => {
     switch (activeView) {
       case "dashboard":
@@ -295,19 +312,21 @@ export default function DashboardPage() {
       case "tutorial":
         return <TutorialView />
       case "reviews":
-        return (
-          <ReviewsView
-            availableReviews={availableReviews}
-            onStartReview={handleStartEvaluation}
-            isProcessing={isProcessingPayout}
-          />
-        )
+        return <ReviewsView availableReviews={availableReviews} onReviewClick={handleReviewClick} />
       case "vip":
         return <VIPView onUpgrade={() => setShowVerificationModal(true)} />
       case "invite":
         return <InviteView referralCode={userData.referralCode} />
       case "profile":
         return <ProfileView userData={userData} />
+      case "product-review":
+        return (
+          <ProductReviewView
+            product={selectedProduct}
+            onStartReview={handleStartEvaluation}
+            isProcessing={isProcessingPayout}
+          />
+        )
       default:
         return (
           <HomeView
@@ -320,6 +339,7 @@ export default function DashboardPage() {
             isProcessingPayout={isProcessingPayout}
             setShowVerificationModal={setShowVerificationModal}
             setActiveView={setActiveView}
+            onReviewClick={handleReviewClick}
           />
         )
     }
@@ -502,6 +522,7 @@ function HomeView({
   isProcessingPayout,
   setShowVerificationModal,
   setActiveView,
+  onReviewClick,
 }: any) {
   return (
     <div className="space-y-6">
@@ -622,11 +643,10 @@ function HomeView({
               <div className="p-3 space-y-2">
                 <h3 className="font-semibold text-sm line-clamp-2 text-white">{review.name}</h3>
                 <Button
-                  onClick={handleStartEvaluation}
-                  disabled={isProcessingPayout}
+                  onClick={() => onReviewClick(review)}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
                 >
-                  {isProcessingPayout ? <Loader2 className="w-4 h-4 animate-spin" /> : "Review Immediately"}
+                  Review Immediately
                 </Button>
               </div>
             </Card>
@@ -904,7 +924,7 @@ function TutorialView() {
   )
 }
 
-function ReviewsView({ availableReviews, onStartReview, isProcessing }: any) {
+function ReviewsView({ availableReviews, onReviewClick }: any) {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Available Reviews</h1>
@@ -927,17 +947,98 @@ function ReviewsView({ availableReviews, onStartReview, isProcessing }: any) {
                 <Star className="w-4 h-4 text-yellow-500" />
                 <span>Review & Earn</span>
               </div>
-              <Button
-                onClick={onStartReview}
-                disabled={isProcessing}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-              >
-                {isProcessing ? <Loader2 className="w-4 h-4 animate-spin" /> : "Start Review"}
+              <Button onClick={() => onReviewClick(review)} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Review Immediately
               </Button>
             </div>
           </Card>
         ))}
       </div>
+    </div>
+  )
+}
+
+function ProductReviewView({ product, onStartReview, isProcessing }: any) {
+  if (!product) return null
+
+  return (
+    <div className="space-y-6">
+      <h1 className="text-2xl font-bold">Product Review</h1>
+
+      <Card className="bg-gray-900 border-gray-800 overflow-hidden">
+        <div className="aspect-video relative">
+          <img src={product.image || "/placeholder.svg"} alt={product.name} className="w-full h-full object-cover" />
+          <Badge className="absolute top-4 right-4 bg-green-500 text-white border-0 text-lg px-4 py-2">
+            Earn ${product.reward}
+          </Badge>
+        </div>
+        <div className="p-6 space-y-4">
+          <div>
+            <h2 className="text-2xl font-bold text-white mb-2">{product.name}</h2>
+            <div className="flex items-center gap-2 text-gray-400">
+              <Star className="w-5 h-5 text-yellow-500" />
+              <span>Product Review Task</span>
+            </div>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg p-4 space-y-3">
+            <h3 className="font-semibold text-white">Review Requirements:</h3>
+            <ul className="space-y-2 text-gray-300">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <span>Write an honest review about the product</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <span>Minimum 50 words required</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <span>Include product quality and experience details</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                <span>Submit within 24 hours</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-lg p-4 text-white">
+            <div className="flex items-center gap-3">
+              <DollarSign className="w-8 h-8" />
+              <div>
+                <p className="text-sm text-white/80">You will earn</p>
+                <p className="text-2xl font-bold">${product.reward}.00</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-yellow-500/20 border border-yellow-500/30 rounded-lg p-4">
+            <p className="text-sm text-yellow-400">
+              <AlertCircle className="w-4 h-4 inline mr-2" />
+              Payment will be processed immediately after review submission and approval.
+            </p>
+          </div>
+
+          <Button
+            onClick={onStartReview}
+            disabled={isProcessing}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Star className="w-5 h-5 mr-2" />
+                Start Review
+              </>
+            )}
+          </Button>
+        </div>
+      </Card>
     </div>
   )
 }
