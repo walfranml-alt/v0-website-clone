@@ -9,7 +9,7 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: "Amazon Reviews - Product Review Platform",
-  description: "Join Amazon's official product review program and earn rewards",
+  description: "Join Amazon's official product review platform and earn rewards",
   generator: "v0.app",
 }
 

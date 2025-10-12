@@ -653,8 +653,8 @@ export default function Dashboard() {
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1 text-2xl font-bold">
-              <span className="text-white">amazon</span>
-              <span className="text-orange-500">reviews</span>
+              <span className="text-white">Amazon</span>
+              <span className="text-orange-500">Reviews</span>
             </div>
           </div>
           <div className="flex items-center gap-4">
@@ -673,8 +673,16 @@ export default function Dashboard() {
               {/* Notifications dropdown */}
               {showNotifications && (
                 <div className="absolute right-0 top-12 w-80 bg-gray-900 border border-gray-800 rounded-lg shadow-xl z-50">
-                  <div className="p-4 border-b border-gray-800">
+                  <div className="p-4 border-b border-gray-800 flex items-center justify-between">
                     <h3 className="font-bold text-lg">Notifications</h3>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => setShowNotifications(false)}
+                      className="h-8 w-8 hover:bg-gray-800"
+                    >
+                      <X className="w-4 h-4" />
+                    </Button>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
                     {[
@@ -736,8 +744,8 @@ export default function Dashboard() {
             {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
               <div className="flex items-center gap-1 text-xl font-bold">
-                <span className="text-white">amazon</span>
-                <span className="text-orange-500">reviews</span>
+                <span className="text-white">Amazon</span>
+                <span className="text-orange-500">Reviews</span>
               </div>
               <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(false)}>
                 <X className="w-5 h-5" />
