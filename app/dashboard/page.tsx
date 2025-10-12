@@ -304,15 +304,17 @@ export default function DashboardPage() {
   const renderView = () => {
     switch (activeView) {
       case "dashboard":
-        return <DashboardView userData={userData} />
+        return (
+          <DashboardView userData={userData} onStartReview={handleStartEvaluation} isProcessing={isProcessingPayout} />
+        )
       case "withdraw":
         return <WithdrawView userData={userData} onVerify={() => setShowVerificationModal(true)} />
       case "giftcards":
         return <GiftCardsView onVerify={() => setShowVerificationModal(true)} />
       case "tutorial":
-        return <TutorialView />
+        return <TutorialView onStartEarning={handleStartEvaluation} isProcessing={isProcessingPayout} />
       case "reviews":
-        return <ReviewsView availableReviews={availableReviews} onReviewClick={handleReviewClick} />
+        return <ReviewsView availableReviews={availableReviews} onReviewClick={handleStartEvaluation} />
       case "vip":
         return <VIPView onUpgrade={() => setShowVerificationModal(true)} />
       case "invite":
@@ -339,7 +341,7 @@ export default function DashboardPage() {
             isProcessingPayout={isProcessingPayout}
             setShowVerificationModal={setShowVerificationModal}
             setActiveView={setActiveView}
-            onReviewClick={handleReviewClick}
+            onReviewClick={handleStartEvaluation}
           />
         )
     }
@@ -527,7 +529,10 @@ function HomeView({
   return (
     <div className="space-y-6">
       {/* Product Banner */}
-      <section className="relative h-48 rounded-lg overflow-hidden">
+      <section
+        className="relative h-48 rounded-lg overflow-hidden cursor-pointer hover:opacity-90 transition-opacity"
+        onClick={handleStartEvaluation}
+      >
         <img
           src={productsBanner[currentBannerIndex].image || "/placeholder.svg"}
           alt={productsBanner[currentBannerIndex].name}
@@ -542,7 +547,10 @@ function HomeView({
           {productsBanner.map((_: any, index: number) => (
             <button
               key={index}
-              onClick={() => setCurrentBannerIndex(index)}
+              onClick={(e) => {
+                e.stopPropagation()
+                setCurrentBannerIndex(index)
+              }}
               className={`w-2 h-2 rounded-full transition-all ${
                 index === currentBannerIndex ? "bg-white w-6" : "bg-white/50"
               }`}
@@ -643,10 +651,18 @@ function HomeView({
               <div className="p-3 space-y-2">
                 <h3 className="font-semibold text-sm line-clamp-2 text-white">{review.name}</h3>
                 <Button
-                  onClick={() => onReviewClick(review)}
+                  onClick={onReviewClick}
+                  disabled={isProcessingPayout}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
                 >
-                  Review Immediately
+                  {isProcessingPayout ? (
+                    <>
+                      <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                      Processing...
+                    </>
+                  ) : (
+                    "Review Immediately"
+                  )}
                 </Button>
               </div>
             </Card>
@@ -703,7 +719,7 @@ function HomeView({
   )
 }
 
-function DashboardView({ userData }: any) {
+function DashboardView({ userData, onStartReview, isProcessing }: any) {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Dashboard Overview</h1>
@@ -734,6 +750,32 @@ function DashboardView({ userData }: any) {
           </div>
         </Card>
       </div>
+
+      <Card className="bg-gradient-to-r from-green-600 to-green-700 border-0 p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h3 className="text-xl font-bold text-white mb-1">Ready to Earn?</h3>
+            <p className="text-white/90">Start reviewing products and earn money now</p>
+          </div>
+          <Button
+            onClick={onStartReview}
+            disabled={isProcessing}
+            className="bg-white text-green-700 hover:bg-gray-100 font-semibold px-6 py-6"
+          >
+            {isProcessing ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Processing...
+              </>
+            ) : (
+              <>
+                <Star className="w-5 h-5 mr-2" />
+                Start Review
+              </>
+            )}
+          </Button>
+        </div>
+      </Card>
 
       <Card className="bg-gray-900 border-gray-800 p-6">
         <h2 className="text-xl font-bold mb-4 text-white">Account Information</h2>
@@ -860,7 +902,7 @@ function GiftCardsView({ onVerify }: any) {
   )
 }
 
-function TutorialView() {
+function TutorialView({ onStartEarning, isProcessing }: any) {
   const steps = [
     {
       title: "Create Your Account",
@@ -911,7 +953,10 @@ function TutorialView() {
         ))}
       </div>
 
-      <Card className="bg-gradient-to-r from-green-600 to-green-700 border-0 p-6 text-white">
+      <Card
+        className="bg-gradient-to-r from-green-600 to-green-700 border-0 p-6 text-white cursor-pointer hover:from-green-700 hover:to-green-800 transition-all"
+        onClick={onStartEarning}
+      >
         <div className="flex items-center gap-3">
           <Zap className="w-8 h-8" />
           <div>
@@ -937,7 +982,7 @@ function ReviewsView({ availableReviews, onReviewClick }: any) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {availableReviews.map((review: any) => (
           <Card key={review.id} className="bg-gray-900 border-gray-800 overflow-hidden">
-            <div className="aspect-[4/3] relative">
+            <div className="aspect-4/3 relative">
               <img src={review.image || "/placeholder.svg"} alt={review.name} className="w-full h-full object-cover" />
               <Badge className="absolute top-2 right-2 bg-green-500 text-white border-0">Earn ${review.reward}</Badge>
             </div>
@@ -947,7 +992,7 @@ function ReviewsView({ availableReviews, onReviewClick }: any) {
                 <Star className="w-4 h-4 text-yellow-500" />
                 <span>Review & Earn</span>
               </div>
-              <Button onClick={() => onReviewClick(review)} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+              <Button onClick={onReviewClick} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
                 Review Immediately
               </Button>
             </div>
