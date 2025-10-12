@@ -17,9 +17,6 @@ export default function SignUpPage() {
     name: "",
     email: "",
     password: "",
-    paypalAccount: "",
-    age: "",
-    reviewExperience: "",
   })
   const [showLoadingModal, setShowLoadingModal] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -37,14 +34,7 @@ export default function SignUpPage() {
   }, [])
 
   useEffect(() => {
-    if (
-      formData.name ||
-      formData.email ||
-      formData.password ||
-      formData.paypalAccount ||
-      formData.age ||
-      formData.reviewExperience
-    ) {
+    if (formData.name || formData.email || formData.password) {
       localStorage.setItem("signupFormData", JSON.stringify(formData))
     }
   }, [formData])
@@ -74,9 +64,7 @@ export default function SignUpPage() {
     console.log("Form submitted:", formData)
     localStorage.setItem("userName", formData.name)
     localStorage.setItem("userEmail", formData.email)
-    localStorage.setItem("userPayPal", formData.paypalAccount)
-    localStorage.setItem("userAge", formData.age)
-    localStorage.setItem("userReviewExperience", formData.reviewExperience)
+    localStorage.setItem("userPayPal", formData.email)
     setShowLoadingModal(true)
     setProgress(0)
   }
@@ -160,84 +148,7 @@ export default function SignUpPage() {
               />
             </div>
 
-            {/* PayPal Account Field */}
-            <div className="space-y-2">
-              <Label htmlFor="paypalAccount" className="text-white text-sm font-medium">
-                PayPal Account
-              </Label>
-              <Input
-                id="paypalAccount"
-                name="paypalAccount"
-                type="email"
-                placeholder="Enter your PayPal email for withdrawals"
-                value={formData.paypalAccount}
-                onChange={handleChange}
-                required
-                className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400"
-              />
-              <p className="text-xs text-gray-500">This will be used for your earnings withdrawals</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="age" className="text-white text-sm font-medium">
-                Age
-              </Label>
-              <select
-                id="age"
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-900/50 border border-gray-700 text-white rounded-md px-3 py-2 focus:border-orange-400 focus:ring-orange-400 focus:outline-none"
-              >
-                <option value="" disabled className="bg-gray-900">
-                  Select age range
-                </option>
-                <option value="18-25" className="bg-gray-900">
-                  18-25
-                </option>
-                <option value="26-35" className="bg-gray-900">
-                  26-35
-                </option>
-                <option value="36-45" className="bg-gray-900">
-                  36-45
-                </option>
-                <option value="46-55" className="bg-gray-900">
-                  46-55
-                </option>
-                <option value="56+" className="bg-gray-900">
-                  56+
-                </option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="reviewExperience" className="text-white text-sm font-medium">
-                Review Experience
-              </Label>
-              <select
-                id="reviewExperience"
-                name="reviewExperience"
-                value={formData.reviewExperience}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-900/50 border border-gray-700 text-white rounded-md px-3 py-2 focus:border-orange-400 focus:ring-orange-400 focus:outline-none"
-              >
-                <option value="" disabled className="bg-gray-900">
-                  Select experience level
-                </option>
-                <option value="Beginner" className="bg-gray-900">
-                  Beginner
-                </option>
-                <option value="Intermediate" className="bg-gray-900">
-                  Intermediate
-                </option>
-                <option value="Advanced" className="bg-gray-900">
-                  Advanced
-                </option>
-              </select>
-            </div>
-
+            {/* Submit Button */}
             <Button
               type="submit"
               size="lg"
@@ -247,6 +158,7 @@ export default function SignUpPage() {
             </Button>
           </form>
 
+          {/* Login Link */}
           <p className="text-center text-gray-400 mt-6">
             Already have an account?{" "}
             <Link href="/" className="text-orange-400 hover:text-orange-300 font-semibold">
@@ -256,8 +168,10 @@ export default function SignUpPage() {
         </div>
       </main>
 
+      {/* Footer */}
       <footer className="relative z-10 text-center py-8 text-sm text-gray-400">© 2025 LLC, All rights reserved.</footer>
 
+      {/* Loading Modal */}
       {showLoadingModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
           <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-orange-500/20">
@@ -281,6 +195,7 @@ export default function SignUpPage() {
               <p className="text-gray-400 text-sm">Please wait...</p>
             </div>
 
+            {/* Progress Bar */}
             <div className="space-y-2">
               <div className="flex justify-between text-sm text-gray-400">
                 <span>Progress</span>
