@@ -593,7 +593,7 @@ export default function Dashboard() {
             onClick={() => setActiveView("dashboard")}
           >
             <Building2 className="w-5 h-5" />
-            <span className="text-xs">Dashboard</span>
+            <span className="text-xs">Start Review</span>
           </Button>
 
           <Button
