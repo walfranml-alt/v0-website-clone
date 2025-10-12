@@ -278,7 +278,7 @@ export default function DashboardPage() {
       <header className="sticky top-0 z-30 bg-black/95 backdrop-blur-sm border-b border-gray-800">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
-            <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={140} height={40} className="h-8 w-auto" />
+            <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={50} className="h-12 w-auto" />
           </div>
           <div className="flex items-center gap-4">
             <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
@@ -389,7 +389,7 @@ export default function DashboardPage() {
         {/* Available Reviews */}
         <section>
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3">Available Reviews</h2>
+            <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3">Reviews available for you</h2>
             <Button variant="ghost" size="sm" className="text-gray-400">
               →
             </Button>
