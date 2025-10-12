@@ -35,7 +35,7 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState<"dashboard" | "withdraw" | "giftcards" | "tutorial" | null>(null)
   const [currentBalance, setCurrentBalance] = useState(204)
-  const [reviewsCompleted, setReviewsCompleted] = useState(0)
+  const [reviewsCompleted, setReviewsCompleted] = useState(3)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [lastEarning, setLastEarning] = useState(0)
