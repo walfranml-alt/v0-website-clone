@@ -228,7 +228,7 @@ export default function DashboardPage() {
               <Star className="w-5 h-5 text-orange-500" />
             </div>
             <div>
-              <h3 className="font-semibold">How to earn with Amazon Jobs 2024</h3>
+              <h3 className="font-semibold">How to earn with Amazon Jobs 2025</h3>
               <p className="text-sm text-gray-400">Complete product reviews and earn rewards</p>
             </div>
           </div>
