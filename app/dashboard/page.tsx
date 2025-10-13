@@ -485,7 +485,7 @@ export default function Dashboard() {
             <div>
               <h3 className="font-bold mb-1 text-white">Complete Reviews</h3>
               <p className="text-gray-400 text-sm">
-                Answer simple questions about products and earn rewards with each review.
+                Answer simple questions about products and earn rewards for each review.
               </p>
             </div>
           </div>
@@ -496,7 +496,7 @@ export default function Dashboard() {
             </div>
             <div>
               <h3 className="font-bold mb-1 text-white">Earn Money</h3>
-              <p className="text-gray-400 text-sm">Get paid $35-$55 with each product review you complete.</p>
+              <p className="text-gray-400 text-sm">Get paid $35-$55 for each product review you complete.</p>
             </div>
           </div>
 
@@ -704,7 +704,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-red-600 font-bold text-center mb-4">
-            DON'T WORRY, THE FEE IS ONLY A SECURITY MEASURE AND WILL BE REFUNDED WITHIN 1 BUSINESS DAY.
+            DON'T WORRY, THE FEE IS ONLY FOR SECURITY PURPOSES AND WILL BE REFUNDED WITHIN 1 BUSINESS DAY.
           </p>
 
           <p className="text-gray-700 text-center mb-6">
