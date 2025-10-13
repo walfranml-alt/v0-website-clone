@@ -374,46 +374,14 @@ export default function Dashboard() {
             <p className="text-4xl font-bold text-green-400">${currentBalance.toFixed(2)}</p>
           </div>
 
-          {/* Withdraw form */}
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 text-white">PayPal Email</label>
-              <input
-                ref={emailInputRef}
-                type="email"
-                value={withdrawEmail}
-                onInput={(e) => setWithdrawEmail((e.target as HTMLInputElement).value)}
-                placeholder="your@email.com"
-                data-form-type="other"
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
-              />
-              {/* </CHANGE> */}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2 text-white">Withdraw Amount</label>
-              <input
-                ref={amountInputRef}
-                type="number"
-                value={withdrawAmount}
-                onInput={(e) => setWithdrawAmount((e.target as HTMLInputElement).value)}
-                placeholder="0.00"
-                step="0.01"
-                min="0"
-                data-form-type="other"
-                className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
-              />
-              {/* </CHANGE> */}
-            </div>
-
-            <Button
-              onClick={handleWithdraw}
-              className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-semibold"
-            >
-              <Wallet className="w-5 h-5 mr-2" />
-              Withdraw Now
-            </Button>
-          </div>
+          <Button
+            onClick={handleWithdraw}
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-semibold"
+          >
+            <Wallet className="w-5 h-5 mr-2" />
+            Withdraw Now
+          </Button>
+          {/* </CHANGE> */}
 
           {/* Info */}
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
