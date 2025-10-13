@@ -9,16 +9,15 @@ import {
   Star,
   CheckCircle2,
   Wallet,
-  Building2,
-  TrendingUp,
-  GraduationCap,
   Bell,
-  Menu,
-  Gift,
   DollarSign,
   Shield,
   X,
   Clock,
+  Menu,
+  Building2,
+  TrendingUp,
+  GraduationCap,
 } from "lucide-react"
 
 // Transaction interface
@@ -149,6 +148,7 @@ export default function Dashboard() {
 
   // Open modal function
   const openModal = (content: "dashboard" | "withdraw" | "giftcards" | "tutorial") => {
+    setShowNotifications(false) // Close notifications when opening modal
     setModalContent(content)
     setShowModal(true)
   }
@@ -375,10 +375,13 @@ export default function Dashboard() {
             <div>
               <label className="block text-sm font-medium mb-2 text-white">PayPal Email</label>
               <input
+                key="withdraw-email-input"
+                id="withdraw-email-input"
                 type="email"
                 value={withdrawEmail}
                 onChange={(e) => setWithdrawEmail(e.target.value)}
                 placeholder="your@email.com"
+                autoComplete="off"
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
             </div>
@@ -386,10 +389,13 @@ export default function Dashboard() {
             <div>
               <label className="block text-sm font-medium mb-2 text-white">Withdraw Amount</label>
               <input
+                key="withdraw-amount-input"
+                id="withdraw-amount-input"
                 type="number"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
                 placeholder="0.00"
+                autoComplete="off"
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
             </div>
@@ -479,9 +485,10 @@ export default function Dashboard() {
               <span className="text-white font-bold">1</span>
             </div>
             <div>
-              <h3 className="font-bold mb-1 text-white">Complete Reviews</h3>
+              <h3 className="font-bold mb-1 text-white">Watch the Video</h3>
               <p className="text-gray-400 text-sm">
-                Answer simple questions about products and earn rewards for each review.
+                Watch the entire video on the home page to unlock the rest of the features: complete reviews, earn
+                money, and withdraw.
               </p>
             </div>
           </div>
@@ -491,6 +498,18 @@ export default function Dashboard() {
               <span className="text-white font-bold">2</span>
             </div>
             <div>
+              <h3 className="font-bold mb-1 text-white">Complete Reviews</h3>
+              <p className="text-gray-400 text-sm">
+                Answer simple questions about products and earn rewards for each review.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-4">
+            <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold">3</span>
+            </div>
+            <div>
               <h3 className="font-bold mb-1 text-white">Earn Money</h3>
               <p className="text-gray-400 text-sm">Get paid $35-$55 for each product review you complete.</p>
             </div>
@@ -498,7 +517,7 @@ export default function Dashboard() {
 
           <div className="flex gap-4">
             <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold">3</span>
+              <span className="text-white font-bold">4</span>
             </div>
             <div>
               <h3 className="font-bold mb-1 text-white">Withdraw Funds</h3>
@@ -521,12 +540,137 @@ export default function Dashboard() {
   const GiftCardsView = () => (
     <div className="space-y-6 pb-24">
       <h1 className="text-2xl font-bold">Gift Cards</h1>
-      <Card className="bg-gray-900 border-gray-800 p-6">
-        <div className="text-center py-12">
-          <Gift className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-          <p className="text-gray-400">Gift cards coming soon!</p>
-        </div>
-      </Card>
+
+      <div className="space-y-4">
+        {/* Amazon Gift Card - $450 */}
+        <Card className="bg-gray-900 border-gray-800 p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-2xl">A</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-white mb-1">Amazon</h3>
+              <p className="text-2xl font-bold text-green-400">$450</p>
+              <p className="text-sm text-gray-400">Redeem for Amazon purchases</p>
+            </div>
+            <Button
+              onClick={() => setShowVideoRequiredModal(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+            >
+              Redeem
+            </Button>
+          </div>
+        </Card>
+
+        {/* Walmart Gift Card */}
+        <Card className="bg-gray-900 border-gray-800 p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-2xl">W</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-white mb-1">Walmart</h3>
+              <p className="text-2xl font-bold text-green-400">$300</p>
+              <p className="text-sm text-gray-400">Use at Walmart stores & online</p>
+            </div>
+            <Button
+              onClick={() => setShowVideoRequiredModal(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+            >
+              Redeem
+            </Button>
+          </div>
+        </Card>
+
+        {/* Target Gift Card */}
+        <Card className="bg-gray-900 border-gray-800 p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-red-400 to-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-2xl">T</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-white mb-1">Target</h3>
+              <p className="text-2xl font-bold text-green-400">$250</p>
+              <p className="text-sm text-gray-400">Shop at Target stores & online</p>
+            </div>
+            <Button
+              onClick={() => setShowVideoRequiredModal(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+            >
+              Redeem
+            </Button>
+          </div>
+        </Card>
+
+        {/* Best Buy Gift Card */}
+        <Card className="bg-gray-900 border-gray-800 p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-2xl">BB</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-white mb-1">Best Buy</h3>
+              <p className="text-2xl font-bold text-green-400">$350</p>
+              <p className="text-sm text-gray-400">Electronics & tech products</p>
+            </div>
+            <Button
+              onClick={() => setShowVideoRequiredModal(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+            >
+              Redeem
+            </Button>
+          </div>
+        </Card>
+
+        {/* Starbucks Gift Card */}
+        <Card className="bg-gray-900 border-gray-800 p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-2xl">S</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-white mb-1">Starbucks</h3>
+              <p className="text-2xl font-bold text-green-400">$100</p>
+              <p className="text-sm text-gray-400">Coffee & beverages</p>
+            </div>
+            <Button
+              onClick={() => setShowVideoRequiredModal(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+            >
+              Redeem
+            </Button>
+          </div>
+        </Card>
+
+        {/* Apple Gift Card */}
+        <Card className="bg-gray-900 border-gray-800 p-6">
+          <div className="flex items-center gap-4">
+            <div className="w-20 h-20 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center flex-shrink-0">
+              <span className="text-white font-bold text-2xl">🍎</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="text-xl font-bold text-white mb-1">Apple</h3>
+              <p className="text-2xl font-bold text-green-400">$400</p>
+              <p className="text-sm text-gray-400">App Store, iTunes & Apple products</p>
+            </div>
+            <Button
+              onClick={() => setShowVideoRequiredModal(true)}
+              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+            >
+              Redeem
+            </Button>
+          </div>
+        </Card>
+      </div>
+
+      <div className="mt-8">
+        <Button
+          onClick={() => setShowVideoRequiredModal(true)}
+          className="w-full bg-red-600 hover:bg-red-700 text-white py-8 text-2xl font-bold rounded-lg shadow-lg"
+        >
+          RESCUE
+        </Button>
+      </div>
     </div>
   )
 
@@ -852,6 +996,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
+                  setShowNotifications(false) // Close notifications
                   openModal("dashboard")
                   setShowSideMenu(false)
                 }}
@@ -864,6 +1009,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
+                  setShowNotifications(false) // Close notifications
                   openModal("withdraw")
                   setShowSideMenu(false)
                 }}
@@ -876,6 +1022,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
+                  setShowNotifications(false) // Close notifications
                   openModal("giftcards")
                   setShowSideMenu(false)
                 }}
@@ -888,6 +1035,7 @@ export default function Dashboard() {
                 variant="ghost"
                 className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
                 onClick={() => {
+                  setShowNotifications(false) // Close notifications
                   openModal("tutorial")
                   setShowSideMenu(false)
                 }}
@@ -1055,7 +1203,10 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className="flex flex-col items-center gap-1 flex-1 text-gray-400"
-            onClick={() => openModal("dashboard")}
+            onClick={() => {
+              setShowNotifications(false) // Close notifications
+              openModal("dashboard")
+            }}
           >
             <Building2 className="w-5 h-5" />
             <span className="text-xs text-white">Start Review</span>
@@ -1064,7 +1215,10 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className="flex flex-col items-center gap-1 flex-1 text-gray-400"
-            onClick={() => openModal("withdraw")}
+            onClick={() => {
+              setShowNotifications(false) // Close notifications
+              openModal("withdraw")
+            }}
           >
             <Wallet className="w-5 h-5" />
             <span className="text-xs text-white">Withdraw</span>
@@ -1073,7 +1227,10 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className="flex flex-col items-center gap-1 flex-1 text-gray-400"
-            onClick={() => openModal("giftcards")}
+            onClick={() => {
+              setShowNotifications(false) // Close notifications
+              openModal("giftcards")
+            }}
           >
             <TrendingUp className="w-5 h-5" />
             <span className="text-xs">GiftCards</span>
@@ -1082,7 +1239,10 @@ export default function Dashboard() {
           <Button
             variant="ghost"
             className="flex flex-col items-center gap-1 flex-1 text-gray-400"
-            onClick={() => openModal("tutorial")}
+            onClick={() => {
+              setShowNotifications(false) // Close notifications
+              openModal("tutorial")
+            }}
           >
             <GraduationCap className="w-5 h-5" />
             <span className="text-xs text-white">System Tutorial</span>
