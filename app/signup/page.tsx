@@ -69,7 +69,7 @@ export default function SignupPage() {
 
         {/* Registration Form */}
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon Reviews</h1>
+          <h1 className="text-3xl font-bold text-center mb-2">Registe for Amazon Reviews</h1>
           <p className="text-center text-gray-600 mb-8">
             Create your account to access the official app and withdraw your earnings
           </p>
