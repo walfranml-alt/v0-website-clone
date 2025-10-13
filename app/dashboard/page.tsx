@@ -136,11 +136,6 @@ export default function Dashboard() {
   }
 
   const handleWithdraw = () => {
-    if (!withdrawEmail || !withdrawAmount) {
-      alert("Please fill in all fields")
-      return
-    }
-    // Show Access Locked popup instead of verification modal
     setShowVideoRequiredModal(true)
   }
 
