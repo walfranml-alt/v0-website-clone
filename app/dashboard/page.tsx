@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Script from "next/script"
 import { Button } from "@/components/ui/button"
@@ -49,6 +49,10 @@ export default function Dashboard() {
   const [withdrawEmail, setWithdrawEmail] = useState("")
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
+
+  const emailInputRef = useRef<HTMLInputElement>(null)
+  const amountInputRef = useRef<HTMLInputElement>(null)
+  // </CHANGE>
 
   // Review products data
   const reviewProducts = [
@@ -375,32 +379,31 @@ export default function Dashboard() {
             <div>
               <label className="block text-sm font-medium mb-2 text-white">PayPal Email</label>
               <input
-                id="withdraw-email-input"
-                type="text"
-                inputMode="email"
+                ref={emailInputRef}
+                type="email"
                 value={withdrawEmail}
-                onChange={(e) => setWithdrawEmail(e.target.value)}
+                onInput={(e) => setWithdrawEmail((e.target as HTMLInputElement).value)}
                 placeholder="your@email.com"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck="false"
+                data-form-type="other"
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
+              {/* </CHANGE> */}
             </div>
 
             <div>
               <label className="block text-sm font-medium mb-2 text-white">Withdraw Amount</label>
               <input
-                id="withdraw-amount-input"
-                type="text"
-                inputMode="decimal"
+                ref={amountInputRef}
+                type="number"
                 value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
+                onInput={(e) => setWithdrawAmount((e.target as HTMLInputElement).value)}
                 placeholder="0.00"
-                autoComplete="off"
+                step="0.01"
+                min="0"
+                data-form-type="other"
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
+              {/* </CHANGE> */}
             </div>
 
             <Button
