@@ -545,8 +545,9 @@ export default function Dashboard() {
         {/* Amazon Gift Card - $450 */}
         <Card className="bg-gray-900 border-gray-800 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-orange-400 to-orange-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">A</span>
+            <div className="w-32 h-20 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-orange-300">
+              <span className="text-white font-bold text-3xl mb-1">$450</span>
+              <span className="text-white text-xs font-semibold">AMAZON</span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-1">Amazon</h3>
@@ -565,8 +566,9 @@ export default function Dashboard() {
         {/* Walmart Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">W</span>
+            <div className="w-32 h-20 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-blue-300">
+              <span className="text-white font-bold text-3xl mb-1">$300</span>
+              <span className="text-white text-xs font-semibold">WALMART</span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-1">Walmart</h3>
@@ -585,8 +587,9 @@ export default function Dashboard() {
         {/* Target Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-red-400 to-red-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">T</span>
+            <div className="w-32 h-20 bg-gradient-to-br from-red-400 via-red-500 to-red-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-red-300">
+              <span className="text-white font-bold text-3xl mb-1">$250</span>
+              <span className="text-white text-xs font-semibold">TARGET</span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-1">Target</h3>
@@ -605,8 +608,9 @@ export default function Dashboard() {
         {/* Best Buy Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">BB</span>
+            <div className="w-32 h-20 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-yellow-300">
+              <span className="text-white font-bold text-3xl mb-1">$350</span>
+              <span className="text-white text-xs font-semibold">BEST BUY</span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-1">Best Buy</h3>
@@ -625,8 +629,9 @@ export default function Dashboard() {
         {/* Starbucks Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">S</span>
+            <div className="w-32 h-20 bg-gradient-to-br from-green-400 via-green-500 to-green-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-green-300">
+              <span className="text-white font-bold text-3xl mb-1">$100</span>
+              <span className="text-white text-xs font-semibold">STARBUCKS</span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-1">Starbucks</h3>
@@ -645,8 +650,9 @@ export default function Dashboard() {
         {/* Apple Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
           <div className="flex items-center gap-4">
-            <div className="w-20 h-20 bg-gradient-to-br from-gray-400 to-gray-600 rounded-lg flex items-center justify-center flex-shrink-0">
-              <span className="text-white font-bold text-2xl">🍎</span>
+            <div className="w-32 h-20 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-gray-600">
+              <span className="text-white font-bold text-3xl mb-1">$400</span>
+              <span className="text-white text-xs font-semibold">APPLE</span>
             </div>
             <div className="flex-1">
               <h3 className="text-xl font-bold text-white mb-1">Apple</h3>
