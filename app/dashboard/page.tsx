@@ -173,7 +173,7 @@ export default function Dashboard() {
       {/* VSL Scripts */}
       <Script id="vsl-player-script" strategy="afterInteractive">
         {`
-          var s=document.createElement("script"); 
+          var s=document.createElement("script");
           s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js";
           s.async=true;
           document.head.appendChild(s);
@@ -371,7 +371,7 @@ export default function Dashboard() {
 
           {/* PayPal Account Label */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-white">Conta Paypal</label>
+            <label className="text-sm font-semibold text-white">PayPal account</label>
 
             {/* Email field - auto-filled with user's email */}
             <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">
@@ -381,7 +381,7 @@ export default function Dashboard() {
 
           {/* Withdrawal Amount field - auto-filled with $204.00 */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-white">Valor de Saque</label>
+            <label className="text-sm font-semibold text-white">Withdrawal Amount</label>
             <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">$204.00</div>
           </div>
           {/* </CHANGE> */}
@@ -1048,7 +1048,7 @@ export default function Dashboard() {
         {/* VSL Scripts */}
         <Script id="vsl-player-script" strategy="afterInteractive">
           {`
-            var s=document.createElement("script"); 
+            var s=document.createElement("script");
             s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js";
             s.async=true;
             document.head.appendChild(s);
