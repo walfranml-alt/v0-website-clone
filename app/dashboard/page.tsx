@@ -378,14 +378,16 @@ export default function Dashboard() {
           <div className="space-y-2">
             <label className="text-sm font-semibold text-white">Conta Paypal</label>
 
-            {/* Email field - visual only */}
-            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-400">email</div>
+            {/* Email field - auto-filled with user's email */}
+            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">
+              {userEmail || "email@example.com"}
+            </div>
           </div>
 
-          {/* Withdrawal Amount field - visual only */}
+          {/* Withdrawal Amount field - auto-filled with $204.00 */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-white">Valor de Saque</label>
-            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-400">0.00</div>
+            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">$204.00</div>
           </div>
           {/* </CHANGE> */}
 
