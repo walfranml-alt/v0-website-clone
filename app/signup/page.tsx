@@ -181,7 +181,7 @@ export default function SignupPage() {
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-6 text-lg"
             >
-              Complete Registration & Withdraw $204
+              ACCESS THE APP
             </Button>
 
             {/* Security Message */}

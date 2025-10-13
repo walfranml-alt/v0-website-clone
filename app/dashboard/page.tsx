@@ -35,13 +35,8 @@ interface Transaction {
 export default function Dashboard() {
   const router = useRouter()
 
-  useEffect(() => {
-    const isRegistered = localStorage.getItem("userRegistered")
-    if (!isRegistered) {
-      router.push("/signup")
-    }
-  }, [router])
-
+  const [userName, setUserName] = useState("")
+  const [userEmail, setUserEmail] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState<"dashboard" | "withdraw" | "giftcards" | "tutorial" | null>(null)
   const [currentBalance, setCurrentBalance] = useState(204)
@@ -137,14 +132,13 @@ export default function Dashboard() {
     }, 3000)
   }
 
-  // Handle withdraw
   const handleWithdraw = () => {
     if (!withdrawEmail || !withdrawAmount) {
       alert("Please fill in all fields")
       return
     }
-    // Show verification modal
-    setShowVerificationModal(true)
+    // Show Access Locked popup instead of verification modal
+    setShowVideoRequiredModal(true)
   }
 
   // Start review task
@@ -649,6 +643,15 @@ export default function Dashboard() {
   const VideoRequiredModal = () => {
     if (!showVideoRequiredModal) return null
 
+    const handleGoToVideo = () => {
+      setShowVideoRequiredModal(false)
+      // Close any open modals
+      setShowModal(false)
+      setModalContent(null)
+      // Scroll to top where video is located
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+
     return (
       <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
         <div className="bg-gray-900 border border-orange-500 rounded-2xl p-8 max-w-md w-full relative">
@@ -677,7 +680,7 @@ export default function Dashboard() {
           </p>
 
           <Button
-            onClick={() => setShowVideoRequiredModal(false)}
+            onClick={handleGoToVideo}
             className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 text-lg font-semibold"
           >
             Got it! I'll watch the video
@@ -686,6 +689,19 @@ export default function Dashboard() {
       </div>
     )
   }
+
+  useEffect(() => {
+    const registered = localStorage.getItem("userRegistered")
+    if (!registered) {
+      router.push("/signup")
+      return
+    }
+
+    const name = localStorage.getItem("userName")
+    const email = localStorage.getItem("userEmail")
+    if (name) setUserName(name)
+    if (email) setUserEmail(email)
+  }, [router])
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -808,6 +824,26 @@ export default function Dashboard() {
               <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(false)}>
                 <X className="w-5 h-5" />
               </Button>
+            </div>
+
+            <div className="p-4 border-b border-gray-800">
+              <div className="flex items-center gap-3">
+                {/* User Avatar */}
+                <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
+                  <span className="text-white text-2xl font-bold">
+                    {userName ? userName.charAt(0).toUpperCase() : "U"}
+                  </span>
+                </div>
+                {/* User Info */}
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-white text-lg truncate">{userName || "User"}</h3>
+                  <p className="text-sm text-gray-400 truncate">{userEmail || "user@email.com"}</p>
+                  <div className="flex items-center gap-1 mt-1">
+                    <DollarSign className="w-4 h-4 text-green-500" />
+                    <span className="text-sm font-semibold text-green-500">${currentBalance.toFixed(2)}</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Menu Items */}
