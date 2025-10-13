@@ -374,6 +374,21 @@ export default function Dashboard() {
             <p className="text-4xl font-bold text-green-400">${currentBalance.toFixed(2)}</p>
           </div>
 
+          {/* PayPal Account Label */}
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-white">Conta Paypal</label>
+
+            {/* Email field - visual only */}
+            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-400">email</div>
+          </div>
+
+          {/* Withdrawal Amount field - visual only */}
+          <div className="space-y-2">
+            <label className="text-sm font-semibold text-white">Valor de Saque</label>
+            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-gray-400">0.00</div>
+          </div>
+          {/* </CHANGE> */}
+
           <Button
             onClick={handleWithdraw}
             className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-semibold"
@@ -381,7 +396,6 @@ export default function Dashboard() {
             <Wallet className="w-5 h-5 mr-2" />
             Withdraw Now
           </Button>
-          {/* </CHANGE> */}
 
           {/* Info */}
           <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
