@@ -668,15 +668,6 @@ export default function Dashboard() {
           </div>
         </Card>
       </div>
-
-      <div className="mt-8">
-        <Button
-          onClick={() => setShowVideoRequiredModal(true)}
-          className="w-full bg-red-600 hover:bg-red-700 text-white py-8 text-2xl font-bold rounded-lg shadow-lg"
-        >
-          RESCUE
-        </Button>
-      </div>
     </div>
   )
 
