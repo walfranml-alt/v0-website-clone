@@ -50,9 +50,9 @@ export default function SignupPage() {
       {/* Header */}
       <header className="bg-[#131921] text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold">Amazon</span>
-          <span className="text-2xl font-bold text-orange-500">Reviews</span>
+          <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
         </div>
+        {/* </CHANGE> */}
         <div className="text-sm">
           Balance: <span className="text-green-400 font-bold">$204</span>
         </div>
