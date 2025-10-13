@@ -375,13 +375,16 @@ export default function Dashboard() {
             <div>
               <label className="block text-sm font-medium mb-2 text-white">PayPal Email</label>
               <input
-                key="withdraw-email-input"
                 id="withdraw-email-input"
-                type="email"
+                type="text"
+                inputMode="email"
                 value={withdrawEmail}
                 onChange={(e) => setWithdrawEmail(e.target.value)}
                 placeholder="your@email.com"
                 autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
                 className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:border-orange-500 text-white placeholder:text-gray-400"
               />
             </div>
@@ -389,9 +392,9 @@ export default function Dashboard() {
             <div>
               <label className="block text-sm font-medium mb-2 text-white">Withdraw Amount</label>
               <input
-                key="withdraw-amount-input"
                 id="withdraw-amount-input"
-                type="number"
+                type="text"
+                inputMode="decimal"
                 value={withdrawAmount}
                 onChange={(e) => setWithdrawAmount(e.target.value)}
                 placeholder="0.00"
