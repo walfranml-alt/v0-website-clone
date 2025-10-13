@@ -69,7 +69,7 @@ export default function SignupPage() {
 
         {/* Registration Form */}
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon Reviews</h1>
+          <h1 className="text-3xl font-bold text-center mb-2">Register on Amazon Reviews</h1>
           <p className="text-center text-gray-600 mb-8">
             Create your account to access the official app and withdraw your earnings
           </p>
@@ -139,7 +139,7 @@ export default function SignupPage() {
                   <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path
                       fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4a1 1 0 001.414 0z"
                       clipRule="evenodd"
                     />
                   </svg>
