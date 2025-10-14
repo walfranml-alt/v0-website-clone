@@ -31,6 +31,12 @@ interface Transaction {
   type: string
 }
 
+interface Notification {
+  id: number
+  message: string
+  time: string
+}
+
 export default function Dashboard() {
   const router = useRouter()
 
@@ -51,9 +57,81 @@ export default function Dashboard() {
   const [showSideMenu, setShowSideMenu] = useState(false)
   const [showWatchProgress, setShowWatchProgress] = useState(true)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [notificationCounter, setNotificationCounter] = useState(0)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
+
+  const randomNames = [
+    "Sarah Johnson",
+    "Michael Chen",
+    "Emma Williams",
+    "James Rodriguez",
+    "Olivia Martinez",
+    "David Kim",
+    "Sophia Anderson",
+    "Daniel Brown",
+    "Isabella Garcia",
+    "Matthew Wilson",
+    "Ava Thompson",
+    "Christopher Lee",
+    "Mia Davis",
+    "Joshua Taylor",
+    "Charlotte Moore",
+    "Andrew Jackson",
+    "Amelia White",
+    "Ryan Harris",
+    "Harper Martin",
+    "Brandon Clark",
+    "Evelyn Lewis",
+    "Kevin Walker",
+    "Abigail Hall",
+    "Tyler Allen",
+    "Emily Young",
+    "Justin King",
+    "Madison Wright",
+    "Nathan Scott",
+    "Elizabeth Green",
+    "Jacob Adams",
+  ]
+
+  const getRandomReviewCount = () => {
+    return Math.floor(Math.random() * 51) + 50 // 50 to 100
+  }
+
+  const calculateEarnings = (reviewCount: number) => {
+    // More reviews = more money
+    // 50 reviews = ~$300, 100 reviews = ~$500
+    const baseEarning = 300
+    const maxEarning = 500
+    const range = maxEarning - baseEarning
+    const percentage = (reviewCount - 50) / 50 // 0 to 1
+    const earning = baseEarning + range * percentage
+    // Add some randomness (+/- 20)
+    const randomVariation = (Math.random() - 0.5) * 40
+    return Math.round(earning + randomVariation)
+  }
+
+  const generateNotification = () => {
+    const name = randomNames[Math.floor(Math.random() * randomNames.length)]
+    const reviewCount = getRandomReviewCount()
+    const earnings = calculateEarnings(reviewCount)
+
+    const templates = [
+      `${name} completed ${reviewCount} reviews and earned $${earnings}.`,
+      `${name} withdrew $${earnings} for completing ${reviewCount} reviews.`,
+      `${name} received $${earnings} in their account for completing ${reviewCount} reviews.`,
+    ]
+
+    const message = templates[Math.floor(Math.random() * templates.length)]
+
+    return {
+      id: Date.now() + Math.random(),
+      message,
+      time: "Just now",
+    }
+  }
 
   // Review products data
   const reviewProducts = [
@@ -833,8 +911,26 @@ export default function Dashboard() {
       setShowBonusBlock(true)
     }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
 
-    // Cleanup timer on unmount
-    return () => clearTimeout(timer)
+    const notificationTimer = setInterval(() => {
+      setNotificationCounter((prev) => {
+        if (prev < 30) {
+          const newNotification = generateNotification()
+          setNotifications((prevNotifications) => {
+            // Keep only the last 15 notifications to avoid memory issues
+            const updatedNotifications = [newNotification, ...prevNotifications].slice(0, 15)
+            return updatedNotifications
+          })
+          return prev + 1
+        }
+        return prev
+      })
+    }, 33000) // 33 seconds
+
+    // Cleanup timers on unmount
+    return () => {
+      clearTimeout(timer)
+      clearInterval(notificationTimer)
+    }
   }, [router])
 
   return (
@@ -871,8 +967,9 @@ export default function Dashboard() {
                 className="relative"
               >
                 <Bell className="w-5 h-5" />
-                {/* Notification badge */}
-                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                {notifications.length > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                )}
               </Button>
 
               {/* Notifications dropdown */}
@@ -890,43 +987,26 @@ export default function Dashboard() {
                     </Button>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
-                    {[
-                      {
-                        id: 1,
-                        title: "Welcome!",
-                        message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
-                        time: "Just now",
-                        unread: true,
-                      },
-                      {
-                        id: 2,
-                        title: "Balance Available",
-                        message: "You have $204 available in your account ready to withdraw!",
-                        time: "5 mins ago",
-                        unread: true,
-                      },
-                      {
-                        id: 3,
-                        title: "Action Required",
-                        message: "Watch the video to unlock your withdrawal and cash out your earnings.",
-                        time: "10 mins ago",
-                        unread: true,
-                      },
-                    ].map((notification) => (
-                      <div
-                        key={notification.id}
-                        className="p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
-                      >
-                        <div className="flex items-start gap-3">
-                          <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
-                          <div className="flex-1">
-                            <h4 className="font-semibold mb-1">{notification.title}</h4>
-                            <p className="text-sm text-gray-400 mb-2">{notification.message}</p>
-                            <span className="text-xs text-gray-500">{notification.time}</span>
+                    {notifications.length > 0 ? (
+                      notifications.map((notification) => (
+                        <div
+                          key={notification.id}
+                          className="p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
+                        >
+                          <div className="flex items-start gap-3">
+                            <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
+                            <div className="flex-1">
+                              <p className="text-sm text-gray-300 mb-2">{notification.message}</p>
+                              <span className="text-xs text-gray-500">{notification.time}</span>
+                            </div>
                           </div>
                         </div>
+                      ))
+                    ) : (
+                      <div className="p-4 text-center text-gray-400">
+                        <p className="text-sm">No notifications yet</p>
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               )}
@@ -1139,15 +1219,6 @@ export default function Dashboard() {
                   Our team will accompany you until you receive your first payment.
                 </p>
               </div>
-            </div>
-
-            <div className="mt-6 text-center">
-              <Button
-                onClick={() => window.open("https://pay.hotmart.com/O102095023L?off=tvbvnt76", "_blank")}
-                className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg font-bold rounded-full shadow-lg"
-              >
-                🚀 CLAIM YOUR BONUSES NOW!
-              </Button>
             </div>
           </div>
         )}
