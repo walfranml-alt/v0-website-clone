@@ -50,11 +50,10 @@ export default function Dashboard() {
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
   const [showWatchProgress, setShowWatchProgress] = useState(true)
-  // </CHANGE>
+  const [showBonusBlock, setShowBonusBlock] = useState(false)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
-  // </CHANGE>
 
   // Review products data
   const reviewProducts = [
@@ -386,7 +385,6 @@ export default function Dashboard() {
             <label className="text-sm font-semibold text-white">Withdrawal Amount</label>
             <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">$204.00</div>
           </div>
-          {/* </CHANGE> */}
 
           <Button
             onClick={handleWithdraw}
@@ -832,8 +830,8 @@ export default function Dashboard() {
 
     const timer = setTimeout(() => {
       setShowWatchProgress(false)
+      setShowBonusBlock(true)
     }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
-    // </CHANGE>
 
     // Cleanup timer on unmount
     return () => clearTimeout(timer)
@@ -864,7 +862,6 @@ export default function Dashboard() {
           <div className="flex items-center gap-2">
             <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
           </div>
-          {/* </CHANGE> */}
           <div className="flex items-center gap-4">
             <div className="relative">
               <Button
@@ -952,7 +949,6 @@ export default function Dashboard() {
             {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
               <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-6 w-auto object-contain" />
-              {/* </CHANGE> */}
               <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(false)}>
                 <X className="w-5 h-5" />
               </Button>
@@ -1059,6 +1055,99 @@ export default function Dashboard() {
           <div className="flex justify-center mb-6">
             <div className="bg-gray-800 text-gray-500 px-6 py-3 rounded-full text-sm font-medium opacity-70 border border-gray-700">
               Watch 73% to unlock the app
+            </div>
+          </div>
+        )}
+
+        {showBonusBlock && (
+          <div className="bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500 rounded-2xl p-6 mb-6">
+            <h2 className="text-2xl font-bold text-center text-white mb-6">🎉 EXCLUSIVE BONUSES UNLOCKED! 🎉</h2>
+
+            <div className="space-y-4">
+              {/* Bonus 1 */}
+              <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
+                <h3 className="text-lg font-bold text-orange-400 mb-2">
+                  🎁 BONUS 1 – Secret List of Brands That Pay the Most
+                </h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  Receive an updated list of companies and brands that hire the most reviewers and pay in dollars, every
+                  week.
+                </p>
+                <p className="text-white text-sm font-semibold">
+                  Find out which brands are hiring now and pay up to $40 per review.
+                </p>
+              </div>
+
+              {/* Bonus 2 */}
+              <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
+                <h3 className="text-lg font-bold text-orange-400 mb-2">
+                  💬 BONUS 2 – Closed Group for Real Opportunities
+                </h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  Join the private group where members share new opportunities daily, payment screenshots, and open
+                  positions.
+                </p>
+                <p className="text-white text-sm font-semibold">Stay on top of new openings before everyone else.</p>
+              </div>
+
+              {/* Bonus 3 */}
+              <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
+                <h3 className="text-lg font-bold text-orange-400 mb-2">💵 BONUS 3 – $204 Welcome Bonus</h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  When you activate your access, you unlock a $204 starting balance within the system, which can be used
+                  to test products or withdraw.
+                </p>
+                <p className="text-white text-sm font-semibold">
+                  Activate your access and receive $204 to get started.
+                </p>
+              </div>
+
+              {/* Bonus 4 */}
+              <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
+                <h3 className="text-lg font-bold text-orange-400 mb-2">
+                  🔒 BONUS 4 – Online Fraud Protection Guarantee
+                </h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  Learn how to identify fake websites and fake hiring scams, ensuring that you only work with verified
+                  companies.
+                </p>
+                <p className="text-white text-sm font-semibold">
+                  Avoid falling for scams — know which websites actually pay.
+                </p>
+              </div>
+
+              {/* Bonus 5 */}
+              <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
+                <h3 className="text-lg font-bold text-orange-400 mb-2">
+                  🛒 BONUS 5 – Special Discounts on Amazon Products
+                </h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  Get access to coupons and exclusive offers of up to 50% OFF on real Amazon products.
+                </p>
+                <p className="text-white text-sm font-semibold">
+                  Save up to 50% on products that you can review and keep.
+                </p>
+              </div>
+
+              {/* Bonus 6 */}
+              <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
+                <h3 className="text-lg font-bold text-orange-400 mb-2">👨‍💻 BONUS 6 – 1-on-1 VIP Support</h3>
+                <p className="text-gray-300 text-sm mb-2">
+                  Individual support via chat to help you set everything up and start reviewing on the same day.
+                </p>
+                <p className="text-white text-sm font-semibold">
+                  Our team will accompany you until you receive your first payment.
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-6 text-center">
+              <Button
+                onClick={() => window.open("https://pay.hotmart.com/O102095023L?off=tvbvnt76", "_blank")}
+                className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-6 text-lg font-bold rounded-full shadow-lg"
+              >
+                🚀 CLAIM YOUR BONUSES NOW!
+              </Button>
             </div>
           </div>
         )}
