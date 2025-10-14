@@ -49,6 +49,8 @@ export default function Dashboard() {
   const [withdrawEmail, setWithdrawEmail] = useState("")
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
+  const [showWatchProgress, setShowWatchProgress] = useState(true)
+  // </CHANGE>
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -827,6 +829,14 @@ export default function Dashboard() {
     const email = localStorage.getItem("userEmail")
     if (name) setUserName(name)
     if (email) setUserEmail(email)
+
+    const timer = setTimeout(() => {
+      setShowWatchProgress(false)
+    }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
+    // </CHANGE>
+
+    // Cleanup timer on unmount
+    return () => clearTimeout(timer)
   }, [router])
 
   return (
@@ -1036,7 +1046,7 @@ export default function Dashboard() {
         </div>
 
         {/* VSL Video Section */}
-        <section className="relative rounded-lg overflow-hidden bg-gray-900 mb-6">
+        <section className="relative rounded-lg overflow-hidden bg-gray-900 mb-2">
           <div className="aspect-video w-full">
             <vturb-smartplayer
               id="vid-68e5bb23787da31935e6c11b"
@@ -1044,6 +1054,14 @@ export default function Dashboard() {
             />
           </div>
         </section>
+
+        {showWatchProgress && (
+          <div className="flex justify-center mb-6">
+            <div className="bg-gray-800 text-gray-500 px-6 py-3 rounded-full text-sm font-medium opacity-70 border border-gray-700">
+              Watch 73% to unlock the app
+            </div>
+          </div>
+        )}
 
         {/* VSL Scripts */}
         <Script id="vsl-player-script" strategy="afterInteractive">
