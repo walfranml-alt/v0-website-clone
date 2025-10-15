@@ -957,7 +957,7 @@ export default function Dashboard() {
     const timer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
-    }, 640000) // 640 seconds = 640,000 milliseconds (10 minutes and 40 seconds)
+    }, 720000) // 720 seconds = 720,000 milliseconds (12 minutes exactly)
 
     return () => {
       clearTimeout(timer)
