@@ -954,12 +954,10 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    console.log("[v0] Timer iniciado - botão e bônus serão alterados em 10 minutos")
     const timer = setTimeout(() => {
-      console.log("[v0] 10 minutos passaram! Escondendo botão e mostrando bônus")
       setShowWatchProgress(false)
       setShowBonusBlock(true)
-    }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
+    }, 780000) // 780 seconds = 780,000 milliseconds (13 minutes exactly)
 
     return () => {
       clearTimeout(timer)
