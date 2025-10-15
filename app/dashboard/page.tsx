@@ -20,6 +20,13 @@ import {
   GraduationCap,
 } from "lucide-react"
 
+interface ToastNotification {
+  id: number
+  name: string
+  message: string
+  time: string
+}
+
 // Transaction interface
 interface Transaction {
   id: number
@@ -29,12 +36,6 @@ interface Transaction {
   date: string
   status: string
   type: string
-}
-
-interface Notification {
-  id: number
-  message: string
-  time: string
 }
 
 export default function Dashboard() {
@@ -57,8 +58,9 @@ export default function Dashboard() {
   const [showSideMenu, setShowSideMenu] = useState(false)
   const [showWatchProgress, setShowWatchProgress] = useState(true)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
-  const [notifications, setNotifications] = useState<Notification[]>([])
-  const [notificationCounter, setNotificationCounter] = useState(0)
+
+  const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
+  const [notificationCount, setNotificationCount] = useState(0)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -74,47 +76,51 @@ export default function Dashboard() {
     "Daniel Brown",
     "Isabella Garcia",
     "Matthew Wilson",
-    "Ava Thompson",
+    "Ava Taylor",
     "Christopher Lee",
-    "Mia Davis",
-    "Joshua Taylor",
+    "Mia Thompson",
+    "Andrew Davis",
     "Charlotte Moore",
-    "Andrew Jackson",
+    "Joshua Jackson",
     "Amelia White",
     "Ryan Harris",
-    "Harper Martin",
-    "Brandon Clark",
-    "Evelyn Lewis",
-    "Kevin Walker",
-    "Abigail Hall",
-    "Tyler Allen",
-    "Emily Young",
-    "Justin King",
-    "Madison Wright",
-    "Nathan Scott",
-    "Elizabeth Green",
-    "Jacob Adams",
+    "Harper Clark",
+    "Nicholas Lewis",
+    "Evelyn Walker",
+    "Brandon Hall",
+    "Abigail Allen",
+    "Tyler Young",
+    "Emily King",
+    "Kevin Wright",
+    "Madison Scott",
+    "Jason Green",
+    "Elizabeth Adams",
+    "Justin Baker",
   ]
 
+  const getRandomName = () => {
+    return randomNames[Math.floor(Math.random() * randomNames.length)]
+  }
+
   const getRandomReviewCount = () => {
-    return Math.floor(Math.random() * 51) + 50 // 50 to 100
+    return Math.floor(Math.random() * (100 - 50 + 1)) + 50 // 50-100
   }
 
   const calculateEarnings = (reviewCount: number) => {
-    // More reviews = more money
-    // 50 reviews = ~$300, 100 reviews = ~$500
-    const baseEarning = 300
-    const maxEarning = 500
-    const range = maxEarning - baseEarning
-    const percentage = (reviewCount - 50) / 50 // 0 to 1
-    const earning = baseEarning + range * percentage
-    // Add some randomness (+/- 20)
-    const randomVariation = (Math.random() - 0.5) * 40
-    return Math.round(earning + randomVariation)
+    // Calculate earnings proportional to review count
+    // 50 reviews = $300, 100 reviews = $500
+    const minEarnings = 300
+    const maxEarnings = 500
+    const minReviews = 50
+    const maxReviews = 100
+
+    const earnings =
+      minEarnings + ((reviewCount - minReviews) / (maxReviews - minReviews)) * (maxEarnings - minEarnings)
+    return Math.round(earnings)
   }
 
-  const generateNotification = () => {
-    const name = randomNames[Math.floor(Math.random() * randomNames.length)]
+  const generateNotificationMessage = () => {
+    const name = getRandomName()
     const reviewCount = getRandomReviewCount()
     const earnings = calculateEarnings(reviewCount)
 
@@ -124,13 +130,31 @@ export default function Dashboard() {
       `${name} received $${earnings} in their account for completing ${reviewCount} reviews.`,
     ]
 
-    const message = templates[Math.floor(Math.random() * templates.length)]
+    const template = templates[Math.floor(Math.random() * templates.length)]
 
     return {
-      id: Date.now() + Math.random(),
-      message,
+      name,
+      message: template,
       time: "Just now",
     }
+  }
+
+  const addToastNotification = () => {
+    if (notificationCount >= 30) return // Stop after 30 notifications
+
+    const notification = generateNotificationMessage()
+    const newNotification: ToastNotification = {
+      id: Date.now(),
+      ...notification,
+    }
+
+    setToastNotifications((prev) => [...prev, newNotification])
+    setNotificationCount((prev) => prev + 1)
+
+    // Auto-remove notification after 5 seconds
+    setTimeout(() => {
+      setToastNotifications((prev) => prev.filter((n) => n.id !== newNotification.id))
+    }, 5000)
   }
 
   // Review products data
@@ -235,6 +259,28 @@ export default function Dashboard() {
     setShowModal(false)
     setModalContent(null)
   }
+
+  const ToastNotificationComponent = ({ notification }: { notification: ToastNotification }) => (
+    <div
+      className="bg-white text-black rounded-lg shadow-2xl p-3 mb-2 animate-in slide-in-from-top duration-300 border-l-4 border-green-500"
+      style={{ minWidth: "280px", maxWidth: "320px" }}
+    >
+      <div className="flex items-start gap-2">
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+          <img src="/amazon-icon.png" alt="Amazon" className="w-8 h-8 object-contain" />
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-0.5">
+            <h4 className="font-bold text-xs">Amazon Reviews</h4>
+            <span className="text-[10px] text-gray-500">{notification.time}</span>
+          </div>
+          <p className="text-xs text-gray-700 leading-tight">{notification.message}</p>
+        </div>
+      </div>
+    </div>
+  )
 
   // HomeView Component
   const HomeView = () => (
@@ -911,30 +957,27 @@ export default function Dashboard() {
       setShowBonusBlock(true)
     }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
 
-    const notificationTimer = setInterval(() => {
-      setNotificationCounter((prev) => {
-        if (prev < 30) {
-          const newNotification = generateNotification()
-          setNotifications((prevNotifications) => {
-            // Keep only the last 15 notifications to avoid memory issues
-            const updatedNotifications = [newNotification, ...prevNotifications].slice(0, 15)
-            return updatedNotifications
-          })
-          return prev + 1
-        }
-        return prev
-      })
-    }, 33000) // 33 seconds
+    const notificationInterval = setInterval(() => {
+      addToastNotification()
+    }, 50000) // 50 seconds
 
     // Cleanup timers on unmount
     return () => {
       clearTimeout(timer)
-      clearInterval(notificationTimer)
+      clearInterval(notificationInterval)
     }
-  }, [router])
+  }, [router, notificationCount])
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] pointer-events-none">
+        <div className="flex flex-col items-center pointer-events-auto">
+          {toastNotifications.map((notification) => (
+            <ToastNotificationComponent key={notification.id} notification={notification} />
+          ))}
+        </div>
+      </div>
+
       {/* Preload links for VSL */}
       <link
         rel="preload"
@@ -967,9 +1010,8 @@ export default function Dashboard() {
                 className="relative"
               >
                 <Bell className="w-5 h-5" />
-                {notifications.length > 0 && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-                )}
+                {/* Notification badge */}
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
               </Button>
 
               {/* Notifications dropdown */}
@@ -987,26 +1029,43 @@ export default function Dashboard() {
                     </Button>
                   </div>
                   <div className="max-h-96 overflow-y-auto">
-                    {notifications.length > 0 ? (
-                      notifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className="p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
-                        >
-                          <div className="flex items-start gap-3">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mt-2 flex-shrink-0"></div>
-                            <div className="flex-1">
-                              <p className="text-sm text-gray-300 mb-2">{notification.message}</p>
-                              <span className="text-xs text-gray-500">{notification.time}</span>
-                            </div>
+                    {[
+                      {
+                        id: 1,
+                        title: "Welcome!",
+                        message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
+                        time: "Just now",
+                        unread: true,
+                      },
+                      {
+                        id: 2,
+                        title: "Balance Available",
+                        message: "You have $204 available in your account ready to withdraw!",
+                        time: "5 mins ago",
+                        unread: true,
+                      },
+                      {
+                        id: 3,
+                        title: "Action Required",
+                        message: "Watch the video to unlock your withdrawal and cash out your earnings.",
+                        time: "10 mins ago",
+                        unread: true,
+                      },
+                    ].map((notification) => (
+                      <div
+                        key={notification.id}
+                        className="p-4 border-b border-gray-800 hover:bg-gray-800/50 cursor-pointer"
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="w-2 h-2 bg-orange-500 rounded-full mt-2 flex-shrink-0"></div>
+                          <div className="flex-1">
+                            <h4 className="font-semibold mb-1">{notification.title}</h4>
+                            <p className="text-sm text-gray-400 mb-2">{notification.message}</p>
+                            <span className="text-xs text-gray-500">{notification.time}</span>
                           </div>
                         </div>
-                      ))
-                    ) : (
-                      <div className="p-4 text-center text-gray-400">
-                        <p className="text-sm">No notifications yet</p>
                       </div>
-                    )}
+                    ))}
                   </div>
                 </div>
               )}
