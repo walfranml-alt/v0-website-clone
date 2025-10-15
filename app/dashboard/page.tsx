@@ -951,22 +951,28 @@ export default function Dashboard() {
     const email = localStorage.getItem("userEmail")
     if (name) setUserName(name)
     if (email) setUserEmail(email)
+  }, [router])
 
+  useEffect(() => {
     const timer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
     }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
 
+    return () => {
+      clearTimeout(timer)
+    }
+  }, []) // Empty dependency array - only runs once on mount
+
+  useEffect(() => {
     const notificationInterval = setInterval(() => {
       addToastNotification()
     }, 50000) // 50 seconds
 
-    // Cleanup timers on unmount
     return () => {
-      clearTimeout(timer)
       clearInterval(notificationInterval)
     }
-  }, [router, notificationCount])
+  }, [notificationCount]) // Depends on notificationCount to stop after 30 notifications
 
   return (
     <div className="min-h-screen bg-black text-white">
