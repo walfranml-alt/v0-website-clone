@@ -957,7 +957,7 @@ export default function Dashboard() {
     const timer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
-    }, 780000) // 780 seconds = 780,000 milliseconds (13 minutes exactly)
+    }, 660000) // Changed from 720000 (12 minutes) to 660000 (11 minutes exactly)
 
     return () => {
       clearTimeout(timer)
@@ -973,10 +973,6 @@ export default function Dashboard() {
       clearInterval(notificationInterval)
     }
   }, [notificationCount]) // Depends on notificationCount to stop after 30 notifications
-
-  useEffect(() => {
-    console.log("[v0] Estado do botão:", showWatchProgress, "Estado do bônus:", showBonusBlock)
-  }, [showWatchProgress, showBonusBlock])
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -1210,7 +1206,9 @@ export default function Dashboard() {
 
         {showBonusBlock && (
           <div className="bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500 rounded-2xl p-6 mb-6">
-            <h2 className="text-2xl font-bold text-center text-white mb-6">🎉 EXCLUSIVE BONUSES UNLOCKED! 🎉</h2>
+            <h2 className="text-2xl font-bold text-center text-white mb-6">
+              🎁 Pay the APP activation fee and receive all the bonuses below 🎁
+            </h2>
 
             <div className="space-y-4">
               {/* Bonus 1 */}
