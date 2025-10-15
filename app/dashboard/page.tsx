@@ -957,7 +957,7 @@ export default function Dashboard() {
     const timer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
-    }, 660000) // Changed from 720000 (12 minutes) to 660000 (11 minutes exactly)
+    }, 640000) // 640 seconds = 640,000 milliseconds (10 minutes and 40 seconds)
 
     return () => {
       clearTimeout(timer)
@@ -1206,7 +1206,7 @@ export default function Dashboard() {
 
         {showBonusBlock && (
           <div className="bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500 rounded-2xl p-6 mb-6">
-            <h2 className="text-2xl font-bold text-center text-white mb-6">
+            <h2 className="text-base md:text-xl lg:text-2xl font-bold text-center text-white mb-6 leading-tight px-2">
               🎁 Pay the APP activation fee and receive all the bonuses below 🎁
             </h2>
 
