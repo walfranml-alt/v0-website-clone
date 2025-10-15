@@ -653,19 +653,19 @@ export default function Dashboard() {
       <div className="space-y-4">
         {/* Amazon Gift Card - $450 */}
         <Card className="bg-gray-900 border-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-32 h-20 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-orange-300">
-              <span className="text-white font-bold text-3xl mb-1">$450</span>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="w-24 md:w-32 h-20 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-orange-300">
+              <span className="text-white font-bold text-2xl md:text-3xl mb-1">$450</span>
               <span className="text-white text-xs font-semibold">AMAZON</span>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-1">Amazon</h3>
-              <p className="text-2xl font-bold text-green-400">$450</p>
-              <p className="text-sm text-gray-400">Redeem for Amazon purchases</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Amazon</h3>
+              <p className="text-xl md:text-2xl font-bold text-green-400">$450</p>
+              <p className="text-xs md:text-sm text-gray-400">Redeem for Amazon purchases</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Redeem
             </Button>
@@ -674,19 +674,19 @@ export default function Dashboard() {
 
         {/* Walmart Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-32 h-20 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-blue-300">
-              <span className="text-white font-bold text-3xl mb-1">$300</span>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="w-24 md:w-32 h-20 bg-gradient-to-br from-blue-400 via-blue-500 to-blue-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-blue-300">
+              <span className="text-white font-bold text-2xl md:text-3xl mb-1">$300</span>
               <span className="text-white text-xs font-semibold">WALMART</span>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-1">Walmart</h3>
-              <p className="text-2xl font-bold text-green-400">$300</p>
-              <p className="text-sm text-gray-400">Use at Walmart stores & online</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Walmart</h3>
+              <p className="text-xl md:text-2xl font-bold text-green-400">$300</p>
+              <p className="text-xs md:text-sm text-gray-400">Use at Walmart stores & online</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Redeem
             </Button>
@@ -695,19 +695,19 @@ export default function Dashboard() {
 
         {/* Target Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-32 h-20 bg-gradient-to-br from-red-400 via-red-500 to-red-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-red-300">
-              <span className="text-white font-bold text-3xl mb-1">$250</span>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="w-24 md:w-32 h-20 bg-gradient-to-br from-red-400 via-red-500 to-red-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-red-300">
+              <span className="text-white font-bold text-2xl md:text-3xl mb-1">$250</span>
               <span className="text-white text-xs font-semibold">TARGET</span>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-1">Target</h3>
-              <p className="text-2xl font-bold text-green-400">$250</p>
-              <p className="text-sm text-gray-400">Shop at Target stores & online</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Target</h3>
+              <p className="text-xl md:text-2xl font-bold text-green-400">$250</p>
+              <p className="text-xs md:text-sm text-gray-400">Shop at Target stores & online</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Redeem
             </Button>
@@ -716,19 +716,19 @@ export default function Dashboard() {
 
         {/* Best Buy Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-32 h-20 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-yellow-300">
-              <span className="text-white font-bold text-3xl mb-1">$350</span>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="w-24 md:w-32 h-20 bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-yellow-300">
+              <span className="text-white font-bold text-2xl md:text-3xl mb-1">$350</span>
               <span className="text-white text-xs font-semibold">BEST BUY</span>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-1">Best Buy</h3>
-              <p className="text-2xl font-bold text-green-400">$350</p>
-              <p className="text-sm text-gray-400">Electronics & tech products</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Best Buy</h3>
+              <p className="text-xl md:text-2xl font-bold text-green-400">$350</p>
+              <p className="text-xs md:text-sm text-gray-400">Electronics & tech products</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Redeem
             </Button>
@@ -737,19 +737,19 @@ export default function Dashboard() {
 
         {/* Starbucks Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-32 h-20 bg-gradient-to-br from-green-400 via-green-500 to-green-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-green-300">
-              <span className="text-white font-bold text-3xl mb-1">$100</span>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="w-24 md:w-32 h-20 bg-gradient-to-br from-green-400 via-green-500 to-green-600 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-green-300">
+              <span className="text-white font-bold text-2xl md:text-3xl mb-1">$100</span>
               <span className="text-white text-xs font-semibold">STARBUCKS</span>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-1">Starbucks</h3>
-              <p className="text-2xl font-bold text-green-400">$100</p>
-              <p className="text-sm text-gray-400">Coffee & beverages</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Starbucks</h3>
+              <p className="text-xl md:text-2xl font-bold text-green-400">$100</p>
+              <p className="text-xs md:text-sm text-gray-400">Coffee & beverages</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Redeem
             </Button>
@@ -758,19 +758,19 @@ export default function Dashboard() {
 
         {/* Apple Gift Card */}
         <Card className="bg-gray-900 border-gray-800 p-6">
-          <div className="flex items-center gap-4">
-            <div className="w-32 h-20 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-gray-600">
-              <span className="text-white font-bold text-3xl mb-1">$400</span>
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="w-24 md:w-32 h-20 bg-gradient-to-br from-gray-700 via-gray-800 to-gray-900 rounded-lg flex flex-col items-center justify-center flex-shrink-0 shadow-lg border-2 border-gray-600">
+              <span className="text-white font-bold text-2xl md:text-3xl mb-1">$400</span>
               <span className="text-white text-xs font-semibold">APPLE</span>
             </div>
-            <div className="flex-1">
-              <h3 className="text-xl font-bold text-white mb-1">Apple</h3>
-              <p className="text-2xl font-bold text-green-400">$400</p>
-              <p className="text-sm text-gray-400">App Store, iTunes & Apple products</p>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Apple</h3>
+              <p className="text-xl md:text-2xl font-bold text-green-400">$400</p>
+              <p className="text-xs md:text-sm text-gray-400">App Store, iTunes & Apple products</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
-              className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3"
+              className="bg-orange-500 hover:bg-orange-600 text-white px-3 py-2 md:px-6 md:py-3 text-sm md:text-base"
             >
               Redeem
             </Button>
