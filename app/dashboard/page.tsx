@@ -954,7 +954,9 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
+    console.log("[v0] Timer iniciado - botão e bônus serão alterados em 10 minutos")
     const timer = setTimeout(() => {
+      console.log("[v0] 10 minutos passaram! Escondendo botão e mostrando bônus")
       setShowWatchProgress(false)
       setShowBonusBlock(true)
     }, 600000) // 600 seconds = 600,000 milliseconds (10 minutes exactly)
@@ -973,6 +975,10 @@ export default function Dashboard() {
       clearInterval(notificationInterval)
     }
   }, [notificationCount]) // Depends on notificationCount to stop after 30 notifications
+
+  useEffect(() => {
+    console.log("[v0] Estado do botão:", showWatchProgress, "Estado do bônus:", showBonusBlock)
+  }, [showWatchProgress, showBonusBlock])
 
   return (
     <div className="min-h-screen bg-black text-white">
