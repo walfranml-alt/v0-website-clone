@@ -301,22 +301,6 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* VSL Scripts */}
-      <Script id="vsl-player-script" strategy="afterInteractive">
-        {`
-          var s=document.createElement("script");
-          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js";
-          s.async=true;
-          document.head.appendChild(s);
-        `}
-      </Script>
-
-      <Script id="vsl-performance" strategy="beforeInteractive">
-        {`
-          !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
-        `}
-      </Script>
-
       {/* Step-by-step checklist */}
       <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
         <div className="mb-4 text-center">
@@ -983,6 +967,10 @@ export default function Dashboard() {
     }
   }, [notificationCount]) // Depends on notificationCount to stop after 30 notifications
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" })
+  }, [])
+
   return (
     <div className="min-h-screen bg-black text-white">
       <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] pointer-events-none">
@@ -992,6 +980,22 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
+
+      {/* VSL player scripts */}
+      <Script id="vsl-player-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68e5bb23787da31935e6c11b/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="vsl-performance" strategy="beforeInteractive">
+        {`
+          !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
+        `}
+      </Script>
 
       {/* Preload links for VSL */}
       <link
