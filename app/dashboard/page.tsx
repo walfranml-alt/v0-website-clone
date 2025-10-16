@@ -63,7 +63,7 @@ export default function Dashboard() {
   const [showWatchProgress, setShowWatchProgress] = useState(true)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
-  const [showTestimonialVideos, setShowTestimonialVideos] = useState(false)
+  const [showTestimonialVideos, setShowTestimonialVideos] = useState(true)
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
