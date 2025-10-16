@@ -966,9 +966,9 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    console.log("[v0] Timer setup for 12 minutes")
+    console.log("[v0] Timer setup for 11 minutes and 30 seconds")
     const timer = setTimeout(() => {
-      console.log("[v0] Timer fired after 12 minutes")
+      console.log("[v0] Timer fired after 11 minutes and 30 seconds")
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
@@ -977,7 +977,7 @@ export default function Dashboard() {
         showBonusBlock: true,
         showInitialBlocks: false,
       })
-    }, 720000) // 720 seconds = 720,000 milliseconds (12 minutes exactly)
+    }, 690000) // 690 seconds = 690,000 milliseconds (11 minutes and 30 seconds)
 
     return () => {
       console.log("[v0] Clearing timer")
