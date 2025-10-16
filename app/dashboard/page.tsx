@@ -991,6 +991,60 @@ export default function Dashboard() {
         `}
       </Script>
 
+      <Script id="testimonial-video-1-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f03359d6d30b2b96ddf6db/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="testimonial-video-2-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f0316818eb30d1915ea476/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="testimonial-video-3-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f03158d48459a22e5db457/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="testimonial-video-4-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f0338418eb30d1915ea6f9/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="testimonial-video-5-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f033776a26dc6be25cd15d/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
+      <Script id="testimonial-video-6-script" strategy="afterInteractive">
+        {`
+          var s=document.createElement("script");
+          s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f0336881e93bf7cd487b8c/v4/player.js";
+          s.async=true;
+          document.head.appendChild(s);
+        `}
+      </Script>
+
       <Script id="vsl-performance" strategy="beforeInteractive">
         {`
           !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
