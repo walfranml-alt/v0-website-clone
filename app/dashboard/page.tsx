@@ -948,9 +948,8 @@ export default function Dashboard() {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
-      // This is where the change is applied:
       setShowTestimonialVideos(true)
-    }, 720000) // 720 seconds = 720,000 milliseconds (12 minutes exactly)
+    }, 680000) // 680 seconds = 680,000 milliseconds (11 minutes and 20 seconds)
 
     return () => {
       clearTimeout(timer)
