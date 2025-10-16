@@ -18,6 +18,10 @@ import {
   Building2,
   TrendingUp,
   GraduationCap,
+  Heart,
+  MessageCircle,
+  Send,
+  Bookmark,
 } from "lucide-react"
 
 interface ToastNotification {
@@ -46,7 +50,7 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState<"dashboard" | "withdraw" | "giftcards" | "tutorial" | null>(null)
   const [currentBalance, setCurrentBalance] = useState(204)
-  const [reviewsCompleted, setReviewsCompleted] = useState(3)
+  const [reviewsCompleted, setReviewsCompleted] = useState(0) // Changed from 3 to 0
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
@@ -58,6 +62,8 @@ export default function Dashboard() {
   const [showSideMenu, setShowSideMenu] = useState(false)
   const [showWatchProgress, setShowWatchProgress] = useState(true)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
+  const [showInitialBlocks, setShowInitialBlocks] = useState(true)
+  const [showTestimonialVideos, setShowTestimonialVideos] = useState(false)
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
@@ -957,6 +963,8 @@ export default function Dashboard() {
     const timer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
+      setShowInitialBlocks(false)
+      setShowTestimonialVideos(true)
     }, 720000) // 720 seconds = 720,000 milliseconds (12 minutes exactly)
 
     return () => {
@@ -994,6 +1002,16 @@ export default function Dashboard() {
       <link
         rel="preload"
         href="https://cdn.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/68e5bb005efcf3a1ee618643/main.m3u8"
+        as="fetch"
+      />
+      <link
+        rel="preload"
+        href="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f03359d6d30b2b96ddf6db/v4/player.js"
+        as="script"
+      />
+      <link
+        rel="preload"
+        href="https://cdn.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/68f0334e968c4bcb4b23cfec/main.m3u8"
         as="fetch"
       />
       <link rel="dns-prefetch" href="https://cdn.converteai.net" />
@@ -1290,6 +1308,235 @@ export default function Dashboard() {
           </div>
         )}
 
+        {showTestimonialVideos && (
+          <div className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
+            <h2 className="text-xl font-bold text-center text-white mb-6">Watch What Our Users Are Saying</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {/* Video 1 - Jessica M. */}
+              <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative">
+                <div className="aspect-[9/16] bg-black flex items-center justify-center relative">
+                  <vturb-smartplayer
+                    id="vid-68f03359d6d30b2b96ddf6db"
+                    style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+                  />
+
+                  {/* Bottom left - Profile and username */}
+                  <div className="absolute bottom-4 left-3 flex items-center gap-2 z-20">
+                    <img
+                      src="/testimonial-profile-1.png"
+                      alt="Jessica M."
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                    <span className="text-white text-xs font-semibold drop-shadow-lg">@jessica_m</span>
+                  </div>
+
+                  {/* Right side - Interaction buttons */}
+                  <div className="absolute bottom-4 right-3 flex flex-col gap-4 z-20">
+                    <div className="flex flex-col items-center">
+                      <Heart className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">2.4K</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">89</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <Send className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">45</span>
+                    </div>
+                    <Bookmark className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Video 2 - Michael R. */}
+              <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative">
+                <div className="aspect-[9/16] bg-black flex items-center justify-center relative">
+                  <vturb-smartplayer
+                    id="vid-68f0316818eb30d1915ea476"
+                    style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+                  />
+
+                  {/* Bottom left - Profile and username */}
+                  <div className="absolute bottom-4 left-3 flex items-center gap-2 z-20">
+                    <img
+                      src="/testimonial-profile-2.png"
+                      alt="Michael R."
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                    <span className="text-white text-xs font-semibold drop-shadow-lg">@michael_r</span>
+                  </div>
+
+                  {/* Right side - Interaction buttons */}
+                  <div className="absolute bottom-4 right-3 flex flex-col gap-4 z-20">
+                    <div className="flex flex-col items-center">
+                      <Heart className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">3.1K</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">124</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <Send className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">67</span>
+                    </div>
+                    <Bookmark className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Video 3 - Sarah L. */}
+              <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative">
+                <div className="aspect-[9/16] bg-black flex items-center justify-center relative">
+                  <vturb-smartplayer
+                    id="vid-68f03158d48459a22e5db457"
+                    style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+                  />
+
+                  {/* Bottom left - Profile and username */}
+                  <div className="absolute bottom-4 left-3 flex items-center gap-2 z-20">
+                    <img
+                      src="/testimonial-profile-3.png"
+                      alt="Sarah L."
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                    <span className="text-white text-xs font-semibold drop-shadow-lg">@sarah_l</span>
+                  </div>
+
+                  {/* Right side - Interaction buttons */}
+                  <div className="absolute bottom-4 right-3 flex flex-col gap-4 z-20">
+                    <div className="flex flex-col items-center">
+                      <Heart className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">1.8K</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">56</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <Send className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">32</span>
+                    </div>
+                    <Bookmark className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Video 4 Placeholder */}
+              <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative">
+                <div className="aspect-[9/16] bg-black flex items-center justify-center relative">
+                  <vturb-smartplayer
+                    id="vid-68f0338418eb30d1915ea6f9"
+                    style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+                  />
+
+                  {/* Bottom left - Profile and username */}
+                  <div className="absolute bottom-4 left-3 flex items-center gap-2 z-20">
+                    <img
+                      src="/testimonial-profile-4.png"
+                      alt="David K."
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                    <span className="text-white text-xs font-semibold drop-shadow-lg">@david_k</span>
+                  </div>
+
+                  {/* Right side - Interaction buttons */}
+                  <div className="absolute bottom-4 right-3 flex flex-col gap-4 z-20">
+                    <div className="flex flex-col items-center">
+                      <Heart className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">2.9K</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">103</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <Send className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">58</span>
+                    </div>
+                    <Bookmark className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Video 5 Placeholder */}
+              <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative">
+                <div className="aspect-[9/16] bg-black flex items-center justify-center relative">
+                  <vturb-smartplayer
+                    id="vid-68f033776a26dc6be25cd15d"
+                    style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+                  />
+
+                  {/* Bottom left - Profile and username */}
+                  <div className="absolute bottom-4 left-3 flex items-center gap-2 z-20">
+                    <img
+                      src="/testimonial-profile-5.png"
+                      alt="Ryan H."
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                    <span className="text-white text-xs font-semibold drop-shadow-lg">@ryan_h</span>
+                  </div>
+
+                  {/* Right side - Interaction buttons */}
+                  <div className="absolute bottom-4 right-3 flex flex-col gap-4 z-20">
+                    <div className="flex flex-col items-center">
+                      <Heart className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">4.2K</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">187</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <Send className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">92</span>
+                    </div>
+                    <Bookmark className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Video 6 - James R. */}
+              <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700 relative">
+                <div className="aspect-[9/16] bg-black flex items-center justify-center relative">
+                  <vturb-smartplayer
+                    id="vid-68f0336881e93bf7cd487b8c"
+                    style={{ display: "block", margin: "0 auto", width: "100%", height: "100%" }}
+                  />
+
+                  {/* Bottom left - Profile and username */}
+                  <div className="absolute bottom-4 left-3 flex items-center gap-2 z-20">
+                    <img
+                      src="/testimonial-profile-6.png"
+                      alt="James R."
+                      className="w-8 h-8 rounded-full object-cover border-2 border-white"
+                    />
+                    <span className="text-white text-xs font-semibold drop-shadow-lg">@james_r</span>
+                  </div>
+
+                  {/* Right side - Interaction buttons */}
+                  <div className="absolute bottom-4 right-3 flex flex-col gap-4 z-20">
+                    <div className="flex flex-col items-center">
+                      <Heart className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">3.5K</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <MessageCircle className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">142</span>
+                    </div>
+                    <div className="flex flex-col items-center">
+                      <Send className="w-6 h-6 text-white drop-shadow-lg" />
+                      <span className="text-white text-xs font-semibold drop-shadow-lg">78</span>
+                    </div>
+                    <Bookmark className="w-6 h-6 text-white drop-shadow-lg" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* VSL Scripts */}
         <Script id="vsl-player-script" strategy="afterInteractive">
           {`
@@ -1306,118 +1553,180 @@ export default function Dashboard() {
           `}
         </Script>
 
+        <Script id="vsl-testimonial-1-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script");
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f03359d6d30b2b96ddf6db/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+
+        <Script id="vsl-testimonial-1-performance" strategy="beforeInteractive">
+          {`
+            !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
+          `}
+        </Script>
+
+        <Script id="vsl-testimonial-2-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script");
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f0316818eb30d1915ea476/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+        <Script id="vsl-testimonial-3-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script");
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f03158d48459a22e5db457/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+
+        <Script id="vsl-testimonial-4-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script");
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f0338418eb30d1915ea6f9/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+
+        <Script id="vsl-testimonial-5-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script");
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f033776a26dc6be25cd15d/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+
+        <Script id="vsl-testimonial-6-script" strategy="afterInteractive">
+          {`
+            var s=document.createElement("script");
+            s.src="https://scripts.converteai.net/e4ba7497-8d0b-4111-9783-5566e7473886/players/68f0336881e93bf7cd487b8c/v4/player.js";
+            s.async=true;
+            document.head.appendChild(s);
+          `}
+        </Script>
+
         {/* Step-by-step checklist */}
-        <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
-          <div className="mb-4 text-center">
-            <h2 className="text-xl font-bold text-white mb-2">Unlock All App Features</h2>
-            <p className="text-sm text-gray-400">
-              Complete the final step to unlock full access to withdrawals and all app functionalities
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            {/* Step 1 - Completed */}
-            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
-                1
-              </div>
-              <p className="text-sm flex-1">Assessments Performed</p>
-              <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span className="text-green-500 text-sm font-semibold">Ok</span>
+        {showInitialBlocks && (
+          <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
+            <div className="mb-4 text-center">
+              <h2 className="text-xl font-bold text-white mb-2">Unlock All App Features</h2>
+              <p className="text-sm text-gray-400">
+                Complete the final step to unlock full access to withdrawals and all app functionalities
+              </p>
             </div>
 
-            {/* Step 2 - Completed */}
-            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
-                2
+            <div className="space-y-3">
+              {/* Step 1 - Completed */}
+              <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+                  1
+                </div>
+                <p className="text-sm flex-1">Assessments Performed</p>
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                <span className="text-green-500 text-sm font-semibold">Ok</span>
               </div>
-              <p className="text-sm flex-1">Registered data</p>
-              <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-              <span className="text-green-500 text-sm font-semibold">Ok</span>
-            </div>
 
-            {/* Step 3 - Not completed */}
-            <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
-              <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
-                3
+              {/* Step 2 - Completed */}
+              <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+                  2
+                </div>
+                <p className="text-sm flex-1">Registered data</p>
+                <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
+                <span className="text-green-500 text-sm font-semibold">Ok</span>
               </div>
-              <p className="text-sm flex-1">Watch the video to withdraw your balance</p>
-              <Clock className="w-5 h-5 text-orange-500 flex-shrink-0" />
-            </div>
-          </div>
-        </section>
 
-        {/* Social Proof Testimonials */}
-        <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
-          <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3 mb-4">What Our Users Say</h2>
-          <div className="space-y-4">
-            {/* Testimonial 1 - Withdrawal released after video */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="flex items-start gap-3 mb-3">
-                <img src="/profile-1.png" alt="Jessica M." className="w-12 h-12 rounded-full object-cover" />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold">Jessica M.</h3>
-                    <span className="text-xs text-gray-400">2 hours ago</span>
+              {/* Step 3 - Not completed */}
+              <div className="flex items-center gap-3 p-3 bg-gray-800/50 rounded-lg">
+                <div className="flex items-center justify-center w-8 h-8 rounded-full bg-orange-500 text-white font-bold flex-shrink-0">
+                  3
+                </div>
+                <p className="text-sm flex-1">Watch the video to withdraw your balance</p>
+                <Clock className="w-5 h-5 text-orange-500 flex-shrink-0" />
+              </div>
+            </div>
+          </section>
+        )}
+
+        {showInitialBlocks && (
+          <section className="bg-gray-900 rounded-lg p-6 border border-gray-800">
+            <h2 className="text-lg font-bold border-l-4 border-yellow-500 pl-3 mb-4">What Our Users Say</h2>
+            <div className="space-y-4">
+              {/* Testimonial 1 - Withdrawal released after video */}
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <img src="/profile-1.png" alt="Jessica M." className="w-12 h-12 rounded-full object-cover" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold">Jessica M.</h3>
+                      <span className="text-xs text-gray-400">2 hours ago</span>
+                    </div>
+                    <div className="flex gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-300">
+                      "I watched the video and my withdrawal was released immediately! Got my $204 in my PayPal within
+                      hours. This is legit! 🎉"
+                    </p>
                   </div>
-                  <div className="flex gap-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    ))}
+                </div>
+              </div>
+
+              {/* Testimonial 2 - Paid activation fee, got profits same day */}
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <img src="/profile-2.png" alt="Michael R." className="w-12 h-12 rounded-full object-cover" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold">Michael R.</h3>
+                      <span className="text-xs text-gray-400">5 hours ago</span>
+                    </div>
+                    <div className="flex gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-300">
+                      "I was skeptical about the activation fee, but I paid it and made profits the same day! Already
+                      earned back 3x what I paid. Best decision ever! 💰"
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-300">
-                    "I watched the video and my withdrawal was released immediately! Got my $204 in my PayPal within
-                    hours. This is legit! 🎉"
-                  </p>
+                </div>
+              </div>
+
+              {/* Testimonial 3 - Fast and easy process */}
+              <div className="bg-gray-800/50 rounded-lg p-4">
+                <div className="flex items-start gap-3 mb-3">
+                  <img src="/profile-3.png" alt="Sarah L." className="w-12 h-12 rounded-full object-cover" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold">Sarah L.</h3>
+                      <span className="text-xs text-gray-400">1 day ago</span>
+                    </div>
+                    <div className="flex gap-1 mb-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
+                      ))}
+                    </div>
+                    <p className="text-sm text-gray-300">
+                      "Super easy! Completed 3 reviews in 10 minutes and cashed out. The whole process was smooth and
+                      fast. Highly recommend! ⚡"
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-
-            {/* Testimonial 2 - Paid activation fee, got profits same day */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="flex items-start gap-3 mb-3">
-                <img src="/profile-2.png" alt="Michael R." className="w-12 h-12 rounded-full object-cover" />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold">Michael R.</h3>
-                    <span className="text-xs text-gray-400">5 hours ago</span>
-                  </div>
-                  <div className="flex gap-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-gray-300">
-                    "I was skeptical about the activation fee, but I paid it and made profits the same day! Already
-                    earned back 3x what I paid. Best decision ever! 💰"
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Testimonial 3 - Fast and easy process */}
-            <div className="bg-gray-800/50 rounded-lg p-4">
-              <div className="flex items-start gap-3 mb-3">
-                <img src="/profile-3.png" alt="Sarah L." className="w-12 h-12 rounded-full object-cover" />
-                <div className="flex-1">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="font-semibold">Sarah L.</h3>
-                    <span className="text-xs text-gray-400">1 day ago</span>
-                  </div>
-                  <div className="flex gap-1 mb-2">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-yellow-500 text-yellow-500" />
-                    ))}
-                  </div>
-                  <p className="text-sm text-gray-300">
-                    "Super easy! Completed 3 reviews in 10 minutes and cashed out. The whole process was smooth and
-                    fast. Highly recommend! ⚡"
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+          </section>
+        )}
       </main>
 
       {/* Bottom Navigation */}
