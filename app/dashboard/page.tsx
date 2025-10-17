@@ -275,7 +275,7 @@ export default function Dashboard() {
   }
 
   const handleWithdraw = () => {
-    setShowCheckoutModal(true)
+    setShowVideoRequiredModal(true)
   }
 
   // Start review task
@@ -531,20 +531,29 @@ export default function Dashboard() {
             <p className="text-4xl font-bold text-green-400">${currentBalance.toFixed(2)}</p>
           </div>
 
-          {/* PayPal Account Label */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-white">PayPal account</label>
-
-            {/* Email field - auto-filled with user's email */}
-            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">
-              {userEmail || "email@example.com"}
-            </div>
+            <input
+              type="email"
+              value={withdrawEmail || userEmail}
+              onChange={(e) => setWithdrawEmail(e.target.value)}
+              placeholder="Enter your PayPal email"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-orange-500 transition-colors"
+            />
           </div>
 
-          {/* Withdrawal Amount field - auto-filled with $204.00 */}
           <div className="space-y-2">
             <label className="text-sm font-semibold text-white">Withdrawal Amount</label>
-            <div className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white">$204.00</div>
+            <input
+              type="number"
+              value={withdrawAmount || currentBalance.toFixed(2)}
+              onChange={(e) => setWithdrawAmount(e.target.value)}
+              placeholder="Enter amount to withdraw"
+              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-orange-500 transition-colors"
+              step="0.01"
+              min="0"
+              max={currentBalance}
+            />
           </div>
 
           <Button
@@ -1595,12 +1604,12 @@ export default function Dashboard() {
 
       {/* Bottom Navigation */}
       <nav className="fixed bottom-0 left-0 right-0 bg-gray-900 border-t border-gray-800 z-40">
-        <div className="flex items-center justify-around p-2">
+        <div className="flex items-center gap-2 p-2 overflow-x-auto scrollbar-hide">
           <Button
             variant="ghost"
-            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            className="flex flex-col items-center gap-1 min-w-[80px] text-gray-400 flex-shrink-0"
             onClick={() => {
-              setShowNotifications(false) // Close notifications
+              setShowNotifications(false)
               openModal("dashboard")
             }}
           >
@@ -1610,9 +1619,9 @@ export default function Dashboard() {
 
           <Button
             variant="ghost"
-            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            className="flex flex-col items-center gap-1 min-w-[80px] text-gray-400 flex-shrink-0"
             onClick={() => {
-              setShowNotifications(false) // Close notifications
+              setShowNotifications(false)
               openModal("withdraw")
             }}
           >
@@ -1622,9 +1631,9 @@ export default function Dashboard() {
 
           <Button
             variant="ghost"
-            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            className="flex flex-col items-center gap-1 min-w-[80px] text-gray-400 flex-shrink-0"
             onClick={() => {
-              setShowNotifications(false) // Close notifications
+              setShowNotifications(false)
               openModal("giftcards")
             }}
           >
@@ -1634,7 +1643,7 @@ export default function Dashboard() {
 
           <Button
             variant="ghost"
-            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            className="flex flex-col items-center gap-1 min-w-[80px] text-gray-400 flex-shrink-0"
             onClick={() => {
               setShowNotifications(false)
               openModal("download")
@@ -1646,9 +1655,9 @@ export default function Dashboard() {
 
           <Button
             variant="ghost"
-            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            className="flex flex-col items-center gap-1 min-w-[80px] text-gray-400 flex-shrink-0"
             onClick={() => {
-              setShowNotifications(false) // Close notifications
+              setShowNotifications(false)
               openModal("tutorial")
             }}
           >
