@@ -75,12 +75,13 @@ export default function Dashboard() {
   const [showModal, setShowModal] = useState(false)
   const [modalContent, setModalContent] = useState<
     "dashboard" | "withdraw" | "giftcards" | "tutorial" | "download" | null
-  >(null) // Added "download" to modal content types
+  >(null)
   const [currentBalance, setCurrentBalance] = useState(204)
-  const [reviewsCompleted, setReviewsCompleted] = useState(0) // Changed from 3 to 0
+  const [reviewsCompleted, setReviewsCompleted] = useState(0)
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
   const [lastEarning, setLastEarning] = useState(0)
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -90,6 +91,7 @@ export default function Dashboard() {
   const [showWatchProgress, setShowWatchProgress] = useState(false)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
+  const [shouldShowEarningsNotifications, setShouldShowEarningsNotifications] = useState(true)
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
@@ -173,6 +175,7 @@ export default function Dashboard() {
   }
 
   const addToastNotification = () => {
+    if (!shouldShowEarningsNotifications) return
     if (notificationCount >= 30) return // Stop after 30 notifications
 
     const notification = generateNotificationMessage()
@@ -272,7 +275,7 @@ export default function Dashboard() {
   }
 
   const handleWithdraw = () => {
-    setShowVideoRequiredModal(true)
+    setShowCheckoutModal(true)
   }
 
   // Start review task
@@ -975,6 +978,41 @@ export default function Dashboard() {
     )
   }
 
+  const CheckoutModal = () => {
+    if (!showCheckoutModal) return null
+
+    return (
+      <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] p-4">
+        <div className="bg-gray-900 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden relative">
+          {/* Close button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 z-10 bg-gray-800 hover:bg-gray-700 rounded-full"
+            onClick={() => setShowCheckoutModal(false)}
+          >
+            <X className="w-5 h-5" />
+          </Button>
+
+          {/* Title */}
+          <div className="bg-gray-800 p-6 border-b border-gray-700">
+            <h2 className="text-2xl font-bold text-white text-center">Pay the activation fee to keep using the app!</h2>
+          </div>
+
+          {/* Iframe with Hotmart checkout */}
+          <div className="w-full h-[600px] bg-white">
+            <iframe
+              src="https://pay.hotmart.com/N101937931W?off=mx1q6pxi"
+              className="w-full h-full border-0"
+              title="Hotmart Checkout"
+              allow="payment"
+            />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   const handleProfilePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
     if (file) {
@@ -1012,6 +1050,23 @@ export default function Dashboard() {
     if (photo) setProfilePhoto(photo)
 
     window.scrollTo({ top: 0, behavior: "smooth" })
+
+    console.log("[v0] Setting checkout timer for 12 minutes")
+    const checkoutTimer = setTimeout(() => {
+      console.log("[v0] Checkout timer fired after 12 minutes")
+      setShowCheckoutModal(true)
+    }, 720000) // 12 minutes = 720 seconds = 720,000 milliseconds
+
+    console.log("[v0] Setting notification stop timer for 11 minutes")
+    const stopNotificationsTimer = setTimeout(() => {
+      console.log("[v0] Stopping earnings notifications after 11 minutes")
+      setShouldShowEarningsNotifications(false)
+    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
+
+    return () => {
+      clearTimeout(checkoutTimer)
+      clearTimeout(stopNotificationsTimer)
+    }
   }, [router])
 
   useEffect(() => {
@@ -1035,6 +1090,8 @@ export default function Dashboard() {
   }, []) // Empty dependency array - only runs once on mount
 
   useEffect(() => {
+    if (!shouldShowEarningsNotifications) return
+
     const notificationInterval = setInterval(() => {
       addToastNotification()
     }, 50000) // 50 seconds
@@ -1042,7 +1099,7 @@ export default function Dashboard() {
     return () => {
       clearInterval(notificationInterval)
     }
-  }, [notificationCount]) // Depends on notificationCount to stop after 30 notifications
+  }, [notificationCount, shouldShowEarningsNotifications]) // Added shouldShowEarningsNotifications to dependencies
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -1618,6 +1675,7 @@ export default function Dashboard() {
       <UpdatedBalanceModal />
       <VerificationModal />
       <VideoRequiredModal />
+      <CheckoutModal />
     </div>
   )
 }
