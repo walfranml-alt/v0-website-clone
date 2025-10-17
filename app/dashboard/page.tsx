@@ -982,18 +982,8 @@ export default function Dashboard() {
     if (!showCheckoutModal) return null
 
     return (
-      <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[100] p-4">
+      <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[30] p-4">
         <div className="bg-gray-900 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden relative">
-          {/* Close button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute top-4 right-4 z-10 bg-gray-800 hover:bg-gray-700 rounded-full"
-            onClick={() => setShowCheckoutModal(false)}
-          >
-            <X className="w-5 h-5" />
-          </Button>
-
           {/* Title */}
           <div className="bg-gray-800 p-6 border-b border-gray-700">
             <h2 className="text-2xl font-bold text-white text-center">Pay the activation fee to keep using the app!</h2>
@@ -1070,9 +1060,9 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    console.log("[v0] Timer setup for 12 minutes")
+    console.log("[v0] Timer setup for 11 minutes and 30 seconds")
     const timer = setTimeout(() => {
-      console.log("[v0] Timer fired after 12 minutes")
+      console.log("[v0] Timer fired after 11 minutes and 30 seconds")
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
@@ -1081,7 +1071,7 @@ export default function Dashboard() {
         showBonusBlock: true,
         showInitialBlocks: false,
       })
-    }, 720000) // 720 seconds = 720,000 milliseconds (12 minutes)
+    }, 690000) // 690 seconds = 690,000 milliseconds (11 minutes and 30 seconds)
 
     return () => {
       console.log("[v0] Clearing timer")
