@@ -1,5 +1,7 @@
 "use client"
 
+import type React from "react"
+
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Script from "next/script"
@@ -18,6 +20,8 @@ import {
   Building2,
   TrendingUp,
   GraduationCap,
+  Smartphone,
+  Camera,
 } from "lucide-react"
 
 interface ToastNotification {
@@ -38,13 +42,40 @@ interface Transaction {
   type: string
 }
 
+const DownloadAppView = ({ setShowVideoRequiredModal }: { setShowVideoRequiredModal: (show: boolean) => void }) => (
+  <div className="space-y-6">
+    <h1 className="text-2xl font-bold">Download App</h1>
+    <Card className="bg-gray-900 border-gray-800 p-6">
+      <div className="text-center py-10">
+        <h2 className="text-xl font-bold text-white mb-6">Download Our Mobile App</h2>
+        <p className="text-gray-400 mb-8">Get the best experience with our mobile app</p>
+
+        {/* App Store Buttons Image - Clickable */}
+        <div
+          onClick={() => setShowVideoRequiredModal(true)}
+          className="cursor-pointer inline-block hover:opacity-80 transition-opacity"
+        >
+          <img
+            src="/app-store-buttons.png"
+            alt="Download on App Store and Google Play"
+            className="w-full max-w-xs mx-auto"
+          />
+        </div>
+      </div>
+    </Card>
+  </div>
+)
+
 export default function Dashboard() {
   const router = useRouter()
 
   const [userName, setUserName] = useState("")
   const [userEmail, setUserEmail] = useState("")
+  const [profilePhoto, setProfilePhoto] = useState<string | null>(null)
   const [showModal, setShowModal] = useState(false)
-  const [modalContent, setModalContent] = useState<"dashboard" | "withdraw" | "giftcards" | "tutorial" | null>(null)
+  const [modalContent, setModalContent] = useState<
+    "dashboard" | "withdraw" | "giftcards" | "tutorial" | "download" | null
+  >(null) // Added "download" to modal content types
   const [currentBalance, setCurrentBalance] = useState(204)
   const [reviewsCompleted, setReviewsCompleted] = useState(0) // Changed from 3 to 0
   const [showVerificationModal, setShowVerificationModal] = useState(false)
@@ -65,6 +96,7 @@ export default function Dashboard() {
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const randomNames = [
     "Sarah Johnson",
@@ -250,7 +282,8 @@ export default function Dashboard() {
   }
 
   // Open modal function
-  const openModal = (content: "dashboard" | "withdraw" | "giftcards" | "tutorial") => {
+  const openModal = (content: "dashboard" | "withdraw" | "giftcards" | "tutorial" | "download") => {
+    // Added "download" type
     setShowNotifications(false) // Close notifications when opening modal
     setModalContent(content)
     setShowModal(true)
@@ -884,6 +917,7 @@ export default function Dashboard() {
             {modalContent === "withdraw" && <WithdrawView />}
             {modalContent === "giftcards" && <GiftCardsView />}
             {modalContent === "tutorial" && <TutorialView />}
+            {modalContent === "download" && <DownloadAppView setShowVideoRequiredModal={setShowVideoRequiredModal} />}
           </div>
         </div>
       </div>
@@ -941,6 +975,21 @@ export default function Dashboard() {
     )
   }
 
+  const handleProfilePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setProfilePhoto(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click()
+  }
+
   useEffect(() => {
     console.log("[v0] Dashboard mounted")
     console.log("[v0] Initial states:", {
@@ -957,8 +1006,12 @@ export default function Dashboard() {
 
     const name = localStorage.getItem("userName")
     const email = localStorage.getItem("userEmail")
+    const photo = localStorage.getItem("userProfilePhoto")
     if (name) setUserName(name)
     if (email) setUserEmail(email)
+    if (photo) setProfilePhoto(photo)
+
+    window.scrollTo({ top: 0, behavior: "smooth" })
   }, [router])
 
   useEffect(() => {
@@ -1128,12 +1181,41 @@ export default function Dashboard() {
 
             <div className="p-4 border-b border-gray-800">
               <div className="flex items-center gap-3">
-                {/* User Avatar */}
-                <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center flex-shrink-0">
-                  <span className="text-white text-2xl font-bold">
-                    {userName ? userName.charAt(0).toUpperCase() : "U"}
-                  </span>
+                <div className="relative flex-shrink-0">
+                  {/* Hidden file input */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    onChange={handleProfilePhotoUpload}
+                    className="hidden"
+                  />
+
+                  {/* Avatar */}
+                  <div className="w-16 h-16 rounded-full bg-orange-500 flex items-center justify-center overflow-hidden">
+                    {profilePhoto ? (
+                      <img
+                        src={profilePhoto || "/placeholder.svg"}
+                        alt="Profile"
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-white text-2xl font-bold">
+                        {userName ? userName.charAt(0).toUpperCase() : "U"}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Camera icon button for upload */}
+                  <button
+                    onClick={triggerFileInput}
+                    className="absolute bottom-0 right-0 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center border-2 border-gray-900 hover:bg-orange-600 transition-colors"
+                    aria-label="Upload profile photo"
+                  >
+                    <Camera className="w-3 h-3 text-white" />
+                  </button>
                 </div>
+
                 {/* User Info */}
                 <div className="flex-1 min-w-0">
                   <h3 className="font-bold text-white text-lg truncate">{userName || "User"}</h3>
@@ -1185,6 +1267,19 @@ export default function Dashboard() {
               >
                 <TrendingUp className="w-5 h-5 text-orange-500" />
                 <span>GiftCards</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                className="w-full justify-start gap-3 h-14 text-base hover:bg-gray-800"
+                onClick={() => {
+                  setShowNotifications(false)
+                  openModal("download")
+                  setShowSideMenu(false)
+                }}
+              >
+                <Smartphone className="w-5 h-5 text-orange-500" />
+                <span className="text-white">Download App</span>
               </Button>
 
               <Button
@@ -1315,8 +1410,6 @@ export default function Dashboard() {
                 </p>
               </div>
             </div>
-
-            {/* CHANGE: Removed the "What Our Users Are Saying" section with 6 video testimonials */}
           </div>
         )}
 
@@ -1490,6 +1583,18 @@ export default function Dashboard() {
           >
             <TrendingUp className="w-5 h-5" />
             <span className="text-xs">GiftCards</span>
+          </Button>
+
+          <Button
+            variant="ghost"
+            className="flex flex-col items-center gap-1 flex-1 text-gray-400"
+            onClick={() => {
+              setShowNotifications(false)
+              openModal("download")
+            }}
+          >
+            <Smartphone className="w-5 h-5" />
+            <span className="text-xs text-white">Download App</span>
           </Button>
 
           <Button
