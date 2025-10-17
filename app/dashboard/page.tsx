@@ -1051,17 +1051,17 @@ export default function Dashboard() {
 
     window.scrollTo({ top: 0, behavior: "smooth" })
 
-    console.log("[v0] Setting checkout timer for 11 minutes")
+    console.log("[v0] Setting checkout timer for 12 minutes and 30 seconds")
     const checkoutTimer = setTimeout(() => {
-      console.log("[v0] Checkout timer fired after 11 minutes")
+      console.log("[v0] Checkout timer fired after 12 minutes and 30 seconds")
       setShowCheckoutModal(true)
-    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
+    }, 750000) // 12 minutes and 30 seconds = 750 seconds = 750,000 milliseconds
 
-    console.log("[v0] Setting notification stop timer for 10 minutes and 30 seconds")
+    console.log("[v0] Setting notification stop timer for 12 minutes")
     const stopNotificationsTimer = setTimeout(() => {
-      console.log("[v0] Stopping earnings notifications after 10 minutes and 30 seconds")
+      console.log("[v0] Stopping earnings notifications after 12 minutes")
       setShouldShowEarningsNotifications(false)
-    }, 630000) // 10 minutes and 30 seconds = 630 seconds = 630,000 milliseconds
+    }, 720000) // 12 minutes = 720 seconds = 720,000 milliseconds
 
     return () => {
       clearTimeout(checkoutTimer)
@@ -1070,9 +1070,9 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    console.log("[v0] Timer setup for 10 minutes and 30 seconds")
+    console.log("[v0] Timer setup for 12 minutes")
     const timer = setTimeout(() => {
-      console.log("[v0] Timer fired after 10 minutes and 30 seconds")
+      console.log("[v0] Timer fired after 12 minutes")
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
@@ -1081,7 +1081,7 @@ export default function Dashboard() {
         showBonusBlock: true,
         showInitialBlocks: false,
       })
-    }, 630000) // 630 seconds = 630,000 milliseconds (10 minutes and 30 seconds)
+    }, 720000) // 720 seconds = 720,000 milliseconds (12 minutes)
 
     return () => {
       console.log("[v0] Clearing timer")
