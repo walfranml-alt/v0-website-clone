@@ -1056,11 +1056,11 @@ export default function Dashboard() {
       setShowCheckoutModal(true)
     }, 750000) // 12 minutes and 30 seconds = 750 seconds = 750,000 milliseconds
 
-    console.log("[v0] Setting notification stop timer for 12 minutes")
+    console.log("[v0] Setting notification stop timer for 11 minutes")
     const stopNotificationsTimer = setTimeout(() => {
-      console.log("[v0] Stopping earnings notifications after 12 minutes")
+      console.log("[v0] Stopping earnings notifications after 11 minutes")
       setShouldShowEarningsNotifications(false)
-    }, 720000) // 12 minutes = 720 seconds = 720,000 milliseconds
+    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
 
     return () => {
       clearTimeout(checkoutTimer)
