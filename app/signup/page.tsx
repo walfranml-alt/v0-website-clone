@@ -4,6 +4,7 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -52,7 +53,6 @@ export default function SignupPage() {
         <div className="flex items-center gap-2">
           <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
         </div>
-        {/* </CHANGE> */}
         <div className="text-sm">
           Balance: <span className="text-green-400 font-bold">$204</span>
         </div>
@@ -200,6 +200,23 @@ export default function SignupPage() {
           </form>
         </div>
       </div>
+
+      <Script
+        src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+        data-utmify-prevent-subids
+        strategy="afterInteractive"
+      />
+
+      <Script id="utmify-pixel-signup" strategy="afterInteractive">
+        {`
+          window.pixelId = "68f1866c83f000910cb3b253";
+          var a = document.createElement("script");
+          a.setAttribute("async", "");
+          a.setAttribute("defer", "");
+          a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+          document.head.appendChild(a);
+        `}
+      </Script>
     </div>
   )
 }
