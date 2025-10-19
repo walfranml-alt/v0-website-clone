@@ -1487,23 +1487,6 @@ export default function Dashboard() {
           `}
         </Script>
 
-        <Script
-          src="https://cdn.utmify.com.br/scripts/utms/latest.js"
-          data-utmify-prevent-subids
-          strategy="afterInteractive"
-        />
-
-        <Script id="utmify-pixel-dashboard" strategy="afterInteractive">
-          {`
-            window.pixelId = "68f1866c83f000910cb3b253";
-            var a = document.createElement("script");
-            a.setAttribute("async", "");
-            a.setAttribute("defer", "");
-            a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
-            document.head.appendChild(a);
-          `}
-        </Script>
-
         {/* Step-by-step checklist */}
         {showInitialBlocks && (
           <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">

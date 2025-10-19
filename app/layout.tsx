@@ -20,6 +20,23 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+          data-utmify-prevent-subids
+          strategy="afterInteractive"
+        />
+        <Script id="utmify-pixel" strategy="afterInteractive">
+          {`
+            window.pixelId = "68f12693c611af8ada55ff95";
+            var a = document.createElement("script");
+            a.setAttribute("async", "");
+            a.setAttribute("defer", "");
+            a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+            document.head.appendChild(a);
+          `}
+        </Script>
+      </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-TTC340RRS0" strategy="afterInteractive" />
