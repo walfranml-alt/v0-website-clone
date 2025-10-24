@@ -1003,7 +1003,7 @@ export default function Dashboard() {
           {/* Iframe with Hotmart checkout */}
           <div className="w-full h-[500px] sm:h-[600px] bg-white">
             <iframe
-              src="https://pay.hotmart.com/E102467942V?checkoutMode=10"
+              src="https://pay.hotmart.com/Y100101509N?off=5rdcsaof"
               className="w-full h-full border-0"
               title="Hotmart Checkout"
               allow="payment"
