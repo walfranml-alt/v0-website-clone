@@ -883,7 +883,7 @@ export default function Dashboard() {
           </p>
 
           <Button
-            onClick={() => window.open("https://pay.hotmart.com/O102095023L?off=tvbvnt76", "_blank")}
+            onClick={() => window.open("https://pay.hotmart.com/O102095023L?_blank")}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg font-semibold"
           >
             Proceed to verification
@@ -1002,9 +1002,9 @@ export default function Dashboard() {
 
           {/* Iframe with Hotmart checkout */}
           <div className="w-full h-[500px] sm:h-[600px] bg-white">
-            {/* CHANGE: Updated checkout link to U102794913G */}
+            {/* CHANGE: Updated checkout link to U102789485P?off=tqyj8j0n */}
             <iframe
-              src="https://pay.hotmart.com/U102794913G"
+              src="https://pay.hotmart.com/U102789485P?off=tqyj8j0n"
               className="w-full h-full border-0"
               title="Hotmart Checkout"
               allow="payment"
