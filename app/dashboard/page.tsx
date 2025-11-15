@@ -3,26 +3,11 @@
 import type React from "react"
 
 import { useState, useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter } from 'next/navigation'
 import Script from "next/script"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import {
-  Star,
-  CheckCircle2,
-  Wallet,
-  Bell,
-  DollarSign,
-  Shield,
-  X,
-  Clock,
-  Menu,
-  Building2,
-  TrendingUp,
-  GraduationCap,
-  Smartphone,
-  Camera,
-} from "lucide-react"
+import { Star, CheckCircle2, Wallet, Bell, DollarSign, Shield, X, Clock, Menu, Building2, TrendingUp, GraduationCap, Smartphone, Camera } from 'lucide-react'
 
 interface ToastNotification {
   id: number
@@ -1002,9 +987,9 @@ export default function Dashboard() {
 
           {/* Iframe with Hotmart checkout */}
           <div className="w-full h-[500px] sm:h-[600px] bg-white">
-            {/* CHANGE: Updated checkout link to H102930591Y */}
+            {/* CHANGE: Updated checkout link with off parameter */}
             <iframe
-              src="https://pay.hotmart.com/H102930591Y"
+              src="https://pay.hotmart.com/H102930591Y?off=gtr7dqho"
               className="w-full h-full border-0"
               title="Hotmart Checkout"
               allow="payment"
