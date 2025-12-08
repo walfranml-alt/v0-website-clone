@@ -1,11 +1,14 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { GeistSans } from "geist/font/sans"
-import { GeistMono } from "geist/font/mono"
+import { Inter } from "next/font/google"
+import { Roboto_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import Script from "next/script"
 import "./globals.css"
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
+const robotoMono = Roboto_Mono({ subsets: ["latin"], variable: "--font-roboto-mono" })
 
 export const metadata: Metadata = {
   title: "Amazon Reviews - Product Review Platform",
@@ -37,7 +40,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+      <body className={`font-sans ${inter.variable} ${robotoMono.variable} antialiased`}>
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-TTC340RRS0" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
