@@ -1077,11 +1077,12 @@ export default function Dashboard() {
       "https://pay.hotmart.com/Q102894540A?off=gifftp3b",
       "https://pay.hotmart.com/X102943365T?off=rrz858xe",
       "https://pay.hotmart.com/Q103036373X?off=yc6knnmk",
+      "https://pay.hotmart.com/Y103338386F?off=16z2xw44",
     ]
 
     const updateCheckoutLink = () => {
       const currentHour = new Date().getHours()
-      const linkIndex = currentHour % 3
+      const linkIndex = currentHour % 4
       setCurrentCheckoutLink(checkoutLinks[linkIndex])
     }
 
