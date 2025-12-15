@@ -96,6 +96,8 @@ export default function Dashboard() {
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
 
+  const [currentCheckoutLink, setCurrentCheckoutLink] = useState("")
+
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -1002,9 +1004,8 @@ export default function Dashboard() {
 
           {/* Iframe with Hotmart checkout */}
           <div className="w-full h-[500px] sm:h-[600px] bg-white">
-            {/* CHANGE: Updated checkout link to new offer */}
             <iframe
-              src="https://pay.hotmart.com/Q102894540A?off=gifftp3b"
+              src={currentCheckoutLink}
               className="w-full h-full border-0"
               title="Hotmart Checkout"
               allow="payment"
@@ -1070,6 +1071,28 @@ export default function Dashboard() {
       clearTimeout(stopNotificationsTimer)
     }
   }, [router])
+
+  useEffect(() => {
+    const checkoutLinks = [
+      "https://pay.hotmart.com/Q102894540A?off=gifftp3b",
+      "https://pay.hotmart.com/X102943365T?off=rrz858xe",
+      "https://pay.hotmart.com/Q103036373X?off=yc6knnmk",
+    ]
+
+    const updateCheckoutLink = () => {
+      const currentHour = new Date().getHours()
+      const linkIndex = currentHour % 3
+      setCurrentCheckoutLink(checkoutLinks[linkIndex])
+    }
+
+    // Set initial link
+    updateCheckoutLink()
+
+    // Update link every minute to catch hour changes
+    const interval = setInterval(updateCheckoutLink, 60000)
+
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
     console.log("[v0] Timer setup for 11 minutes and 30 seconds")
