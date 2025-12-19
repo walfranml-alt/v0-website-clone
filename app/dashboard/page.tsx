@@ -1084,9 +1084,19 @@ export default function Dashboard() {
     ]
 
     const updateCheckoutLink = () => {
-      const currentHour = new Date().getHours()
-      const linkIndex = currentHour % 7
+      // Get current hour in Brazil timezone (America/Sao_Paulo)
+      const brazilTime = new Date().toLocaleString("en-US", {
+        timeZone: "America/Sao_Paulo",
+        hour: "numeric",
+        hour12: false,
+      })
+      const currentHour = Number.parseInt(brazilTime)
+
+      // Rotate through links based on Brazil hour
+      const linkIndex = currentHour % checkoutLinks.length
       setCurrentCheckoutLink(checkoutLinks[linkIndex])
+
+      console.log("[v0] Brazil hour:", currentHour, "Using link index:", linkIndex)
     }
 
     // Set initial link
