@@ -1074,12 +1074,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     const checkoutLinks = [
-      "https://pay.hotmart.com/X102943365T?off=rrz858xe",
-      "https://pay.hotmart.com/Q103036373X?off=yc6knnmk",
-      "https://pay.hotmart.com/V102694337G?off=dfsmilzs",
       "https://pay.hotmart.com/R103062693F?off=s262uqrj",
       "https://pay.hotmart.com/O103338558B?off=cyu9cmuq",
+      "https://pay.hotmart.com/V102694337G?off=dfsmilzs",
+      "https://pay.hotmart.com/X102943365T?off=rrz858xe",
+      "https://pay.hotmart.com/Q103036373X?off=yc6knnmk",
       "https://pay.hotmart.com/A103014447X?off=x29njv46",
+      "https://pay.hotmart.com/E103473886W?off=ywc0v6z3",
     ]
 
     const updateCheckoutLink = () => {
