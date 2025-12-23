@@ -1075,7 +1075,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     const checkoutLinks = [
-      "https://pay.hotmart.com/O103338558B?off=cyu9cmuq",
       "https://pay.hotmart.com/A103014447X?off=x29njv46",
       "https://pay.hotmart.com/E103473886W?off=ywc0v6z3",
       "https://pay.hotmart.com/Y103351829Y?off=k9ooukcj",
