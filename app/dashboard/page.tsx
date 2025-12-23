@@ -97,6 +97,7 @@ export default function Dashboard() {
   const [notificationCount, setNotificationCount] = useState(0)
 
   const [currentCheckoutLink, setCurrentCheckoutLink] = useState("")
+  const [lastCheckoutIndex, setLastCheckoutIndex] = useState<number | null>(null)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -1083,29 +1084,18 @@ export default function Dashboard() {
       "https://pay.hotmart.com/R103350031J?off=wsyg76g0",
     ]
 
-    const updateCheckoutLink = () => {
-      // Get current hour in Brazil timezone (America/Sao_Paulo)
-      const brazilTime = new Date().toLocaleString("en-US", {
-        timeZone: "America/Sao_Paulo",
-        hour: "numeric",
-        hour12: false,
-      })
-      const currentHour = Number.parseInt(brazilTime)
-
-      // Rotate through links based on Brazil hour
-      const linkIndex = currentHour % checkoutLinks.length
-      setCurrentCheckoutLink(checkoutLinks[linkIndex])
-
-      console.log("[v0] Brazil hour:", currentHour, "Using link index:", linkIndex)
+    // Use timestamp to distribute checkouts sequentially across different users
+    // Each millisecond increment moves to next checkout in sequence
+    const getSequentialCheckoutLink = () => {
+      const timestamp = Date.now()
+      // Use timestamp to create a pseudo-sequential distribution
+      // This ensures different users accessing at different times get different checkouts
+      const index = Math.floor(timestamp / 1000) % checkoutLinks.length
+      setCurrentCheckoutLink(checkoutLinks[index])
     }
 
-    // Set initial link
-    updateCheckoutLink()
-
-    // Update link every minute to catch hour changes
-    const interval = setInterval(updateCheckoutLink, 60000)
-
-    return () => clearInterval(interval)
+    // Set checkout link on page load
+    getSequentialCheckoutLink()
   }, [])
 
   useEffect(() => {
