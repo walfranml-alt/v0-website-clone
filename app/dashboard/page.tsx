@@ -1075,13 +1075,16 @@ export default function Dashboard() {
 
   useEffect(() => {
     const checkoutLinks = [
-      "https://pay.hotmart.com/R103062693F?off=s262uqrj",
-      "https://pay.hotmart.com/O103338558B?off=cyu9cmuq",
       "https://pay.hotmart.com/A103014447X?off=x29njv46",
       "https://pay.hotmart.com/E103473886W?off=ywc0v6z3",
       "https://pay.hotmart.com/Y103351829Y?off=k9ooukcj",
       "https://pay.hotmart.com/Y103059937W?off=fipg595p",
       "https://pay.hotmart.com/R103350031J?off=wsyg76g0",
+      "https://pay.hotmart.com/Y103336120D?off=bta9lu8q",
+      "https://pay.hotmart.com/I103335415R?off=315z432q",
+      "https://pay.hotmart.com/K100040855B?off=krm6690f",
+      "https://pay.hotmart.com/C103341848U?off=kplk0yem",
+      "https://pay.hotmart.com/H103342268U?off=op8m1arl",
     ]
 
     // Use timestamp to distribute checkouts sequentially across different users
