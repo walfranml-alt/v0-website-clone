@@ -81,7 +81,7 @@ export default function Dashboard() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
-  const [showCheckoutModal, setShowCheckoutModal] = useState(false)
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false) // Renamed from showCheckout to showCheckoutModal
   const [lastEarning, setLastEarning] = useState(0)
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -991,7 +991,7 @@ export default function Dashboard() {
   }
 
   const CheckoutModal = () => {
-    if (!showCheckoutModal) return null
+    if (!showCheckoutModal) return null // Use showCheckoutModal here
 
     return (
       <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[60] p-4">
@@ -1058,7 +1058,7 @@ export default function Dashboard() {
     console.log("[v0] Setting checkout timer for 12 minutes and 30 seconds")
     const checkoutTimer = setTimeout(() => {
       console.log("[v0] Checkout timer fired after 12 minutes and 30 seconds")
-      setShowCheckoutModal(true)
+      setShowCheckoutModal(true) // Use setShowCheckoutModal here
     }, 750000) // 12 minutes and 30 seconds = 750 seconds = 750,000 milliseconds
 
     console.log("[v0] Setting notification stop timer for 11 minutes")
@@ -1082,23 +1082,34 @@ export default function Dashboard() {
       "https://pay.hotmart.com/R103350031J?off=wsyg76g0",
       "https://pay.hotmart.com/Y103336120D?off=bta9lu8q",
       "https://pay.hotmart.com/I103335415R?off=315z432q",
-      "https://pay.hotmart.com/K100040855B?off=krm6690f",
       "https://pay.hotmart.com/C103341848U?off=kplk0yem",
       "https://pay.hotmart.com/H103342268U?off=op8m1arl",
+      "https://pay.hotmart.com/M103517546P?off=72lw4xvr",
     ]
 
-    // Use timestamp to distribute checkouts sequentially across different users
-    // Each millisecond increment moves to next checkout in sequence
     const getSequentialCheckoutLink = () => {
       const timestamp = Date.now()
-      // Use timestamp to create a pseudo-sequential distribution
-      // This ensures different users accessing at different times get different checkouts
       const index = Math.floor(timestamp / 1000) % checkoutLinks.length
+
+      // Debug logs to track rotation
+      console.log("[v0] Checkout Rotation Debug:")
+      console.log("[v0] Current timestamp:", timestamp)
+      console.log("[v0] Timestamp in seconds:", Math.floor(timestamp / 1000))
+      console.log("[v0] Selected index:", index)
+      console.log("[v0] Selected checkout URL:", checkoutLinks[index])
+      console.log("[v0] Total checkouts available:", checkoutLinks.length)
+
       setCurrentCheckoutLink(checkoutLinks[index])
+      setLastCheckoutIndex(index)
     }
 
-    // Set checkout link on page load
     getSequentialCheckoutLink()
+
+    const interval = setInterval(() => {
+      getSequentialCheckoutLink()
+    }, 1000)
+
+    return () => clearInterval(interval)
   }, [])
 
   useEffect(() => {
@@ -1708,6 +1719,25 @@ export default function Dashboard() {
       <VerificationModal />
       <VideoRequiredModal />
       <CheckoutModal />
+
+      {/* Moved the Checkout modal logic here, and renamed showCheckout to showCheckoutModal */}
+      {showCheckoutModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] p-4">
+          <div className="bg-white rounded-lg w-full max-w-4xl h-[90vh] relative">
+            <div className="absolute top-2 left-2 bg-yellow-400 text-black px-3 py-1 rounded text-sm font-mono z-10">
+              Checkout #{lastCheckoutIndex !== null ? lastCheckoutIndex + 1 : "?"} de 10
+            </div>
+
+            <button
+              onClick={() => setShowCheckoutModal(false)} // Use setShowCheckoutModal here
+              className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full p-2"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <iframe src={currentCheckoutLink} className="w-full h-full rounded-lg" allow="payment" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
