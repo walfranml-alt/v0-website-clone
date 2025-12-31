@@ -1074,43 +1074,39 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    const checkoutLinks = [
-      "https://pay.hotmart.com/A103014447X?off=x29njv46",
-      "https://pay.hotmart.com/E103473886W?off=ywc0v6z3",
-      "https://pay.hotmart.com/Y103351829Y?off=k9ooukcj",
-      "https://pay.hotmart.com/Y103059937W?off=fipg595p",
-      "https://pay.hotmart.com/R103350031J?off=wsyg76g0",
-      "https://pay.hotmart.com/Y103336120D?off=bta9lu8q",
-      "https://pay.hotmart.com/I103335415R?off=315z432q",
-      "https://pay.hotmart.com/C103341848U?off=kplk0yem",
-      "https://pay.hotmart.com/H103342268U?off=op8m1arl",
-      "https://pay.hotmart.com/M103517546P?off=72lw4xvr",
-    ]
+    // Check if showCheckout is true to set the static checkout link
+    if (showCheckoutModal) {
+      setCurrentCheckoutLink("https://go.centerpag.com/PPU38CQ5CDR")
+      setLastCheckoutIndex(0)
+    }
+
+    // The previous code for rotating links has been removed from here.
+    // The logic for setting the checkout link is now solely within the 'if (showCheckoutModal)' block.
 
     const getSequentialCheckoutLink = () => {
       const timestamp = Date.now()
-      const index = Math.floor(timestamp / 1000) % checkoutLinks.length
+      const index = Math.floor(timestamp / 1000) % 10 // Assuming there are 10 checkout links
 
-      // Debug logs to track rotation
+      // Debug logs to track rotation (though rotation is now disabled)
       console.log("[v0] Checkout Rotation Debug:")
       console.log("[v0] Current timestamp:", timestamp)
       console.log("[v0] Timestamp in seconds:", Math.floor(timestamp / 1000))
       console.log("[v0] Selected index:", index)
-      console.log("[v0] Selected checkout URL:", checkoutLinks[index])
-      console.log("[v0] Total checkouts available:", checkoutLinks.length)
+      // console.log("[v0] Selected checkout URL:", checkoutLinks[index]) // This line would cause an error as checkoutLinks is not defined here anymore
+      console.log("[v0] Total checkouts available:", 10)
 
-      setCurrentCheckoutLink(checkoutLinks[index])
-      setLastCheckoutIndex(index)
+      // This part is effectively unused due to the static link logic above
+      // setCurrentCheckoutLink(checkoutLinks[index])
+      // setLastCheckoutIndex(index)
     }
 
-    getSequentialCheckoutLink()
+    // Removed the interval as the rotation system is no longer in use.
+    // const interval = setInterval(() => {
+    //   getSequentialCheckoutLink()
+    // }, 1000)
 
-    const interval = setInterval(() => {
-      getSequentialCheckoutLink()
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [])
+    // return () => clearInterval(interval) // Clean up the interval
+  }, [showCheckoutModal]) // Depend on showCheckoutModal to trigger this effect when it changes
 
   useEffect(() => {
     console.log("[v0] Timer setup for 11 minutes and 30 seconds")
