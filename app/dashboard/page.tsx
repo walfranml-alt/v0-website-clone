@@ -990,32 +990,8 @@ export default function Dashboard() {
     )
   }
 
-  const CheckoutModal = () => {
-    if (!showCheckoutModal) return null // Use showCheckoutModal here
-
-    return (
-      <div className="fixed inset-0 bg-black/90 flex items-center justify-center z-[60] p-4">
-        <div className="bg-gray-900 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden relative">
-          {/* Title */}
-          <div className="bg-gray-800 p-4 md:p-6 border-b border-gray-700">
-            <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-white text-center leading-tight">
-              Pay the activation fee to keep using the app!
-            </h2>
-          </div>
-
-          {/* Iframe with Hotmart checkout */}
-          <div className="w-full h-[500px] sm:h-[600px] bg-white">
-            <iframe
-              src={currentCheckoutLink}
-              className="w-full h-full border-0"
-              title="Hotmart Checkout"
-              allow="payment"
-            />
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // Removed CheckoutModal component as popup is no longer needed
+  // const CheckoutModal = () => { ... }
 
   const handleProfilePhotoUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -1074,39 +1050,8 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    // Check if showCheckout is true to set the static checkout link
-    if (showCheckoutModal) {
-      setCurrentCheckoutLink("https://go.centerpag.com/PPU38CQ5CDR")
-      setLastCheckoutIndex(0)
-    }
-
-    // The previous code for rotating links has been removed from here.
-    // The logic for setting the checkout link is now solely within the 'if (showCheckoutModal)' block.
-
-    const getSequentialCheckoutLink = () => {
-      const timestamp = Date.now()
-      const index = Math.floor(timestamp / 1000) % 10 // Assuming there are 10 checkout links
-
-      // Debug logs to track rotation (though rotation is now disabled)
-      console.log("[v0] Checkout Rotation Debug:")
-      console.log("[v0] Current timestamp:", timestamp)
-      console.log("[v0] Timestamp in seconds:", Math.floor(timestamp / 1000))
-      console.log("[v0] Selected index:", index)
-      // console.log("[v0] Selected checkout URL:", checkoutLinks[index]) // This line would cause an error as checkoutLinks is not defined here anymore
-      console.log("[v0] Total checkouts available:", 10)
-
-      // This part is effectively unused due to the static link logic above
-      // setCurrentCheckoutLink(checkoutLinks[index])
-      // setLastCheckoutIndex(index)
-    }
-
-    // Removed the interval as the rotation system is no longer in use.
-    // const interval = setInterval(() => {
-    //   getSequentialCheckoutLink()
-    // }, 1000)
-
-    // return () => clearInterval(interval) // Clean up the interval
-  }, [showCheckoutModal]) // Depend on showCheckoutModal to trigger this effect when it changes
+    // Removed all checkout modal logic
+  }, [])
 
   useEffect(() => {
     console.log("[v0] Timer setup for 11 minutes and 30 seconds")
@@ -1714,9 +1659,6 @@ export default function Dashboard() {
       <UpdatedBalanceModal />
       <VerificationModal />
       <VideoRequiredModal />
-      <CheckoutModal />
-
-      {/* Moved the Checkout modal logic here, and renamed showCheckout to showCheckoutModal */}
       {showCheckoutModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] p-4">
           <div className="bg-white rounded-lg w-full max-w-4xl h-[90vh] relative">
