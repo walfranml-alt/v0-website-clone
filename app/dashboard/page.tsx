@@ -1031,11 +1031,12 @@ export default function Dashboard() {
 
     window.scrollTo({ top: 0, behavior: "smooth" })
 
-    console.log("[v0] Setting checkout timer for 12 minutes and 30 seconds")
+    console.log("[v0] Setting checkout link and timer for 11 minutes")
+    setCurrentCheckoutLink("https://pay.mycheckoutt.com/019b8f52-4227-7017-8c0f-bb67b304acad?ref=...")
     const checkoutTimer = setTimeout(() => {
-      console.log("[v0] Checkout timer fired after 12 minutes and 30 seconds")
-      setShowCheckoutModal(true) // Use setShowCheckoutModal here
-    }, 750000) // 12 minutes and 30 seconds = 750 seconds = 750,000 milliseconds
+      console.log("[v0] Checkout timer fired after 11 minutes")
+      setShowCheckoutModal(true)
+    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
 
     console.log("[v0] Setting notification stop timer for 11 minutes")
     const stopNotificationsTimer = setTimeout(() => {
