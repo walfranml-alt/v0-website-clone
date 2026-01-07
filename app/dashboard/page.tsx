@@ -81,7 +81,6 @@ export default function Dashboard() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
-  const [showCheckoutModal, setShowCheckoutModal] = useState(false) // Renamed from showCheckout to showCheckoutModal
   const [lastEarning, setLastEarning] = useState(0)
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -95,9 +94,6 @@ export default function Dashboard() {
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
-
-  const [currentCheckoutLink, setCurrentCheckoutLink] = useState("")
-  const [lastCheckoutIndex, setLastCheckoutIndex] = useState<number | null>(null)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -1031,13 +1027,7 @@ export default function Dashboard() {
 
     window.scrollTo({ top: 0, behavior: "smooth" })
 
-    console.log("[v0] Setting checkout link and timer for 11 minutes")
-    setCurrentCheckoutLink("https://pay.mycheckoutt.com/019b8f52-4227-7017-8c0f-bb67b304acad?ref=...")
-    const checkoutTimer = setTimeout(() => {
-      console.log("[v0] Checkout timer fired after 11 minutes")
-      setShowCheckoutModal(true)
-    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
-
+    // Removed checkout link and timer logic
     console.log("[v0] Setting notification stop timer for 11 minutes")
     const stopNotificationsTimer = setTimeout(() => {
       console.log("[v0] Stopping earnings notifications after 11 minutes")
@@ -1045,7 +1035,6 @@ export default function Dashboard() {
     }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
 
     return () => {
-      clearTimeout(checkoutTimer)
       clearTimeout(stopNotificationsTimer)
     }
   }, [router])
@@ -1660,13 +1649,7 @@ export default function Dashboard() {
       <UpdatedBalanceModal />
       <VerificationModal />
       <VideoRequiredModal />
-      {showCheckoutModal && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] p-4">
-          <div className="bg-white rounded-lg w-full max-w-4xl h-[90vh] relative">
-            <iframe src={currentCheckoutLink} className="w-full h-full rounded-lg" allow="payment" />
-          </div>
-        </div>
-      )}
+      {/* Removed CheckoutModal and its related logic */}
     </div>
   )
 }
