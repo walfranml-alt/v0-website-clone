@@ -1663,12 +1663,6 @@ export default function Dashboard() {
       {showCheckoutModal && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] p-4">
           <div className="bg-white rounded-lg w-full max-w-4xl h-[90vh] relative">
-            <button
-              onClick={() => setShowCheckoutModal(false)} // Use setShowCheckoutModal here
-              className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full p-2"
-            >
-              <X className="h-6 w-6" />
-            </button>
             <iframe src={currentCheckoutLink} className="w-full h-full rounded-lg" allow="payment" />
           </div>
         </div>
