@@ -81,7 +81,6 @@ export default function Dashboard() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
-  const [showCheckoutModal, setShowCheckoutModal] = useState(false) // Renamed from showCheckout to showCheckoutModal
   const [lastEarning, setLastEarning] = useState(0)
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -95,26 +94,6 @@ export default function Dashboard() {
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
-
-  const [currentCheckoutLink, setCurrentCheckoutLink] = useState("")
-  const [checkoutClickCount, setCheckoutClickCount] = useState(0)
-
-  // Checkout links for rotation - each click opens a different checkout
-  const checkoutLinks = [
-    "https://pay.mycheckoutt.com/019bd7bc-513c-728d-8353-f4faa5a4f9e0?ref=",
-    "https://pay.mycheckoutt.com/019bc81f-da82-70e1-b162-ba17cb2000df?ref=",
-    "https://pay.mycheckoutt.com/019bc357-9928-7312-b759-c834c99a4905?ref=",
-    "https://pay.mycheckoutt.com/019b8f52-4227-7017-8c0f-bb67b304acad?ref=",
-    "https://pay.mycheckoutt.com/019bc22f-90be-703f-8dd5-f2c277ec37bc?ref=",
-  ]
-
-  // Handle checkout button click - rotates through checkouts
-  const handleCheckoutClick = () => {
-    const currentIndex = checkoutClickCount % checkoutLinks.length
-    const checkoutUrl = checkoutLinks[currentIndex]
-    window.open(checkoutUrl, "_blank")
-    setCheckoutClickCount((prev) => prev + 1)
-  }
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -1048,32 +1027,41 @@ export default function Dashboard() {
 
     window.scrollTo({ top: 0, behavior: "smooth" })
 
-    // Show checkout button after 11 minutes
-    const checkoutTimer = setTimeout(() => {
-      setShowCheckoutModal(true)
-    }, 660000) // 11 minutes
-
-    // Stop notifications after 11 minutes
+    // Removed checkout link and timer logic
+    console.log("[v0] Setting notification stop timer for 11 minutes")
     const stopNotificationsTimer = setTimeout(() => {
+      console.log("[v0] Stopping earnings notifications after 11 minutes")
       setShouldShowEarningsNotifications(false)
-    }, 660000) // 11 minutes
+    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
 
     return () => {
-      clearTimeout(checkoutTimer)
       clearTimeout(stopNotificationsTimer)
     }
   }, [router])
 
   useEffect(() => {
-    // Timer to show bonus block after 11.5 minutes
+    // Removed all checkout modal logic
+  }, [])
+
+  useEffect(() => {
+    console.log("[v0] Timer setup for 11 minutes and 30 seconds")
     const timer = setTimeout(() => {
+      console.log("[v0] Timer fired after 11 minutes and 30 seconds")
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
-    }, 690000) // 11 minutes and 30 seconds
+      console.log("[v0] States updated:", {
+        showWatchProgress: false,
+        showBonusBlock: true,
+        showInitialBlocks: false,
+      })
+    }, 690000) // 690 seconds = 690,000 milliseconds (11 minutes and 30 seconds)
 
-    return () => clearTimeout(timer)
-  }, [])
+    return () => {
+      console.log("[v0] Clearing timer")
+      clearTimeout(timer)
+    }
+  }, []) // Empty dependency array - only runs once on mount
 
   useEffect(() => {
     if (!shouldShowEarningsNotifications) return
@@ -1661,18 +1649,7 @@ export default function Dashboard() {
       <UpdatedBalanceModal />
       <VerificationModal />
       <VideoRequiredModal />
-      {/* Floating Checkout Button - appears after timer */}
-      {showCheckoutModal && (
-        <div className="fixed bottom-4 left-4 right-4 z-[9999]">
-          <Button
-            onClick={handleCheckoutClick}
-            className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white py-6 text-lg font-bold shadow-2xl animate-pulse border-2 border-green-400"
-          >
-            <Wallet className="w-6 h-6 mr-2" />
-            WITHDRAW $204.00 NOW
-          </Button>
-        </div>
-      )}
+      {/* Removed CheckoutModal and its related logic */}
     </div>
   )
 }
