@@ -367,8 +367,12 @@ export default function Dashboard() {
       </Script>
 
       {/* Green Checkout Button - Always visible */}
+      {console.log("[v0] Rendering green checkout button, balance:", currentBalance)}
       <Button
-        onClick={handleCheckoutClick}
+        onClick={() => {
+          console.log("[v0] Green button clicked!")
+          handleCheckoutClick()
+        }}
         className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-bold shadow-lg mb-4"
       >
         <Wallet className="w-5 h-5 mr-2" />
