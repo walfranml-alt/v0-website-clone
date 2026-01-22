@@ -1091,12 +1091,12 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
-    // Show bonus block and checkout button after 10 minutes (600000ms)
+    // Show bonus block and checkout button after 9 minutes and 30 seconds (570000ms)
     const bonusTimer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
-    }, 600000) // 10 minutes = 600,000 milliseconds
+    }, 570000) // 9 minutes 30 seconds = 570,000 milliseconds
 
     return () => clearTimeout(bonusTimer)
   }, [])
