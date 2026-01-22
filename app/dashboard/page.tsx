@@ -367,17 +367,32 @@ export default function Dashboard() {
       </Script>
 
       {/* Green Checkout Button - Always visible */}
-      {console.log("[v0] Rendering green checkout button, balance:", currentBalance)}
-      <Button
-        onClick={() => {
-          console.log("[v0] Green button clicked!")
-          handleCheckoutClick()
-        }}
-        className="w-full bg-green-600 hover:bg-green-700 text-white py-6 text-lg font-bold shadow-lg mb-4"
-      >
-        <Wallet className="w-5 h-5 mr-2" />
-        WITHDRAW ${currentBalance.toFixed(2)} NOW
-      </Button>
+      <div className="w-full">
+        <button
+          type="button"
+          onClick={handleCheckoutClick}
+          style={{
+            width: '100%',
+            backgroundColor: '#16a34a',
+            color: 'white',
+            padding: '24px 16px',
+            fontSize: '18px',
+            fontWeight: 'bold',
+            borderRadius: '8px',
+            border: 'none',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            marginBottom: '16px',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)'
+          }}
+        >
+          <Wallet style={{ width: '20px', height: '20px' }} />
+          WITHDRAW ${currentBalance.toFixed(2)} NOW
+        </button>
+      </div>
 
       {/* Step-by-step checklist */}
       <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
@@ -1076,24 +1091,15 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
-    console.log("[v0] Timer setup for 11 minutes and 30 seconds")
-    const timer = setTimeout(() => {
-      console.log("[v0] Timer fired after 11 minutes and 30 seconds")
+    // Show bonus block and checkout button after 10 minutes (600000ms)
+    const bonusTimer = setTimeout(() => {
       setShowWatchProgress(false)
       setShowBonusBlock(true)
       setShowInitialBlocks(false)
-      console.log("[v0] States updated:", {
-        showWatchProgress: false,
-        showBonusBlock: true,
-        showInitialBlocks: false,
-      })
-    }, 690000) // 690 seconds = 690,000 milliseconds (11 minutes and 30 seconds)
+    }, 600000) // 10 minutes = 600,000 milliseconds
 
-    return () => {
-      console.log("[v0] Clearing timer")
-      clearTimeout(timer)
-    }
-  }, []) // Empty dependency array - only runs once on mount
+    return () => clearTimeout(bonusTimer)
+  }, [])
 
   useEffect(() => {
     if (!shouldShowEarningsNotifications) return
@@ -1389,9 +1395,46 @@ export default function Dashboard() {
           </div>
         )}
 
+        {/* Separate Green Checkout Button Block - Above Bonus Block */}
+        {showBonusBlock && (
+          <div className="bg-gradient-to-r from-green-600 to-green-500 rounded-2xl p-6 mb-6 border-2 border-green-400">
+            <h2 className="text-xl font-bold text-center text-white mb-4">
+              Withdrawal Unlocked!
+            </h2>
+            <p className="text-sm text-center text-green-100 mb-4">
+              Complete the final verification to withdraw your ${currentBalance.toFixed(2)}
+            </p>
+            <button
+              type="button"
+              onClick={handleCheckoutClick}
+              className="animate-pulse"
+              style={{
+                width: '100%',
+                backgroundColor: 'white',
+                color: '#16a34a',
+                padding: '24px 16px',
+                fontSize: '18px',
+                fontWeight: 'bold',
+                borderRadius: '8px',
+                border: 'none',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
+                animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+              }}
+            >
+              <Wallet style={{ width: '20px', height: '20px' }} />
+              ACTIVATE APP NOW
+            </button>
+          </div>
+        )}
+
+        {/* Bonus Block */}
         {showBonusBlock && (
           <div className="bg-gradient-to-br from-orange-500/10 to-yellow-500/10 border-2 border-orange-500 rounded-2xl p-6 mb-6">
-            {console.log("[v0] Bonus block is rendering")}
             <h2 className="text-base md:text-xl lg:text-2xl font-bold text-center text-white mb-6 leading-tight px-2">
               🎁 Pay the APP activation fee and receive all the bonuses below 🎁
             </h2>
