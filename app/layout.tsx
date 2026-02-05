@@ -1,18 +1,15 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { Roboto_Mono } from "next/font/google"
+import { GeistSans } from "geist/font/sans"
+import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import Script from "next/script"
 import "./globals.css"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
-const robotoMono = Roboto_Mono({ subsets: ["latin"], variable: "--font-roboto-mono" })
-
 export const metadata: Metadata = {
   title: "Amazon Reviews - Product Review Platform",
-  description: "Join Amazon's official product review platform and earn rewards",
+  description: "Join Amazon's official product review program and earn rewards",
   generator: "v0.app",
 }
 
@@ -23,15 +20,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        {/* Utmify UTM tracking script */}
         <Script
           src="https://cdn.utmify.com.br/scripts/utms/latest.js"
           data-utmify-prevent-subids
           strategy="afterInteractive"
         />
+
         <Script id="utmify-pixel" strategy="afterInteractive">
           {`
-            window.pixelId = "690c06da8cc510a799a3d155";
+            window.pixelId = "68df0d3a533c662f5492cfec";
             var a = document.createElement("script");
             a.setAttribute("async", "");
             a.setAttribute("defer", "");
@@ -39,8 +38,7 @@ export default function RootLayout({
             document.head.appendChild(a);
           `}
         </Script>
-      </head>
-      <body className={`font-sans ${inter.variable} ${robotoMono.variable} antialiased`}>
+
         {/* Google Analytics */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=G-TTC340RRS0" strategy="afterInteractive" />
         <Script id="google-analytics" strategy="afterInteractive">
