@@ -89,6 +89,7 @@ export default function Dashboard() {
   const [showSideMenu, setShowSideMenu] = useState(false)
   const [currentLogoIndex, setCurrentLogoIndex] = useState(0)
   const headerLogos = ["/temu-review-logo.png", "/amazon-reviews-logo-2.png"]
+  const notificationIcons = ["/amazon-icon.png", "/temu-icon.png"]
   const [showWatchProgress, setShowWatchProgress] = useState(false)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
@@ -324,7 +325,7 @@ export default function Dashboard() {
     >
       <div className="flex items-start gap-2">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
-          <img src="/amazon-icon.png" alt="Amazon" className="w-8 h-8 object-contain" />
+          <img src={notificationIcons[currentLogoIndex]} alt="Reviews" className="w-8 h-8 object-contain" />
         </div>
 
         {/* Content */}
