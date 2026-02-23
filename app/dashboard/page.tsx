@@ -24,12 +24,13 @@ import {
   Camera,
 } from "lucide-react"
 
-interface ToastNotification {
+ interface ToastNotification {
   id: number
   name: string
   message: string
   time: string
-}
+  icon: string
+  }
 
 // Transaction interface
 interface Transaction {
@@ -203,6 +204,7 @@ export default function Dashboard() {
     const newNotification: ToastNotification = {
       id: Date.now(),
       ...notification,
+      icon: notificationCount % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png",
     }
 
     setToastNotifications((prev) => [...prev, newNotification])
@@ -325,7 +327,7 @@ export default function Dashboard() {
     >
       <div className="flex items-start gap-2">
         <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
-          <img src={notificationIcons[currentLogoIndex]} alt="Reviews" className="w-8 h-8 object-contain" />
+          <img src={notification.icon} alt="Reviews" className="w-8 h-8 object-contain" />
         </div>
 
         {/* Content */}
@@ -1122,6 +1124,7 @@ export default function Dashboard() {
         const newNotification: ToastNotification = {
           id: Date.now(),
           ...notification,
+          icon: prev % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png",
         }
         setToastNotifications((prevNotifs) => [...prevNotifs, newNotification])
         setTimeout(() => {
