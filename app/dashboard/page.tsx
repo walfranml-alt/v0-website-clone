@@ -87,6 +87,8 @@ export default function Dashboard() {
   const [withdrawEmail, setWithdrawEmail] = useState("")
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0)
+  const headerLogos = ["/temu-review-logo.png", "/amazon-reviews-logo-2.png"]
   const [showWatchProgress, setShowWatchProgress] = useState(false)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
@@ -1091,6 +1093,14 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
+    // Rotate header logo every 1 second
+    const logoInterval = setInterval(() => {
+      setCurrentLogoIndex((prev) => (prev + 1) % headerLogos.length)
+    }, 1000)
+    return () => clearInterval(logoInterval)
+  }, [headerLogos.length])
+
+  useEffect(() => {
     // Show bonus block and checkout button after 9 minutes and 30 seconds (570000ms)
     const bonusTimer = setTimeout(() => {
       setShowWatchProgress(false)
@@ -1154,9 +1164,9 @@ export default function Dashboard() {
       <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-40">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
-            <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
-          </div>
-          <div className="flex items-center gap-4">
+ <img src={headerLogos[currentLogoIndex]} alt="Reviews" className="h-8 w-auto object-contain" />
+  </div>
+  <div className="flex items-center gap-4">
             <div className="relative">
               <Button
                 variant="ghost"
@@ -1242,7 +1252,7 @@ export default function Dashboard() {
           <div className="fixed top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-800 z-50 shadow-2xl animate-in slide-in-from-left">
             {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
-              <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-6 w-auto object-contain" />
+              <img src={headerLogos[currentLogoIndex]} alt="Reviews" className="h-6 w-auto object-contain" />
               <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(false)}>
                 <X className="w-5 h-5" />
               </Button>
