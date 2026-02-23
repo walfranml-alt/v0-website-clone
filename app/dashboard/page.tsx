@@ -1117,7 +1117,7 @@ export default function Dashboard() {
 
     const notificationInterval = setInterval(() => {
       addToastNotification()
-    }, 50000) // 50 seconds
+    }, 30000) // 30 seconds
 
     return () => {
       clearInterval(notificationInterval)
