@@ -24,12 +24,13 @@ import {
   Camera,
 } from "lucide-react"
 
-interface ToastNotification {
+ interface ToastNotification {
   id: number
   name: string
   message: string
   time: string
-}
+  icon: string
+  }
 
 // Transaction interface
 interface Transaction {
@@ -87,6 +88,9 @@ export default function Dashboard() {
   const [withdrawEmail, setWithdrawEmail] = useState("")
   const [showNotifications, setShowNotifications] = useState(false)
   const [showSideMenu, setShowSideMenu] = useState(false)
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0)
+  const headerLogos = ["/temu-review-logo.png", "/amazon-reviews-logo-2.png"]
+  const notificationIcons = ["/amazon-icon.png", "/temu-icon.png"]
   const [showWatchProgress, setShowWatchProgress] = useState(false)
   const [showBonusBlock, setShowBonusBlock] = useState(false)
   const [showInitialBlocks, setShowInitialBlocks] = useState(true)
@@ -111,8 +115,7 @@ export default function Dashboard() {
     setCheckoutClickCount((prev) => prev + 1)
   }
 
-  const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
-  const [notificationCount, setNotificationCount] = useState(0)
+  const [activeNotification, setActiveNotification] = useState<ToastNotification | null>(null)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -190,25 +193,6 @@ export default function Dashboard() {
       message: template,
       time: "Just now",
     }
-  }
-
-  const addToastNotification = () => {
-    if (!shouldShowEarningsNotifications) return
-    if (notificationCount >= 30) return // Stop after 30 notifications
-
-    const notification = generateNotificationMessage()
-    const newNotification: ToastNotification = {
-      id: Date.now(),
-      ...notification,
-    }
-
-    setToastNotifications((prev) => [...prev, newNotification])
-    setNotificationCount((prev) => prev + 1)
-
-    // Auto-remove notification after 5 seconds
-    setTimeout(() => {
-      setToastNotifications((prev) => prev.filter((n) => n.id !== newNotification.id))
-    }, 5000)
   }
 
   // Review products data
@@ -315,27 +299,7 @@ export default function Dashboard() {
     setModalContent(null)
   }
 
-  const ToastNotificationComponent = ({ notification }: { notification: ToastNotification }) => (
-    <div
-      className="bg-white text-black rounded-lg shadow-2xl p-3 mb-2 animate-in slide-in-from-top duration-300 border-l-4 border-green-500"
-      style={{ minWidth: "280px", maxWidth: "320px" }}
-    >
-      <div className="flex items-start gap-2">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
-          <img src="/amazon-icon.png" alt="Amazon" className="w-8 h-8 object-contain" />
-        </div>
 
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-0.5">
-            <h4 className="font-bold text-xs">Amazon Reviews</h4>
-            <span className="text-[10px] text-gray-500">{notification.time}</span>
-          </div>
-          <p className="text-xs text-gray-700 leading-tight">{notification.message}</p>
-        </div>
-      </div>
-    </div>
-  )
 
   // HomeView Component
   const HomeView = () => (
@@ -751,9 +715,9 @@ export default function Dashboard() {
               <span className="text-white text-xs font-semibold">AMAZON</span>
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Amazon</h3>
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Amazon e Temu</h3>
               <p className="text-xl md:text-2xl font-bold text-green-400">$450</p>
-              <p className="text-xs md:text-sm text-gray-400">Redeem for Amazon purchases</p>
+              <p className="text-xs md:text-sm text-gray-400">Redeem for Amazon e Temu purchases</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
@@ -924,7 +888,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-gray-700 text-center mb-6">
-            After verification, your full access to the official Amazon Reviews App and your $204 withdrawal will be
+            After verification, your full access to the official Amazon e Temu Reviews App and your $204 withdrawal will be
             authorized and credited to your PayPal account.
           </p>
 
@@ -1018,7 +982,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-orange-400 font-semibold text-center mb-6">
-            Watch the video first to unlock all app functionalities including reviews, withdrawals, and exclusive Amazon
+            Watch the video first to unlock all app functionalities including reviews, withdrawals, and exclusive Amazon e Temu
             platform discounts.
           </p>
 
@@ -1091,6 +1055,14 @@ export default function Dashboard() {
   }, [])
 
   useEffect(() => {
+    // Rotate header logo every 1 second
+    const logoInterval = setInterval(() => {
+      setCurrentLogoIndex((prev) => (prev + 1) % 2)
+    }, 1000)
+    return () => clearInterval(logoInterval)
+  }, [])
+
+  useEffect(() => {
     // Show bonus block and checkout button after 9 minutes and 30 seconds (570000ms)
     const bonusTimer = setTimeout(() => {
       setShowWatchProgress(false)
@@ -1101,27 +1073,49 @@ export default function Dashboard() {
     return () => clearTimeout(bonusTimer)
   }, [])
 
+  const notifCountRef = useRef(0)
+  const notifTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
   useEffect(() => {
-    if (!shouldShowEarningsNotifications) return
-
-    const notificationInterval = setInterval(() => {
-      addToastNotification()
-    }, 50000) // 50 seconds
-
-    return () => {
-      clearInterval(notificationInterval)
+    function scheduleNotification() {
+      notifTimerRef.current = setTimeout(() => {
+        if (notifCountRef.current >= 30) return
+        const notification = generateNotificationMessage()
+        const icon = notifCountRef.current % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png"
+        setActiveNotification({ id: Date.now(), ...notification, icon })
+        notifCountRef.current++
+        // Hide after 5 seconds
+        setTimeout(() => setActiveNotification(null), 5000)
+        // Schedule next
+        scheduleNotification()
+      }, 30000)
     }
-  }, [notificationCount, shouldShowEarningsNotifications]) // Added shouldShowEarningsNotifications to dependencies
+    scheduleNotification()
+    return () => {
+      if (notifTimerRef.current) clearTimeout(notifTimerRef.current)
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] pointer-events-none">
-        <div className="flex flex-col items-center pointer-events-auto">
-          {toastNotifications.map((notification) => (
-            <ToastNotificationComponent key={notification.id} notification={notification} />
-          ))}
+      {activeNotification && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60]" style={{ minWidth: "280px", maxWidth: "320px" }}>
+          <div className="bg-white text-black rounded-lg shadow-2xl p-3 border-l-4 border-green-500">
+            <div className="flex items-start gap-2">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                <img src={activeNotification.icon} alt="Reviews" className="w-8 h-8 object-contain" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-0.5">
+                  <h4 className="font-bold text-xs text-black">Amazon e Temu Reviews</h4>
+                  <span className="text-[10px] text-gray-500">{activeNotification.time}</span>
+                </div>
+                <p className="text-xs text-gray-700 leading-tight">{activeNotification.message}</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Preload links for VSL */}
       <link
@@ -1154,9 +1148,9 @@ export default function Dashboard() {
       <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-40">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-2">
-            <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
-          </div>
-          <div className="flex items-center gap-4">
+ <img src={headerLogos[currentLogoIndex]} alt="Reviews" className="h-8 w-auto object-contain" />
+  </div>
+  <div className="flex items-center gap-4">
             <div className="relative">
               <Button
                 variant="ghost"
@@ -1188,7 +1182,7 @@ export default function Dashboard() {
                       {
                         id: 1,
                         title: "Welcome!",
-                        message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
+                        message: "Welcome to Amazon e Temu Reviews! Start completing reviews to earn money.",
                         time: "Just now",
                         unread: true,
                       },
@@ -1242,7 +1236,7 @@ export default function Dashboard() {
           <div className="fixed top-0 left-0 h-full w-80 bg-gray-900 border-r border-gray-800 z-50 shadow-2xl animate-in slide-in-from-left">
             {/* Menu Header */}
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
-              <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-6 w-auto object-contain" />
+              <img src={headerLogos[currentLogoIndex]} alt="Reviews" className="h-6 w-auto object-contain" />
               <Button variant="ghost" size="icon" onClick={() => setShowSideMenu(false)}>
                 <X className="w-5 h-5" />
               </Button>
@@ -1373,7 +1367,7 @@ export default function Dashboard() {
         <div className="mb-4 text-center">
           <h1 className="text-lg md:text-xl font-bold text-white leading-tight">
             Watch the video to learn how to earn <span className="text-orange-500">$300 to $500 per day</span> with
-            reviews on the Amazon Reviews app.
+            reviews on the Amazon e Temu Reviews app.
           </h1>
         </div>
 
@@ -1495,10 +1489,10 @@ export default function Dashboard() {
               {/* Bonus 5 */}
               <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
                 <h3 className="text-lg font-bold text-orange-400 mb-2">
-                  🛒 BONUS 5 – Special Discounts on Amazon Products
+                  🛒 BONUS 5 – Special Discounts on Amazon e Temu Products
                 </h3>
                 <p className="text-gray-300 text-sm mb-2">
-                  Get access to coupons and exclusive offers of up to 50% OFF on real Amazon products.
+                  Get access to coupons and exclusive offers of up to 50% OFF on real Amazon e Temu products.
                 </p>
                 <p className="text-white text-sm font-semibold">
                   Save up to 50% on products that you can review and keep.

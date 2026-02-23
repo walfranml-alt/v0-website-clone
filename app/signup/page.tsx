@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +15,15 @@ export default function SignupPage() {
   const [password, setPassword] = useState("")
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [activationCode] = useState(generateActivationCode())
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0)
+  const headerLogos = ["/temu-review-logo.png", "/amazon-reviews-logo-2.png"]
+
+  useEffect(() => {
+    const logoInterval = setInterval(() => {
+      setCurrentLogoIndex((prev) => (prev + 1) % 2)
+    }, 1000)
+    return () => clearInterval(logoInterval)
+  }, [])
 
   function generateActivationCode() {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -50,7 +59,7 @@ export default function SignupPage() {
       {/* Header */}
       <header className="bg-[#131921] text-white p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <img src="/amazon-reviews-logo.png" alt="Amazon Reviews" className="h-8 w-auto object-contain" />
+          <img src={headerLogos[currentLogoIndex]} alt="Reviews" className="h-8 w-auto object-contain" />
         </div>
         <div className="text-sm">
           Balance: <span className="text-green-400 font-bold">$204</span>
@@ -68,7 +77,7 @@ export default function SignupPage() {
 
         {/* Registration Form */}
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon Reviews</h1>
+          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon e Temu Reviews</h1>
           <p className="text-center text-gray-600 mb-8">
             Create your account to access the official app and withdraw your earnings
           </p>
@@ -166,7 +175,7 @@ export default function SignupPage() {
               <label htmlFor="terms" className="text-sm text-gray-700 cursor-pointer">
                 I accept the{" "}
                 <a href="#" className="text-orange-500 hover:underline">
-                  Amazon Reviews Terms of Service
+                  Amazon e Temu Reviews Terms of Service
                 </a>{" "}
                 and{" "}
                 <a href="#" className="text-orange-500 hover:underline">
@@ -193,7 +202,7 @@ export default function SignupPage() {
                 />
               </svg>
               <p className="text-sm text-blue-800">
-                Your information is secure and protected by Amazon Reviews encryption
+                Your information is secure and protected by Amazon e Temu Reviews encryption
               </p>
             </div>
           </form>
