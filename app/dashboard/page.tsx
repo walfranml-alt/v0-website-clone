@@ -1098,10 +1098,10 @@ export default function Dashboard() {
   useEffect(() => {
     // Rotate header logo every 1 second
     const logoInterval = setInterval(() => {
-      setCurrentLogoIndex((prev) => (prev + 1) % headerLogos.length)
+      setCurrentLogoIndex((prev) => (prev + 1) % 2)
     }, 1000)
     return () => clearInterval(logoInterval)
-  }, [headerLogos.length])
+  }, [])
 
   useEffect(() => {
     // Show bonus block and checkout button after 9 minutes and 30 seconds (570000ms)
@@ -1117,27 +1117,33 @@ export default function Dashboard() {
   useEffect(() => {
     if (!shouldShowEarningsNotifications) return
 
-    const notificationInterval = setInterval(() => {
-      setNotificationCount((prev) => {
-        if (prev >= 30) return prev
-        const notification = generateNotificationMessage()
-        const newNotification: ToastNotification = {
-          id: Date.now(),
-          ...notification,
-          icon: prev % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png",
-        }
-        setToastNotifications((prevNotifs) => [...prevNotifs, newNotification])
-        setTimeout(() => {
-          setToastNotifications((prevNotifs) => prevNotifs.filter((n) => n.id !== newNotification.id))
-        }, 5000)
-        return prev + 1
-      })
-    }, 30000) // 30 seconds
+    let count = 0
+
+    const showOneNotification = () => {
+      if (count >= 30) return
+      const notification = generateNotificationMessage()
+      const id = Date.now()
+      const newNotification: ToastNotification = {
+        id,
+        ...notification,
+        icon: count % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png",
+      }
+      setToastNotifications([newNotification])
+      count++
+      setNotificationCount(count)
+      setTimeout(() => {
+        setToastNotifications([])
+      }, 5000)
+    }
+
+    // Show first notification after 30 seconds
+    const notificationInterval = setInterval(showOneNotification, 30000)
 
     return () => {
       clearInterval(notificationInterval)
     }
-  }, [shouldShowEarningsNotifications])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <div className="min-h-screen bg-black text-white">
