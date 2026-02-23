@@ -1114,35 +1114,39 @@ export default function Dashboard() {
     return () => clearTimeout(bonusTimer)
   }, [])
 
+  const notificationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const notificationCountRef = useRef(0)
+
   useEffect(() => {
-    if (!shouldShowEarningsNotifications) return
+    // Clear any existing interval first to prevent duplicates
+    if (notificationIntervalRef.current) {
+      clearInterval(notificationIntervalRef.current)
+      notificationIntervalRef.current = null
+    }
 
-    let count = 0
-
-    const showOneNotification = () => {
-      if (count >= 30) return
+    notificationIntervalRef.current = setInterval(() => {
+      if (notificationCountRef.current >= 30) {
+        if (notificationIntervalRef.current) clearInterval(notificationIntervalRef.current)
+        return
+      }
       const notification = generateNotificationMessage()
       const id = Date.now()
-      const newNotification: ToastNotification = {
-        id,
-        ...notification,
-        icon: count % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png",
-      }
+      const icon = notificationCountRef.current % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png"
+      const newNotification: ToastNotification = { id, ...notification, icon }
       setToastNotifications([newNotification])
-      count++
-      setNotificationCount(count)
+      notificationCountRef.current++
+      setNotificationCount(notificationCountRef.current)
       setTimeout(() => {
         setToastNotifications([])
       }, 5000)
-    }
-
-    // Show first notification after 30 seconds
-    const notificationInterval = setInterval(showOneNotification, 30000)
+    }, 30000)
 
     return () => {
-      clearInterval(notificationInterval)
+      if (notificationIntervalRef.current) {
+        clearInterval(notificationIntervalRef.current)
+        notificationIntervalRef.current = null
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
