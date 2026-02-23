@@ -68,7 +68,7 @@ export default function SignupPage() {
 
         {/* Registration Form */}
         <div className="bg-white rounded-lg shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon Reviews</h1>
+          <h1 className="text-3xl font-bold text-center mb-2">Register for Amazon e Temu Reviews</h1>
           <p className="text-center text-gray-600 mb-8">
             Create your account to access the official app and withdraw your earnings
           </p>
@@ -166,7 +166,7 @@ export default function SignupPage() {
               <label htmlFor="terms" className="text-sm text-gray-700 cursor-pointer">
                 I accept the{" "}
                 <a href="#" className="text-orange-500 hover:underline">
-                  Amazon Reviews Terms of Service
+                  Amazon e Temu Reviews Terms of Service
                 </a>{" "}
                 and{" "}
                 <a href="#" className="text-orange-500 hover:underline">
@@ -193,7 +193,7 @@ export default function SignupPage() {
                 />
               </svg>
               <p className="text-sm text-blue-800">
-                Your information is secure and protected by Amazon Reviews encryption
+                Your information is secure and protected by Amazon e Temu Reviews encryption
               </p>
             </div>
           </form>

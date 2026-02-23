@@ -330,7 +330,7 @@ export default function Dashboard() {
         {/* Content */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-0.5">
-            <h4 className="font-bold text-xs">Amazon Reviews</h4>
+            <h4 className="font-bold text-xs">Amazon e Temu Reviews</h4>
             <span className="text-[10px] text-gray-500">{notification.time}</span>
           </div>
           <p className="text-xs text-gray-700 leading-tight">{notification.message}</p>
@@ -753,9 +753,9 @@ export default function Dashboard() {
               <span className="text-white text-xs font-semibold">AMAZON</span>
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Amazon</h3>
+              <h3 className="text-lg md:text-xl font-bold text-white mb-1">Amazon e Temu</h3>
               <p className="text-xl md:text-2xl font-bold text-green-400">$450</p>
-              <p className="text-xs md:text-sm text-gray-400">Redeem for Amazon purchases</p>
+              <p className="text-xs md:text-sm text-gray-400">Redeem for Amazon e Temu purchases</p>
             </div>
             <Button
               onClick={() => setShowVideoRequiredModal(true)}
@@ -926,7 +926,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-gray-700 text-center mb-6">
-            After verification, your full access to the official Amazon Reviews App and your $204 withdrawal will be
+            After verification, your full access to the official Amazon e Temu Reviews App and your $204 withdrawal will be
             authorized and credited to your PayPal account.
           </p>
 
@@ -1020,7 +1020,7 @@ export default function Dashboard() {
           </p>
 
           <p className="text-orange-400 font-semibold text-center mb-6">
-            Watch the video first to unlock all app functionalities including reviews, withdrawals, and exclusive Amazon
+            Watch the video first to unlock all app functionalities including reviews, withdrawals, and exclusive Amazon e Temu
             platform discounts.
           </p>
 
@@ -1198,7 +1198,7 @@ export default function Dashboard() {
                       {
                         id: 1,
                         title: "Welcome!",
-                        message: "Welcome to Amazon Reviews! Start completing reviews to earn money.",
+                        message: "Welcome to Amazon e Temu Reviews! Start completing reviews to earn money.",
                         time: "Just now",
                         unread: true,
                       },
@@ -1383,7 +1383,7 @@ export default function Dashboard() {
         <div className="mb-4 text-center">
           <h1 className="text-lg md:text-xl font-bold text-white leading-tight">
             Watch the video to learn how to earn <span className="text-orange-500">$300 to $500 per day</span> with
-            reviews on the Amazon Reviews app.
+            reviews on the Amazon e Temu Reviews app.
           </h1>
         </div>
 
@@ -1505,10 +1505,10 @@ export default function Dashboard() {
               {/* Bonus 5 */}
               <div className="bg-gray-900/80 rounded-lg p-4 border border-orange-500/30">
                 <h3 className="text-lg font-bold text-orange-400 mb-2">
-                  🛒 BONUS 5 – Special Discounts on Amazon Products
+                  🛒 BONUS 5 – Special Discounts on Amazon e Temu Products
                 </h3>
                 <p className="text-gray-300 text-sm mb-2">
-                  Get access to coupons and exclusive offers of up to 50% OFF on real Amazon products.
+                  Get access to coupons and exclusive offers of up to 50% OFF on real Amazon e Temu products.
                 </p>
                 <p className="text-white text-sm font-semibold">
                   Save up to 50% on products that you can review and keep.
