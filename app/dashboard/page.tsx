@@ -115,8 +115,7 @@ export default function Dashboard() {
     setCheckoutClickCount((prev) => prev + 1)
   }
 
-  const [toastNotifications, setToastNotifications] = useState<ToastNotification[]>([])
-  const [notificationCount, setNotificationCount] = useState(0)
+  const [activeNotification, setActiveNotification] = useState<ToastNotification | null>(null)
 
   const emailInputRef = useRef<HTMLInputElement>(null)
   const amountInputRef = useRef<HTMLInputElement>(null)
@@ -194,26 +193,6 @@ export default function Dashboard() {
       message: template,
       time: "Just now",
     }
-  }
-
-  const addToastNotification = () => {
-    if (!shouldShowEarningsNotifications) return
-    if (notificationCount >= 30) return // Stop after 30 notifications
-
-    const notification = generateNotificationMessage()
-    const newNotification: ToastNotification = {
-      id: Date.now(),
-      ...notification,
-      icon: notificationCount % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png",
-    }
-
-    setToastNotifications((prev) => [...prev, newNotification])
-    setNotificationCount((prev) => prev + 1)
-
-    // Auto-remove notification after 5 seconds
-    setTimeout(() => {
-      setToastNotifications((prev) => prev.filter((n) => n.id !== newNotification.id))
-    }, 5000)
   }
 
   // Review products data
@@ -320,27 +299,7 @@ export default function Dashboard() {
     setModalContent(null)
   }
 
-  const ToastNotificationComponent = ({ notification }: { notification: ToastNotification }) => (
-    <div
-      className="bg-white text-black rounded-lg shadow-2xl p-3 mb-2 animate-in slide-in-from-top duration-300 border-l-4 border-green-500"
-      style={{ minWidth: "280px", maxWidth: "320px" }}
-    >
-      <div className="flex items-start gap-2">
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
-          <img src={notification.icon} alt="Reviews" className="w-8 h-8 object-contain" />
-        </div>
 
-        {/* Content */}
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between mb-0.5">
-            <h4 className="font-bold text-xs">Amazon e Temu Reviews</h4>
-            <span className="text-[10px] text-gray-500">{notification.time}</span>
-          </div>
-          <p className="text-xs text-gray-700 leading-tight">{notification.message}</p>
-        </div>
-      </div>
-    </div>
-  )
 
   // HomeView Component
   const HomeView = () => (
@@ -1114,50 +1073,49 @@ export default function Dashboard() {
     return () => clearTimeout(bonusTimer)
   }, [])
 
-  const notificationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
-  const notificationCountRef = useRef(0)
+  const notifCountRef = useRef(0)
+  const notifTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   useEffect(() => {
-    // Clear any existing interval first to prevent duplicates
-    if (notificationIntervalRef.current) {
-      clearInterval(notificationIntervalRef.current)
-      notificationIntervalRef.current = null
+    function scheduleNotification() {
+      notifTimerRef.current = setTimeout(() => {
+        if (notifCountRef.current >= 30) return
+        const notification = generateNotificationMessage()
+        const icon = notifCountRef.current % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png"
+        setActiveNotification({ id: Date.now(), ...notification, icon })
+        notifCountRef.current++
+        // Hide after 5 seconds
+        setTimeout(() => setActiveNotification(null), 5000)
+        // Schedule next
+        scheduleNotification()
+      }, 30000)
     }
-
-    notificationIntervalRef.current = setInterval(() => {
-      if (notificationCountRef.current >= 30) {
-        if (notificationIntervalRef.current) clearInterval(notificationIntervalRef.current)
-        return
-      }
-      const notification = generateNotificationMessage()
-      const id = Date.now()
-      const icon = notificationCountRef.current % 2 === 0 ? "/amazon-icon.png" : "/temu-icon.png"
-      const newNotification: ToastNotification = { id, ...notification, icon }
-      setToastNotifications([newNotification])
-      notificationCountRef.current++
-      setNotificationCount(notificationCountRef.current)
-      setTimeout(() => {
-        setToastNotifications([])
-      }, 5000)
-    }, 30000)
-
+    scheduleNotification()
     return () => {
-      if (notificationIntervalRef.current) {
-        clearInterval(notificationIntervalRef.current)
-        notificationIntervalRef.current = null
-      }
+      if (notifTimerRef.current) clearTimeout(notifTimerRef.current)
     }
   }, [])
 
   return (
     <div className="min-h-screen bg-black text-white">
-      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60] pointer-events-none">
-        <div className="flex flex-col items-center pointer-events-auto">
-          {toastNotifications.map((notification) => (
-            <ToastNotificationComponent key={notification.id} notification={notification} />
-          ))}
+      {activeNotification && (
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-[60]" style={{ minWidth: "280px", maxWidth: "320px" }}>
+          <div className="bg-white text-black rounded-lg shadow-2xl p-3 border-l-4 border-green-500">
+            <div className="flex items-start gap-2">
+              <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0">
+                <img src={activeNotification.icon} alt="Reviews" className="w-8 h-8 object-contain" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-0.5">
+                  <h4 className="font-bold text-xs text-black">Amazon e Temu Reviews</h4>
+                  <span className="text-[10px] text-gray-500">{activeNotification.time}</span>
+                </div>
+                <p className="text-xs text-gray-700 leading-tight">{activeNotification.message}</p>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Preload links for VSL */}
       <link
