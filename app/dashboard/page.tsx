@@ -1116,13 +1116,25 @@ export default function Dashboard() {
     if (!shouldShowEarningsNotifications) return
 
     const notificationInterval = setInterval(() => {
-      addToastNotification()
+      setNotificationCount((prev) => {
+        if (prev >= 30) return prev
+        const notification = generateNotificationMessage()
+        const newNotification: ToastNotification = {
+          id: Date.now(),
+          ...notification,
+        }
+        setToastNotifications((prevNotifs) => [...prevNotifs, newNotification])
+        setTimeout(() => {
+          setToastNotifications((prevNotifs) => prevNotifs.filter((n) => n.id !== newNotification.id))
+        }, 5000)
+        return prev + 1
+      })
     }, 30000) // 30 seconds
 
     return () => {
       clearInterval(notificationInterval)
     }
-  }, [notificationCount, shouldShowEarningsNotifications]) // Added shouldShowEarningsNotifications to dependencies
+  }, [shouldShowEarningsNotifications])
 
   return (
     <div className="min-h-screen bg-black text-white">
